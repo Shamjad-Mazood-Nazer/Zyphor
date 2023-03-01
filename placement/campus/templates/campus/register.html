@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    <meta charset="UTF-8">
+    <title>Sign UP!</title>
+	<link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
+	<link rel="stylesheet" href="{% static '/css/loginStyle.css' %}">
+	<script src="{% static '/js/registerScript.js' %}"></script>
+</head>
+<body>
+<font size="5px" color="red">
+{% if success %}
+	<div align="center"> {{ success }} </div>
+{% endif %}
+{% if error %}
+	<div align="center"> {{ error }} </div>
+{% endif %}
+</font>
+<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-pic js-tilt" data-tilt>
+					<img src="https://colorlib.com/etc/lf/Login_v1/images/img-01.png" alt="Along with preparation, college placement cells help get the right people to the right place. If left alone, students could really hamper their careers by getting into the wrong place. Therefore, the importance of a good place cell cannot be stressed enough.">
+				</div>
+
+				<form method="post" action="register" class="login100-form validate-form">
+					{% csrf_token %}
+					<span class="login100-form-title">
+						Create Account
+					</span>
+
+<!--					<span id="confirmpassword" class="new"></span>-->
+<!--					<div id="reg-branch-div" class="wrap-input100 validate-input">-->
+<!--						<select class="input100" required>-->
+<!--							<option selected disabled value="">Select your branch</option>-->
+<!--							<option>MCA</option>-->
+<!--							<option>BTECH</option>-->
+<!--						</select>-->
+<!--						<span class="focus-input100"></span>-->
+<!--						<span class="symbol-input100">-->
+<!--							<i class="fa fa-book" aria-hidden="true"></i>-->
+<!--						</span>-->
+<!--					</div>-->
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="text" id="admino" name="admino" maxlength="5" onkeypress="admnoValidation(this)" placeholder="College Admission Number" required autocomplete="off"/>
+
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-university" aria-hidden="true"></i>
+						</span>
+					</div>
+<span id="admno" class="new"></span>
+					<div class="wrap-input100 validate-input">
+							<input class="input100" type="text" id="first_name" name="first_name" placeholder="First Name" onkeyup='fnameValidation(this)' required autocomplete="off"/>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-user" aria-hidden="true"></i>
+						</span>
+					</div>
+<span id="fname" class="new"></span>
+					<div class="wrap-input100 validate-input">
+							<input class="input100" type="text" id="last_name" name="last_name" placeholder="Last Name" onkeyup='lnameValidation(this)' required autocomplete="off"/>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-user-o" aria-hidden="true"></i>
+						</span>
+					</div>
+<span id="lname" class="new"></span>
+					<div class="wrap-input100 validate-input">
+							<input class="input100" type="email" id="mail" name="email" placeholder="Email" onkeyup='emailValidation(this)' required autocomplete="off"/>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
+<span id="email" class="new"></span>
+					<div class="wrap-input100 validate-input" data-validate = "Password is required">
+						<input class="input100" type="password" name="password" id="pass" placeholder="Password" onkeyup='passwordValidation(this)' required autocomplete="off"/>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+<span id="pass1" class="new"></span>
+					<div class="wrap-input100 validate-input" data-validate = "Password is required">
+						<input class="input100" type="password" id="repass" placeholder="Confirm Password" onkeyup='cpasswordValidation(this)' required autocomplete="off"/>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+<span id="pass2" class="new"></span>
+
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="number" name="code" id="id_code" placeholder="Enter verification code.." style="display: none;" required autocomplete="off"/>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+<!--							<i class="fa fa-code" aria-hidden="true"></i>-->
+						</span>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button id="regBtn" class="login100-form-btn" style="background-color: black;">
+							One Click to Generate Code..
+						</button>
+					</div>
+					<div class="container-login100-form-btn">
+						<button type="submit" class="login100-form-btn">
+							Sign Up!
+						</button>
+					</div>
+
+				</form>
+				<div class="container-login100-form-btn">
+					<a href="{% url 'home' %}">
+						<button class="login100-form-btn" style="background-color: #de5f1f">
+							<i class="fa fa-chevron-circle-left" aria-hidden="true"> </i>Already have an account?
+						</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+ $('#regBtn').on('click', function(e){
+  if($("#id_code").css('display')=='none'){
+   e.preventDefault();
+   var dataToGo = $('#mail').val();
+   console.log(dataToGo);
+   $.ajax({
+           url: "{% url 'ajax_generate_code' %}",
+           type: 'GET',
+           data: dataToGo,
+           success: function (data) {
+               $('#id_code').css('display', 'block');
+           },
+           cache: false,
+           contentType: false,
+           processData: false
+        });
+  }
+ })
+</script>

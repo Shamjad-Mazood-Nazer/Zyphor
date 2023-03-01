@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <!------ Include the above in your HEAD tag ---------->
+    <title>Welcome Back!</title>
+      <link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
+    <link rel="stylesheet" href="{% static '/css/studentDashStyle.css' %}">
+      <script scr="{% static '/js/logoutScript.js' %}"></script>
+  </head>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+<body>
+    <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Dashboard</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user-circle"></i> Hi Admin!{{user.TpoName}}
+                            <span class="caret"></span>
+                        </a>{% endif %}
+                        <ul id="g-account-menu" class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-user-secret"></i> My Profile
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'tpoLogout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /container -->
+    </div>
+
+    <!-- /Header -->
+
+    <!-- Main -->
+
+    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+
+        <ul class="nav nav-pills nav-stacked" style="border-right:1px solid black">
+            <!--<li class="nav-header"></li>-->
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fa fa-database"></i> Add Announcement </a></li>
+            <li><a href="#"><i class="fa fa-history"></i> Students enrolled / Drives</a></li>
+            <li><a href="#"><i class="fa fa-lock"></i> Change Password</a></li>
+
+        </ul>
+    </div><!-- /span-3 -->
+    <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+        <!-- Right -->
+
+        <a href="{% url 'adminDash' %}"><strong><span class="fa fa-dashboard"></span> My Dashboard</strong></a>
+
+        <hr>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <h5>STUDENTS STATUS :</h5>
+                <hr>
+                <div class="card card-body">
+                    <a class="btn btn-primary  btn-sm btn-block" href="">Create Customer</a>
+                    <table class="table table-sm">
+                        <tr>
+                            <th></th>
+                            <th>Admission Number</th>
+                            <th>Student Name</th>
+                            <th>Email</th>
+                        </tr>
+                        {% for student in AccountRegister %}
+                            <tr>
+                                <td><a class="btn btn-sm btn-info" href="{% url 'customer' customer.id %}">VIEW</a> </td>
+                                <td>{{student.admino}}</td>
+                                <td>{{student.name}}</td>
+                                <td>{{student.email}}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

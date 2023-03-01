@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Details</title>
+        <link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
+        <link rel="stylesheet" href="https://codepen.io/gymratpacks/pen/VKzBEp#0">
+        <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="{% static '/css/studentFormStyle.css' %}">
+        <script src="{% static '/js/studentFormScript.js' %}"></script>
+    </head>
+    <body>
+        <div class="row" >
+            <div id="studentform_maindiv" >
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <h1> Enter your details </h1>
+                    <div class="stud_formdiv" >
+                        <fieldset>
+                               <legend>
+                            <span class="number">1</span> Your Basic Info
+                        </legend>
+                            <div class="scroll">
+
+
+
+<!--                        <label for="AdmissionNo">Admission No:<font color="red">*</font></label>-->
+<!--                        <input type="text" id="AdmissionNo" onkeypress="universityNoValidation(this)" name="admission_number" placeholder="College Admission Number" required autocomplete="off">-->
+<!--<br><span id="universityno" class="new"></span><br><br>-->
+
+<!--                        <label>Title:<font color="red">*</font></label>-->
+<!--                        <input type="radio" id="Mr" value="Mr." name="user_title" required autocomplete="off"><label for="Mr" class="light">Mr.</label>&nbsp;-->
+<!--                        <input type="radio" id="Ms" value="Ms." name="user_title"><label for="Ms" class="light">Ms.</label>-->
+<!--<span id="title" class="new"></span><br><br>-->
+
+<!--                        <label for="fullname">Full Name:<font color="red">*</font></label>-->
+<!--                        <input type="text" id="fullname" name="fullname" placeholder="Full Name" onkeyup='nameValidation(this)' required autocomplete="off"><br>-->
+<!--<span id="name" class="new"></span><br>-->
+
+                        <label for="branch">Pick your Branch:<font color="red">*</font></label>
+                        <select id="branch" name="  branch" required autocomplete="off">
+                            <option value="" selected disabled>Select your branch</option>
+                            <optgroup label="B.Tech">
+                                <option value="CSE">CSE</option>
+                                <option value="MECH">Mechanical</option>
+                                <option value="CIVIL">Civil</option>
+                                <option value="CHEMICAL">Chemical</option>
+                                <option value="IT">IT</option>
+                                <option value="EEE">EEE</option>
+                                <option value="ECE">ECE</option>
+                            </optgroup>
+                            <optgroup label="MCA">
+                                <option value="RMCA_A">Regular MCA(A)</option>
+                                <option value="RMCA_B">Regular MCA(B)</option>
+                                <option value="INMCA">Integrated MCA</option>
+                            </optgroup>
+                        </select>
+
+                        <label for="DoB">Date of Birth:<font color="red">*</font> </label>
+                        <input type="date" id="DoB" name="user_DoB" max="2004-12-31" required autocomplete="off">
+<br><span id="birth" class="new"></span>
+                        <label>Gender:<font color="red">*</font></label>
+                        <input type="radio" id="Male" value="M" name="user_gender" required autocomplete="off"><label for="Male" class="light">Male</label>
+                        <input type="radio" id="Female" value="F" name="user_gender"><label for="Female" class="light">Female</label>
+<br><span id="gender" class="new"></span>
+                        <br><br>
+                        <label for="phone1">Phone No:<font color="red">*</font></label>
+                        <input type="number" id="phone1" name="phone1" maxlength="10" onkeypress="phone1Validation(this)" placeholder="Your Personal Number" required autocomplete="off">
+<br><span id="ph1" class="new"></span>
+                        <label for="phone2">Alternative No:<font color="red">*</font></label>
+                        <input type="number" id="phone2" name="phone2" maxlength="10" onkeypress="phone2Validation(this)" placeholder="Alternative Number" required autocomplete="off">
+<br><span id="ph2" class="new"></span>
+<br><span id="mail" class="new"></span>
+                        <label for="collegeemail">College Email:<font color="red">*</font></label>
+                        <input type="email" id="collegeemail" name="collegeemail" onkeypress="emailValidation(this)" placeholder="College Mail" required autocomplete="off">
+
+                            </div>
+                    </fieldset>
+
+                        <fieldset>
+
+                        <legend>
+                            <span class="number">2</span>Personal Profile
+                        </legend>
+<div class="scroll">
+                        <label for="address">Address:<font color="red">*</font></label>
+                        <input type="text"  id="address" name="address" onkeypress="addressValidation(this)" placeholder="Address" required autocomplete="off">
+                <br><span id="addr" class="new"></span><br><br>
+
+                        <label for="fatherName">Father's Name:<font color="red">*</font></label>
+                        <input type="text" id="fatherName" name="fathername" onkeypress="fatherNameValidation(this)" placeholder="Father's Name" required autocomplete="off">
+                <br><span id="father_name" class="new"></span><br><br>
+
+                        <label for="fatherNo">Father's Mobile No:<font color="red">*</font></label>
+                        <input type="text" id="fatherNo" name="fathernumber" onkeypress="fatherPhoneValidation(this)" placeholder="Father's Number" required autocomplete="off">
+                <br><span id="fatherph" class="new"></span><br><br>
+
+                        <label for="motherName">Mother's Name:<font color="red">*</font></label>
+                        <input type="text" id="motherName" name="mothername" onkeypress="motherNameValidation(this)" placeholder="Mother's Name" required autocomplete="off">
+                <br><span id="mother_name" class="new"></span><br><br>
+
+                        <label for="motherNo">Mother's Mobile No:<font color="red">*</font></label>
+                        <input type="text" id="motherNo" name="mothernumber" onkeypress="motherPhoneValidation(this)" placeholder="Mother's Number" required autocomplete="off">
+                <br><span id="motherph" class="new"></span><br><br>
+
+                        <label for="pincode">Pin Code:<font color="red">*</font></label>
+                        <input type="text" id="pincode" name="pincode" onkeypress="pincodeValidation(this)" placeholder="Pin Code" required autocomplete="off">
+                <br><span id="pin" class="new"></span><br><br>
+
+                        <label for="nationality">Nationality:<font color="red">*</font></label>
+                        <input type="text" id="nationality" name="user_nationality" required autocomplete="off">
+</div>
+                    </fieldset>
+
+
+
+                        <fieldset>
+
+                        <legend>
+                            <span class="number">3</span>Academic Profile
+                        </legend>
+<div class="scroll">
+                        <label for="persslc">SSLC %:<font color="red">*</font></label>
+                        <input type="number" id="persslc" name="sslcPer" min="0" max="100" required autocomplete="off">
+<br><span id="sslcper" class="new"></span>
+                        <label for="sslcYoP">SSLC Year of Pass:<font color="red">*</font></label>
+                        <input type="number" id="sslcYoP" name="sslcYoP" min="2010" max="2018" required autocomplete="off">
+
+                        <label for="sslcBoard">SSLC Board:<font color="red">*</font></label>
+                        <input type="text" id="sslcBoard" name="sslcBoard" required autocomplete="off">
+
+                        <label for="perHSE">HSE %:<font color="red">*</font></label>
+                        <input type="number" id="perHSE" name="HSEPer" min="0" max="100" required autocomplete="off">
+
+                        <label for="HSEYoP">HSE Year of Pass:<font color="red">*</font></label>
+                        <input type="number" id="HSEYoP" name="HSEYoP" min="2010" max="2020" required autocomplete="off">
+
+                        <label for="HSEBoard">HSE Board:<font color="red">*</font></label>
+                        <input type="text" id="HSEBoard" name="HSEBoard" required autocomplete="off">
+
+                        <label for="UG">Name of UG Program:<font color="red">*</font></label>
+                        <input type="text" id="UG" name="UG_course" required autocomplete="off">
+
+                        <label for="perUG">UG %:<font color="red">*</font></label>
+                        <input type="number" id="perUG" name="UG_Per" min="0" max="100" required autocomplete="off">
+
+                        <label for="UGYoP">UG Year of Pass:<font color="red">*</font></label>
+                        <input type="number" id="UGYoP" name="UG_YoP" min="2010" max="2022" required autocomplete="off">
+
+                        <label for="UG_CGPA">UG CGPA:<font color="red">*</font></label>
+                        <input type="text" id="UG_CGPA" name="UG_CGPA" min="0" max="10" onkeypress="cgpaValidation(this)" placeholder="eg: 4.00 / 8.32" required autocomplete="off">
+                        <br><span id="cgpa" class="new"></span><br><br>
+
+                        <label for="UGCollege">Name of the college:<font color="red">*</font></label>
+                        <input type="text" id="UGCollege" name="UG_college_name" required autocomplete="off">
+
+                        <label for="UGUniversity">UG University:<font color="red">*</font></label>
+                        <input type="text" id="UGUniversity" name="UG_UNIVERSIY" required autocomplete="off">
+
+                        <label for="entranceRank">Entrance Rank:<font color="red">*</font></label>
+                        <input type="number" id="entranceRank" name="entrance_rank" min="1" max="6000" required autocomplete="off">
+
+                        <label for="arrears">Active Arrears:<font color="red">*</font></label>
+                        <input type="number" id="arrears" min="0" max="15" name="active_arrears" required autocomplete="off">
+
+                        <label for="university">University:<font color="red">*</font></label>
+                        <input type="text" id="university" name="university" required autocomplete="off">
+
+                        <label for="exam_not">Exams not attended:<font color="red">*</font></label>
+                        <input type="number" id="exam_not" name="exam_not_attended" min="0" max="15" required autocomplete="off">
+</div>
+                    </fieldset>
+
+                        <fieldset>
+
+                        <legend>
+                            <span class="number">4</span>Additional Skills
+                        </legend>
+<div class="scroll">
+                        <label for="technical_skills">Technical Skills:</label>
+                        <textarea id="technical_skills" name="technical_skill" required autocomplete="off"></textarea>
+
+                        <label for="certifications">Certifications:</label>
+                        <textarea id="certifications" name="certifications" required autocomplete="off"></textarea>
+
+                        <label for="internships">Internships:</label>
+                        <textarea id="internships" name="internships"></textarea>
+
+                        <label for="work_XP">Work Experience Details:</label>
+                        <textarea id="work_XP" name="work_XP"></textarea>
+
+                        <label for="achievements">Achievements:</label>
+                        <textarea id="achievements" name="achievements"></textarea>
+
+                        <label for="languages">Languages Known:</label>
+                        <textarea id="languages" name="languages" required autocomplete="off"></textarea>
+
+                        <label for="github">Project/Github Links:</label>
+                        <input type="text" id="github" name="github" required autocomplete="off">
+
+                        <label for="linkedin">LinkedIn Account Link:</label>
+                        <input type="text" id="linkedin" name="linkedin" required autocomplete="off">
+
+</div>
+                            <button class="button button" type="submit">Update My Details</button>
+                    </fieldset>
+                    </div>
+
+                </form>
+                    <a href="{% url 'student' %}">
+                        <button class="button button1" style="float:right; margin-right:8.7%;">Back to My Home</button>
+                    </a>
+            </div>
+        </div>
+    </body>
+</html>
