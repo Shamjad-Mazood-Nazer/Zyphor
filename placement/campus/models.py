@@ -49,7 +49,7 @@ class MCAStudentDetails(models.Model):
         ('female', 'female'),
     )
 
-    admino = models.ForeignKey(StudentReg, null=True, blank=True, on_delete=models.CASCADE)
+    admino = models.OneToOneField(StudentReg, null=True, blank=True, on_delete=models.CASCADE)
     branch = models.CharField(max_length=50, choices=branch)
     DoB = models.DateField(max_length=10)
     gender = models.CharField(max_length=6, choices=gender)

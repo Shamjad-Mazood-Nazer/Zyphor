@@ -183,8 +183,9 @@ def updateStudentDetails(request):
         if request.method == 'POST':
             form = MCAStudentDetails(request.POST)
             if form.is_valid():
-                data = form.save()
-                form.save()
+                data = form.save(commit=False)
+                data.admino=email
+                data.save()
             success = "Updated Successfully !"
         return render(request, 'campus/studentForm.html', {'form': form, 'success': success})
     else:
