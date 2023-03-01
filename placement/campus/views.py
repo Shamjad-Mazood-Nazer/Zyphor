@@ -289,14 +289,14 @@ def quiz(request):
             for q in questions:
                 total += 1
                 print(request.POST.get(q.question))
-                print(q.ans)
+                print('correct answer:'+q.ans)
                 print()
                 if q.ans == request.POST.get(q.question):
-                    score += 10
+                    score += 1
                     correct += 1
                 else:
                     wrong += 1
-            percent = score / (total * 10) * 100
+            percent = (score / total) * 100
             context = {
                 'score': score,
                 'time': request.POST.get('timer'),

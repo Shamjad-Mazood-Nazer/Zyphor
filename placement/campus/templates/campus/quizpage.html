@@ -15,7 +15,7 @@
 <div class="container ">
 <h1>Welcome to Quiz Training</h1>
 
-<div align="right " id="displaytimer"><b>Timer: 0 seconds</b></div>
+    <div align="right " id="displaytimer"><b>Time you are taking : <u>0 seconds</u></b></div>
 
  <form method='post' action=''>
     {% csrf_token %}
@@ -25,7 +25,7 @@
     </div>
     <div class="form-check">
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios1" value="option1" checked>
+            <input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios1" value="option1" >
             <label class="form-check-label" for="gridRadios1">
                 {{q.op1}}
             </label>
@@ -58,7 +58,7 @@
     {% block script %}
         <script>
 
-            console.log('hello world')
+            console.log('Testing...')
             const timer=document.getElementById('displaytimer')
             console.log(timer.textContent)
             const inputtag = document.getElementById('timer')
@@ -66,7 +66,7 @@
             t=0
             setInterval(()=>{
                 t+=1
-                timer.innerHTML ="<b>Timer: " +t+" seconds</b>"
+                timer.innerHTML ="<b>Time you are taking : <u>" +t+" seconds</u></b>"
                 inputtag.value = t
             },1000)
         </script>
