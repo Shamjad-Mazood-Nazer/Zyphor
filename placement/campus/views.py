@@ -306,8 +306,8 @@ def quiz(request):
                 'percent': percent,
                 'total': total
             }
-            r = QuizResult(email="email", score="score", time="time", correct="correct",
-                           wrong="wrong", percent="percent", total="total")
+            r = QuizResult(email=email, score=score, time=15, correct=correct,
+                           wrong=wrong, percent=percent, total=total)
             r.save()
             return render(request, 'campus/result.html', context)
         else:

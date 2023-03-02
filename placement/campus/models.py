@@ -218,13 +218,13 @@ class QuesModel(models.Model):
 
 
 class QuizResult(models.Model):
-    email = models.EmailField(max_length=70)
-    score = models.CharField()
-    time = models.CharField()
-    correct = models.CharField()
-    wrong = models.CharField()
-    percent = models.CharField()
-    total = models.CharField()
+    email = models.EmailField(max_length=70, default=0)
+    score = models.CharField(max_length=3, default=0)
+    time = models.CharField(max_length=4, default=0)
+    correct = models.CharField(max_length=3, default=0)
+    wrong = models.CharField(max_length=3, default=0)
+    percent = models.CharField(max_length=3, default=0)
+    total = models.CharField(verbose_name='total questions', max_length=3, default=0)
 
     class Meta:
         verbose_name_plural = 'Quiz - Result'
