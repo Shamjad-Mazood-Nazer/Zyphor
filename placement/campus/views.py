@@ -308,6 +308,7 @@ def quiz(request):
             }
             r = QuizResult(email=email, score=score, time=15, correct=correct,
                            wrong=wrong, percent=percent, total=total)
+            print(r)
             r.save()
             return render(request, 'campus/result.html', context)
         else:
