@@ -306,6 +306,7 @@ def quiz(request):
                 'percent': percent,
                 'total': total
             }
+
             return render(request, 'campus/result.html', context)
         else:
             questions = QuesModel.objects.all()

@@ -216,3 +216,19 @@ class QuesModel(models.Model):
     class Meta:
         verbose_name_plural = 'Quiz - Questions'
 
+
+class QuizResult(models.Model):
+    email = models.ManyToManyField(StudentReg, max_length=70)
+    score = models.IntegerField()
+    time = models.IntegerField()
+    correct = models.IntegerField()
+    wrong = models.IntegerField()
+    percent = models.IntegerField()
+    total = models.IntegerField()
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        verbose_name_plural = 'Quiz - Result'
+
