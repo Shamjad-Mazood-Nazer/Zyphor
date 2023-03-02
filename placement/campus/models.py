@@ -219,3 +219,16 @@ class QuesModel(models.Model):
 
 class QuizResult(models.Model):
     email = models.EmailField(max_length=70)
+    score = models.CharField()
+    time = models.CharField()
+    correct = models.CharField()
+    wrong = models.CharField()
+    percent = models.CharField()
+    total = models.CharField()
+
+    class Meta:
+        verbose_name_plural = 'Quiz - Result'
+
+    def __str__(self):
+        return self.email
+
