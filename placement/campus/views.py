@@ -283,6 +283,7 @@ def quiz(request):
         if request.method == 'POST':
             print(request.POST)
             questions = QuesModel.objects.all()
+            time = request.POST.get('timer')
             score = 0
             wrong = 0
             correct = 0
@@ -300,13 +301,13 @@ def quiz(request):
             percent = (score / total) * 100
             context = {
                 'score': score,
-                'time': request.POST.get('timer'),
+                'time': time,
                 'correct': correct,
                 'wrong': wrong,
                 'percent': percent,
                 'total': total
             }
-            r = QuizResult(email=email, score=score, time=15, correct=correct,
+            r = QuizResult(email=email, score=score, time=time+' sec', correct=correct,
                            wrong=wrong, percent=percent, total=total)
             print(r)
             r.save()
