@@ -187,7 +187,7 @@ def updateStudentDetails(request):
                 data.admino=email
                 data.save()
             success = "Updated Successfully !"
-        return render(request, 'campus/studentForm.html', {'form': form, 'success': success})
+        return render(request, 'campus/student_details.html', {'form': form, 'success': success})
     else:
         return render(request, 'campus/payments.html', )
 
