@@ -184,7 +184,7 @@ def updateStudentDetails(request):
             form = MCAStudentDetails(request.POST)
             if form.is_valid():
                 data = form.save(commit=False)
-                data.admino=email
+                data.admino = email
                 data.save()
             success = "Updated Successfully !"
         return render(request, 'campus/student_details.html', {'form': form, 'success': success})
@@ -291,7 +291,7 @@ def quiz(request):
             for q in questions:
                 total += 1
                 print(request.POST.get(q.question))
-                print('correct answer:'+q.ans)
+                print('correct answer:' + q.ans)
                 print()
                 if q.ans == request.POST.get(q.question):
                     score += 1
@@ -307,7 +307,7 @@ def quiz(request):
                 'percent': percent,
                 'total': total
             }
-            r = QuizResult(email=email, score=score, time=time+' sec', correct=correct,
+            r = QuizResult(email=email, score=score, time=time + ' sec', correct=correct,
                            wrong=wrong, percent=percent, total=total)
             print(r)
             r.save()
@@ -320,3 +320,14 @@ def quiz(request):
             return render(request, 'campus/quizpage.html', context)
     else:
         return render(request, 'campus/payments.html', )
+
+
+def quiz_list(request):
+    quizzes = Quiz.objects.all()
+    return render(request, 'quiz_list.html', {'quizzes': quizzes})
+
+
+def quiz_detail(request, quiz_id):
+    quiz = Quiz.objects.get(pk=quiz_id)
+    questions = Question.objects.filter(quiz=quiz)
+    return render(request, 'quiz_detail.html', {'quiz': quiz, 'questions': questions})

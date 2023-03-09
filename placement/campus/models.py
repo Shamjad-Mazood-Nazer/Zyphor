@@ -216,14 +216,15 @@ class QuizResult(models.Model):
     def __str__(self):
         return self.email
 
-class Quiz(models.Model):
-    title = models.CharField(max_length=255)
 
-class Question(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    text = models.CharField(max_length=255)
+class QuesModel(models.Model):
+    question = models.CharField(max_length=200, null=True)
+    op1 = models.CharField(max_length=200, null=True)
+    op2 = models.CharField(max_length=200, null=True)
+    op3 = models.CharField(max_length=200, null=True)
+    op4 = models.CharField(max_length=200, null=True)
+    ans = models.CharField(max_length=200, null=True)
 
-class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    text = models.CharField(max_length=255)
-    is_correct = models.BooleanField(default=False)
+    def __str__(self):
+        return self.question
+
