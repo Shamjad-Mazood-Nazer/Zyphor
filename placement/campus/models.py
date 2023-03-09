@@ -201,22 +201,6 @@ class Payment(models.Model):
         verbose_name_plural = 'Payment Table'
 
 
-# Create your models here.
-class QuesModel(models.Model):
-    question = models.CharField(max_length=200, null=True)
-    op1 = models.CharField(max_length=200, null=True)
-    op2 = models.CharField(max_length=200, null=True)
-    op3 = models.CharField(max_length=200, null=True)
-    op4 = models.CharField(max_length=200, null=True)
-    ans = models.CharField(max_length=200, null=True)
-
-    def __str__(self):
-        return self.question
-
-    class Meta:
-        verbose_name_plural = 'Quiz - Questions'
-
-
 class QuizResult(models.Model):
     email = models.EmailField(max_length=70, default=0)
     score = models.CharField(max_length=3, default=0)
@@ -232,3 +216,14 @@ class QuizResult(models.Model):
     def __str__(self):
         return self.email
 
+class Quiz(models.Model):
+    title = models.CharField(max_length=255)
+
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=False)
