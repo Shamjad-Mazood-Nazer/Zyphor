@@ -1,11 +1,9 @@
 from django.urls import path
-from .views import *
-
+from . import views
 
 app_name = 'quiz'
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='index'),
-    path('create/', QuizCreateView.as_view(), name='create'),
-    path('<int:quiz_id>/', QuizDetailView.as_view(), name='detail'),
+    path('quiz_mode', views.quiz_mode, name='quiz_mode'),
+    path('upload/', views.upload_aiken, name='upload_aiken'),
 ]

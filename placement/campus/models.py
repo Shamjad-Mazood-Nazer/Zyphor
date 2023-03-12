@@ -228,3 +228,15 @@ class QuesModel(models.Model):
     def __str__(self):
         return self.question
 
+
+class AikenQuizFormat(models.Model):
+    name = models.CharField(max_length=255, verbose_name='File Name')
+    uploaded_on = models.DateField(auto_now_add=True, verbose_name='Upload Date')
+    file = models.FileField(upload_to='files', verbose_name='File', default='')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'Aiken Quiz File'
+

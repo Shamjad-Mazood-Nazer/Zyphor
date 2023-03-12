@@ -92,9 +92,10 @@ def login(request):
                 id = std.admino
                 print(email)
                 request.session['email'] = std.email
-                # This is a session variable and will remain existing as long as you don't delete this manually or clear your browser cache
+                """This is a session variable and will remain existing as long as you don't delete this manually or 
+                clear your browser cache """
                 request.session['admino'] = std.admino
-                return redirect('student')
+                return redirect('campus:student')
         return render(request, 'campus/login.html', {'form': form})
     else:
         return render(request, 'campus/login.html', {'form': form})
@@ -128,7 +129,7 @@ def adminDash(request):
 def tpoLogout(request):
     if 'email' in request.session:
         del request.session['email']  # delete user session
-    return redirect('tpo')
+    return redirect('campus:tpo')
 
 
 def get_user(request):
@@ -242,7 +243,11 @@ def registerDrive(request):
 def payment(request):
     email = request.session['email']
     if Payment.objects.filter(email=email).exists():
-        return HttpResponse("<script>alert('Already Paid!');window.location='/';</script>")
+        info = Payment.objects.filter(email=email).values('payment_on').get()['payment_on']
+        context = {'info': info}
+        print(info)
+        return render(request, 'campus/payment_done.html', context)
+        # return HttpResponse("<script>alert('Already Paid!');window.location='/';</script>")
     else:
         stripe.api_key = settings.STRIPE_PRIVATE_KEY
         session = stripe.checkout.Session.create(
@@ -324,10 +329,18 @@ def quiz(request):
 
 def quiz_list(request):
     quizzes = Quiz.objects.all()
-    return render(request, 'quiz_list.html', {'quizzes': quizzes})
+    return render(request, 'quiz:quiz_list.html', {'quizzes': quizzes})
 
 
 def quiz_detail(request, quiz_id):
     quiz = Quiz.objects.get(pk=quiz_id)
     questions = Question.objects.filter(quiz=quiz)
-    return render(request, 'quiz_detail.html', {'quiz': quiz, 'questions': questions})
+    return render(request, 'quiz:quiz_detail.html', {'quiz': quiz, 'questions': questions})
+
+
+def quiz_mode(request):
+    return render(request, 'campus/quiz_mode.html')
+
+
+def quiz_list(request):
+    return render(request, 'campus/quiz_list.html')

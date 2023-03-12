@@ -1,42 +1,66 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
-from django.contrib import messages
-from quiz.models import Quiz, Question, Answer
+from datetime import time
+
+from django.core.files.storage import FileSystemStorage
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from .forms import AikenUploadForm
+from .aiken_parser import parse_aiken_file
+import os
+from io import StringIO
+from django.conf import settings
+from django.http import HttpResponse
+from .models import *
 
 
-class IndexView(View):
-    def get(self, request):
-        quizzes = Quiz.objects.all()
-        context = {'quizzes': quizzes}
-        return render(request, 'quiz/index.html', context)
+def quiz_mode(request):
+    return render(request, 'quiz/quiz_mode.html')
 
 
-class QuizCreateView(View):
-    def get(self, request):
-        return render(request, 'quiz/quiz_create.html')
+def upload_aiken(request):
+    folder = 'quiz/aiken'
+    if request.method == 'POST':
+        form = AikenUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Process the uploaded file
+            file = request.FILES['file']
+            fs = FileSystemStorage(location=folder)
+            filename = fs.save(file.name, file)
+            file_url = fs.url(filename)
+            # parse_aiken_file(file)
 
-    def post(self, request):
-        # Parse the Aiken file from the request
-        aiken_text = request.POST.get('aiken_text')
-        quiz_title, questions = aiken_parser.parse(aiken_text)
-
-        # Create the Quiz object and save it to the database
-        quiz = Quiz.objects.create(title=quiz_title)
-
-        # Create the Question and Answer objects and save them to the database
-        for question_text, answer_text, options_text in questions:
-            question = Question.objects.create(text=question_text, quiz=quiz)
-            for option_text in options_text:
-                is_correct = option_text == answer_text
-                Answer.objects.create(text=option_text, question=question, is_correct=is_correct)
-
-        messages.success(request, 'Quiz created successfully.')
-        return redirect('quiz:index')
+            # Redirect to the quiz list page
+            return render(request, 'quiz/quiz_list.html', {'file_url': file_url})
+    else:
+        form = AikenUploadForm()
+    return render(request, 'quiz/aiken_upload.html', {'form': form})
 
 
-class QuizDetailView(View):
-    def get(self, request, quiz_id):
-        quiz = get_object_or_404(Quiz, pk=quiz_id)
-        questions = quiz.question_set.all()
-        context = {'quiz': quiz, 'questions': questions}
-        return render(request, 'quiz/quiz_detail.html', context)
+def import_aiken(request):
+    if request.method == 'POST':
+        file = request.FILES['aiken_file']  # get the uploaded file from the request
+        file_contents = file.read()  # read the contents of the file as bytes
+        file_str = file_contents.decode('utf-8')  # decode the bytes into a string
+
+        # create a filename based on the original filename and the current timestamp
+        filename = f'{file.name}-{int(time.time())}.txt'
+
+        # construct the full path to the file within the 'aiken_files' directory
+        filepath = os.path.join(settings.BASE_DIR, 'quiz', 'aiken_files', filename)
+
+        # create the 'aiken_files' directory if it doesn't exist
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
+        # write the file contents to the file
+        with open(filepath, 'w') as f:
+            f.write(file_str)
+
+        # parse the Aiken-formatted text and create a quiz object
+        quiz = parse_aiken_file(StringIO(file_str))
+
+        # save the quiz object to the database
+        quiz.save()
+
+        return HttpResponse('Quiz imported successfully!')
+    else:
+        return render(request, 'import_aiken.html')

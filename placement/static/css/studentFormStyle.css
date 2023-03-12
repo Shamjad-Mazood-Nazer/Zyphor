@@ -1,190 +1,242 @@
+* {
+    margin: 0;
+    padding: 0;
+}
 
-    *, *:before, *:after
-    {
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-    }
+html {
+    height: 100%;
+}
 
-    body
-    {
-        font-family: 'Nunito', sans-serif;
-        color: #384047;
-    }
+p {
+	color: grey;
+}
 
-    form
-    {
-        margin: 10px auto;
-        padding: 10px 20px;
-        background: #f4f7f8;
-        border-radius: 8px;
-    }
+#heading {
+	text-transform: uppercase;
+	color: #673AB7;
+	font-weight: normal;
+}
 
-    h1
-    {
-        margin: 0 0 30px 0;
-        text-align: center;
-    }
+#msform {
+    text-align: center;
+    position: relative;
+    margin-top: 20px;
+}
 
-    input[type="number"] {
-        background: rgba(255,255,255,0.1);
-        border: none;
-        font-size: 15px;
-        height: 5%;
-        margin: 0;
-        outline: 0;
-        padding: 15px;
-        width: auto;
-        background-color: #e8eeef;
-        color: #8a97a0;
-        box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
-        margin-bottom: 30px;
-    }
+#msform fieldset {
+    background: white;
+    border: 0 none;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 20px;
 
-    input[type="text"],
-    input[type="password"],
-    input[type="date"],
-    input[type="datetime"],
-    input[type="email"],
-    input[type="search"],
-    input[type="tel"],
-    input[type="time"],
-    input[type="url"],
-    textarea,
-    select {
-        background: rgba(255,255,255,0.1);
-        border: none;
-        font-size: 15px;
-        height: auto;
-        margin: 0;
-        outline: 0;
-        padding: 15px;
-        width: auto%;
-        background-color: #e8eeef;
-        color: #8a97a0;
-        box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
-        margin-bottom: 30px;
-    }
+    /*stacking fieldsets above each other*/
+    position: relative;
+}
 
-    input[type="radio"],
-    input[type="checkbox"] {
-        margin: 0 4px 8px 0;
-    }
+.form-card {
+	text-align: left;
+}
 
-    select {
-        padding: 6px;
-        height: 32px;
-        border-radius: 2px;
-    }
+/*Hide all except first fieldset*/
+#msform fieldset:not(:first-of-type) {
+    display: none;
+}
 
-    .button {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 16px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        transition-duration: 0.5s;
-        cursor: pointer;
-    }
+#msform input, #msform textarea, #msform select {
+    padding: 8px 15px 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    margin-bottom: 25px;
+    margin-top: 2px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: montserrat;
+    color: #2C3E50;
+    background-color: #ECEFF1;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
 
-    .button {
-        background-color: white;
-        color: black;
-        border: 2px solid #4CAF50;
-    }
+#msform input:focus, #msform textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #673AB7;
+    outline-width: 0;
+}
 
-    .button:hover {
-        background-color: #4CAF50;
-        color: white;
-    }
+/*Next Buttons*/
+#msform .action-button {
+    width: 100px;
+    background: #673AB7;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 0px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 0px 10px 5px;
+    float: right;
+}
 
-    .button1 {
-        background-color: white;
-        color: black;
-        border: 2px solid #f44336;
-    }
+#msform .action-button:hover, #msform .action-button:focus {
+    background-color: #311B92;
+}
 
-    .button1:hover {
-        background-color: #f44336;
-        color: white;
-    }
+/*Previous Buttons*/
+#msform .action-button-previous {
+    width: 100px;
+    background: #616161;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 0px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px 10px 0px;
+    float: right;
+}
 
-    fieldset
-    {
+#msform .action-button-previous:hover, #msform .action-button-previous:focus {
+    background-color: #000000;
+}
 
-        margin-bottom: 30px;
-        border: none;
-    }
+/*The background card*/
+.card {
+    z-index: 0;
+    border: none;
+    position: relative;
+}
 
-    legend
-    {
-        font-size: 1.4em;
-        margin-bottom: 10px;
-    }
+/*FieldSet headings*/
+.fs-title {
+    font-size: 25px;
+    color: #673AB7;
+    margin-bottom: 15px;
+    font-weight: normal;
+    text-align: left;
+}
 
-    label
-    {
-        display: block;
-        margin-bottom: 8px;
-    }
+.purple-text {
+	color: #673AB7;
+    font-weight: normal;
+}
 
-    label.light
-    {
-        font-weight: 300;
-        display: inline;
-    }
+/*Step Count*/
+.steps {
+	font-size: 25px;
+    color: gray;
+    margin-bottom: 10px;
+    font-weight: normal;
+    text-align: right;
+}
 
-    .number
-    {
-        background-color: #5fcf80;
-        color: #fff;
-        height: 30px;
-        width: 30px;
-        display: inline-block;
-        font-size: 0.8em;
-        margin-right: 4px;
-        line-height: 30px;
-        text-align: center;
-        text-shadow: 0 1px 0 rgba(255,255,255,0.2);
-        border-radius: 100%;
-    }
+/*Field names*/
+.fieldlabels {
+	color: gray;
+	text-align: left;
+}
 
-    .stud_formdiv{
-        display: flex;
-    }
+/*Icon progressbar*/
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    color: lightgrey;
+}
 
-    #studentform_maindiv{
-        width: 100%;
-    }
+#progressbar .active {
+    color: #673AB7;
+}
 
-    #studentform_maindiv{
-        width: 100%;
-        flex: 1;
-    }
+#progressbar li {
+    list-style-type: none;
+    font-size: 15px;
+    width: 16.5%;
+    float: left;
+    position: relative;
+    font-weight: 400;
+}
 
-    @media screen and (min-width: 480px)
-    {
+/*Icons in the ProgressBar*/
+#progressbar #account:before {
+    font-family: FontAwesome;
+    content: "\f13e";
+}
 
-        form
-        {
-<!--            max-width: 480px;-->
-        }
+#progressbar #personal:before {
+    font-family: FontAwesome;
+    content: "\f007";
+}
 
-    }
-    div.scroll {
-                margin:4px, 4px;
-                padding:4px;
+#progressbar #academic:before {
+    font-family: FontAwesome;
+    content: "\f549";
+}
 
-                width: 300px;
-                height: 800px;
-                overflow-x: hidden;
-                overflow-y: auto;
-                text-align:justify;
-            }
+#progressbar #skill:before {
+    font-family: FontAwesome;
+    content: "\f120";
+}
 
-            //html, body {margin: 0; height: 100%; overflow: hidden}
+#progressbar #payment:before {
+    font-family: FontAwesome;
+    content: "\f030";
+}
 
+#progressbar #confirm:before {
+    font-family: FontAwesome;
+    content: "\f00c";
+}
+
+/*Icon ProgressBar before any progress*/
+#progressbar li:before {
+    width: 50px;
+    height: 50px;
+    line-height: 45px;
+    display: block;
+    font-size: 20px;
+    color: #ffffff;
+    background: lightgray;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    padding: 2px;
+}
+
+/*ProgressBar connectors*/
+#progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: lightgray;
+    position: absolute;
+    left: 0;
+    top: 25px;
+    z-index: -1;
+}
+
+/*Color number of the step and the connector before it*/
+#progressbar li.active:before, #progressbar li.active:after {
+    background: #673AB7;
+}
+
+/*Animated Progress Bar*/
+.progress {
+	height: 20px;
+}
+
+.progress-bar {
+	background-color: #673AB7;
+}
+
+/*Fit image in bootstrap div*/
+.fit-image{
+    width: 100%;
+    object-fit: cover;
+}
+
+#sex{
+
+}

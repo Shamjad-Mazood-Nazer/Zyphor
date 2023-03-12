@@ -5,56 +5,468 @@
     <meta charset="UTF-8">
     <title>Details</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/fontawesome.min.css" integrity="sha512-cHxvm20nkjOUySu7jdwiUxgGy11vuVPE9YeK89geLMLMMEOcKFyS2i+8wo0FOwyQO/bL8Bvq1KMsqK4bbOsPnA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/studentFormStyle.css' %}">
     <script src="{% static 'js/studentFormScript.js' %}"></script>
 
 </head>
 <body>
-<form class="row g-3">
-  <div class="col-md-6">
-    <label for="inputEmail4" class="form-label">Email</label>
-    <input type="email" class="form-control" id="inputEmail4">
-  </div>
-  <div class="col-md-6">
-    <label for="inputPassword4" class="form-label">Password</label>
-    <input type="password" class="form-control" id="inputPassword4">
-  </div>
-  <div class="col-12">
-    <label for="inputAddress" class="form-label">Address</label>
-    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-  </div>
-  <div class="col-12">
-    <label for="inputAddress2" class="form-label">Address 2</label>
-    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-  </div>
-  <div class="col-md-6">
-    <label for="inputCity" class="form-label">City</label>
-    <input type="text" class="form-control" id="inputCity">
-  </div>
-  <div class="col-md-4">
-    <label for="inputState" class="form-label">State</label>
-    <select id="inputState" class="form-select">
-      <option selected>Choose...</option>
-      <option>...</option>
-    </select>
-  </div>
-  <div class="col-md-2">
-    <label for="inputZip" class="form-label">Zip</label>
-    <input type="text" class="form-control" id="inputZip">
-  </div>
-  <div class="col-12">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="gridCheck">
-      <label class="form-check-label" for="gridCheck">
-        Check me out
-      </label>
-    </div>
-  </div>
-  <div class="col-12">
-    <button type="submit" class="btn btn-primary">Sign in</button>
-  </div>
-</form>
+<div class="container-fluid">
+	<div class="row justify-content-center">
+		<div class="col-11 col-sm-9 col-md-7 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+            <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                <h2 id="heading">Fill up your Details</h2>
+                <p>Fill all form field to go to next step</p>
+
+                <form id="msform" method="post" action="">
+                    {% csrf_token %}
+                    <!-- progressbar -->
+                    <ul id="progressbar">
+                        <li class="active" id="account"><strong>Basic Info</strong></li>
+                        <li id="personal"><strong>Personal Profile</strong></li>
+                        <li id="academic"><strong>Academic Profile</strong></li>
+                        <li id="skill"><strong>Additional Skills</strong></li>
+                        <li id="payment"><strong>Image</strong></li>
+                        <li id="confirm"><strong>Finish</strong></li>
+                    </ul>
+                    <div class="progress">
+                    	<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                	</div>
+                    <br>
+                    <!-- fieldsets -->
+                    <fieldset>
+                        <div class="form-card">
+                        	<div class="row">
+                        		<div class="col-7">
+                            		<h2 class="fs-title">Account Information:</h2>
+                            	</div>
+                            	<div class="col-5">
+                            		<h2 class="steps">Step 1 - 6</h2>
+                            	</div>
+                            </div>
+<!--                            <label class="fieldlabels">Admission Number: *</label>-->
+<!--                            <input type="text" name="admission_number" placeholder="University register number"/>-->
+                            <label class="fieldlabels">Date of Birth: *</label>
+                            <input type="date" name="DoB" min="1995-01-01" max="2005-12-31" placeholder="yyyy-mm-dd" required/>
+
+                            <label class="fieldlabels">Gender: *</label>
+                            <select name="gender">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+
+                            <label class="fieldlabels">Mobile Number: *</label>
+                            <input type="text" id="phone1" name="phone1" maxlength="10" onkeypress="phone1Validation(this)" placeholder="Your Personal Number" required autocomplete="off"/>
+                            <br><span id="ph1" class="new"></span>
+
+                            <label class="fieldlabels">Alternative Number: *</label>
+                            <input type="text" id="phone2" name="phone2" maxlength="10" onkeypress="phone2Validation(this)" placeholder="Alternative Number" required autocomplete="off"/>
+                            <br><span id="ph2" class="new"></span>
+
+                            <label class="fieldlabels">College Email: *</label>
+                            <input type="email" id="collegeemail" name="collegeemail" onkeypress="emailValidation(this)" placeholder="College Mail" required autocomplete="off"/>
+                            <br><span id="mail" class="new"></span>
+
+
+                        </div>
+                        <input type="button" name="next" class="next action-button" value="Next"/>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-card">
+                            <div class="row">
+                        		<div class="col-7">
+                            		<h2 class="fs-title">Personal Information:</h2>
+                            	</div>
+                            	<div class="col-5">
+                            		<h2 class="steps">Step 2 - 6</h2>
+                            	</div>
+                            </div>
+
+                            <label class="fieldlabels">Address Line1: *</label>
+                            <input type="text" name="addressline1" placeholder="House Name"/>
+
+                            <label class="fieldlabels">Address Line2: *</label>
+                            <input type="text" name="addressline2" placeholder="Post Office Name"/>
+
+                            <label class="fieldlabels">Address Line3: *</label>
+                            <input type="text" name="addressline3" placeholder="City Name"/>
+
+                            <label class="fieldlabels">Pincode: *</label>
+                            <input type="text" name="pincode" placeholder="Pincode"/>
+
+                            <label class="fieldlabels">Father's Name: *</label>
+                            <input type="text" name="father_name" onkeypress="fatherNameValidation(this)" placeholder="Father's Name" required autocomplete="off" />
+
+                            <label class="fieldlabels">Father's Contact No.: *</label>
+                            <input type="text" name="father_phno" placeholder="Father's Contact No."/>
+
+                            <label class="fieldlabels">Mother's Name: *</label>
+                            <input type="text" name="mother_name" onkeypress="motherNameValidation(this)" placeholder="Mother's Name" required autocomplete="off" />
+
+                            <label class="fieldlabels">Mother's Contact No.: *</label>
+                            <input type="text" name="mother_phno" placeholder="Alternate Contact No."/>
+
+                            <label class="fieldlabels">Nationality: *</label>
+                            <select name="nationality">
+                                <option value="indian">Indian</option>
+                            </select>
+                        </div>
+                        <input type="button" name="next" class="next action-button" value="Next"/>
+                        <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-card">
+                        	<div class="row">
+                        		<div class="col-7">
+                            		<h2 class="fs-title">Academic Information:</h2>
+                            	</div>
+                            	<div class="col-5">
+                            		<h2 class="steps">Step 3 - 6</h2>
+                            	</div>
+                            </div>
+                            <label class="fieldlabels">SSLC/10th %: *</label>
+                            <input type="text" name="sslc_per" placeholder="SSLC Percentage" pattern="^(\d{1,2}(\.\d{1,2})?|100(\.0{1,2})?)%?$" required />
+
+                            <label class="fieldlabels">SSLC/10th Year of Pass: *</label>
+                            <select name="sslc_yop" required>
+                                  <option value="">--Select a year--</option>
+                                  <option value="2010">2010</option>
+                                  <option value="2011">2011</option>
+                                  <option value="2012">2012</option>
+                                  <option value="2013">2013</option>
+                                  <option value="2014">2014</option>
+                                  <option value="2015">2015</option>
+                                  <option value="2016">2016</option>
+                                  <option value="2017">2017</option>
+                                  <option value="2018">2018</option>
+                                  <option value="2019">2019</option>
+                            </select>
+
+                            <label class="fieldlabels">SSLC/10th Board: *</label>
+                            <select name="sslc_board" required>
+                                <option value="">--Please select--</option>
+                                <option value="CBSE">CBSE</option>
+                                <option value="ICSE">ICSE</option>
+                                <option value="State Board of Andhra Pradesh">State Board of Andhra Pradesh</option>
+                                <option value="State Board of Assam">State Board of Assam</option>
+                                <option value="State Board of Bihar">State Board of Bihar</option>
+                                <option value="State Board of Chhattisgarh">State Board of Chhattisgarh</option>
+                                <option value="State Board of Goa">State Board of Goa</option>
+                                <option value="State Board of Gujarat">State Board of Gujarat</option>
+                                <option value="State Board of Haryana">State Board of Haryana</option>
+                                <option value="State Board of Himachal Pradesh">State Board of Himachal Pradesh</option>
+                                <option value="State Board of Jammu and Kashmir">State Board of Jammu and Kashmir</option>
+                                <option value="State Board of Jharkhand">State Board of Jharkhand</option>
+                                <option value="State Board of Karnataka">State Board of Karnataka</option>
+                                <option value="State Board of Kerala">State Board of Kerala</option>
+                                <option value="State Board of Madhya Pradesh">State Board of Madhya Pradesh</option>
+                                <option value="State Board of Maharashtra">State Board of Maharashtra</option>
+                                <option value="State Board of Manipur">State Board of Manipur</option>
+                                <option value="State Board of Meghalaya">State Board of Meghalaya</option>
+                                <option value="State Board of Mizoram">State Board of Mizoram</option>
+                                <option value="State Board of Nagaland">State Board of Nagaland</option>
+                                <option value="State Board of Odisha">State Board of Odisha</option>
+                                <option value="State Board of Punjab">State Board of Punjab</option>
+                                <option value="State Board of Rajasthan">State Board of Rajasthan</option>
+                                <option value="State Board of Sikkim">State Board of Sikkim</option>
+                                <option value="State Board of Tamil Nadu">State Board of Tamil Nadu</option>
+                                <option value="State Board of Telangana">State Board of Telangana</option>
+                                <option value="State Board of Tripura">State Board of Tripura</option>
+                                <option value="State Board of Uttar Pradesh">State Board of Uttar Pradesh</option>
+                                <option value="State Board of Uttarakhand">State Board of Uttarakhand</option>
+                                <option value="State Board of West Bengal">State Board of West Bengal</option>
+                            </select>
+
+                            <label class="fieldlabels">HSE/12th %: *</label>
+                            <input type="text" name="hse_per" placeholder="HSE/12th Percentage" pattern="^(\d{1,2}(\.\d{1,2})?|100(\.0{1,2})?)%?$" required />
+
+                            <label class="fieldlabels">HSE/12th Year of Pass: *</label>
+                            <select name="sslc_yop" required>
+                                  <option value="">--Select a year--</option>
+                                  <option value="2012">2012</option>
+                                  <option value="2013">2013</option>
+                                  <option value="2014">2014</option>
+                                  <option value="2015">2015</option>
+                                  <option value="2016">2016</option>
+                                  <option value="2017">2017</option>
+                                  <option value="2018">2018</option>
+                                  <option value="2019">2019</option>
+                                  <option value="2020">2020</option>
+                                  <option value="2021">2021</option>
+                            </select>
+
+                            <label class="fieldlabels">HSE/12th Board: *</label>
+                            <select name="hse_board">
+                                <option value="">--Select Board--</option>
+                                <option value="CBSE">CBSE</option>
+                                <option value="ICSE">ICSE</option>
+                                <option value="VHSE">VHSE</option>
+                                <option value="State Board">State Board</option>
+                                <option value="NIOS">NIOS</option>
+                                <option value="IB">IB</option>
+                                <option value="Cambridge">Cambridge</option>
+                            </select>
+
+                            <label class="fieldlabels">UG Programme: *</label>
+                            <select name="ug_program">
+                                <option value="">--Select Program--</option>
+                                <option value="B.Tech">B.Tech</option>
+                                <option value="B.E">B.E</option>
+                                <option value="B.Sc">B.Sc</option>
+                                <option value="B.Com">B.Com</option>
+                                <option value="B.Arch">B.Arch</option>
+                                <option value="BBA">BBA</option>
+                                <option value="BCA">BCA</option>
+                                <option value="B.Pharm">B.Pharm</option>
+                                <option value="LLB">LLB</option>
+                                <option value="B.Ed">B.Ed</option>
+                            </select>
+
+                            <label class="fieldlabels">UG %: *</label>
+                            <input type="text" name="ug_per" placeholder="UG Percentage" pattern="^(\d{1,2}(\.\d{1,2})?|100(\.0{1,2})?)%?$" required />
+
+                            <label class="fieldlabels">UG Year of Pass: *</label>
+                            <select name="sslc_yop" required>
+                                  <option value="">--Select a year--</option>
+                                  <option value="2012">2012</option>
+                                  <option value="2013">2013</option>
+                                  <option value="2014">2014</option>
+                                  <option value="2015">2015</option>
+                                  <option value="2016">2016</option>
+                                  <option value="2017">2017</option>
+                                  <option value="2018">2018</option>
+                                  <option value="2019">2019</option>
+                                  <option value="2020">2020</option>
+                                  <option value="2021">2021</option>
+                                  <option value="2022">2022</option>
+                                  <option value="2023">2023</option>
+                            </select>
+
+                            <label class="fieldlabels">UG CGPA: *</label>
+                            <input type="text" name="ug_cgpa" placeholder="UG CGPA" pattern="^[0-9](\.[0-9]{1,2})?$|^10(\.00)?$" required />
+
+                            <label class="fieldlabels">UG College: *</label>
+                            <select id="ug_college" name="ug_college">
+                                <option value="">--Select College--</option>
+                                <option value="Government Medical College, Thrissur">Government Medical College, Thrissur</option>
+                                <option value="Indian Institute of Technology Palakkad">Indian Institute of Technology Palakkad</option>
+                                <option value="National Institute of Technology Calicut">National Institute of Technology Calicut</option>
+                                <option value="Government Engineering College, Thrissur">Government Engineering College, Thrissur</option>
+                                <option value="St. Teresa's College">St. Teresa's College</option>
+                                <option value="St. Albert's College">St. Albert's College</option>
+                                <option value="Mar Ivanios College">Mar Ivanios College</option>
+                                <option value="MES College, Marampally">MES College, Marampally</option>
+                                <option value="MES College, Erumely">MES College, Marampally</option>
+                                <option value="Shermount College, Kanakappalam">MES College, Marampally</option>
+                                <option value="CMS College Kottayam">CMS College Kottayam</option>
+                                <option value="Bishop Vayalil Memorial Holy Cross College">Bishop Vayalil Memorial Holy Cross College</option>
+                                <option value="Government College, Kottayam">Government College, Kottayam</option>
+                                <option value="Amal Jyothi College of Engineering">Amal Jyothi College of Engineering</option>
+                                <option value="Saintgits College of Engineering">Saintgits College of Engineering</option>
+                                <option value="Assumption College">Assumption College</option>
+                                <option value="Mount Zion College of Engineering, Pathanamthitta">Mount Zion College of Engineering</option>
+                                <option value="Musaliar College of Engineering and Technology, Pathanamthitta">Musaliar College of Engineering and Technology</option>
+                                <option value="Nehru College of Engineering and Research Centre, Pampady">Nehru College of Engineering and Research Centre</option>
+                                <option value="Marthoma College of Science and Technology, Ayur">Marthoma College of Science and Technology</option>
+                                <option value="St. Thomas College, Ranni">St. Thomas College</option>
+                                <option value="Mar Baselios Institute of Technology and Science, Nellimattom">Mar Baselios Institute of Technology and Science</option>
+                                <option value="Sree Buddha College of Engineering, Nooranad">Sree Buddha College of Engineering</option>
+                                <option value="Snehajyothi Institute of Technology and Sciences, Cherthala">Snehajyothi Institute of Technology and Sciences</option>
+                                <option value="College of Engineering, Kallooppara">College of Engineering</option>
+                                <option value="TKM College of Engineering">TKM College of Engineering</option>
+                                <option value="Sree Narayana College, Kollam">Sree Narayana College, Kollam</option>
+                                <option value="Fatima Mata National College">Fatima Mata National College</option>
+                                <option value="TKM Institute of Technology">TKM Institute of Technology</option>
+                                <option value="Sree Narayana Guru Institute of Science and Technology">Sree Narayana Guru Institute of Science and Technology</option>
+                                <option value="Kollam Institute of Technology and Science">Kollam Institute of Technology and Science</option>
+                            </select>
+
+                            <label class="fieldlabels">UG University: *</label>
+                            <select name="ug_university">
+                                <option value="">--Please select University--</option>
+                                <option value="APJ KTU">APJ KTU</option>
+                                <option value="University of Kerala">University of Kerala</option>
+                                <option value="Mahatma Gandhi University">Mahatma Gandhi University</option>
+                                <option value="Calicut University">Calicut University</option>
+                                <option value="Kannur University">Kannur University</option>
+                                <option value="Cochin University of Science and Technology">Cochin University of Science and Technology</option>
+                            </select>
+
+                            <label class="fieldlabels">Entrance Rank: *</label>
+                            <input type="text" name="entrance_rank" placeholder="Entrance Rank"/>
+
+                            <label class="fieldlabels">Active Arrears: *</label>
+                            <input type="number" name="active_arrears" placeholder="Count of Active Arrears"/>
+
+                            <label class="fieldlabels">Exam Not Attended: *</label>
+                            <input type="number" name="exam_not_attended" placeholder="Count of Exam not Attended"/>
+
+                            <label class="fieldlabels">PG University: *</label>
+                            <select name="pg_university">
+                                <option value="">--Please select PG University--</option>
+                                <option value="APJ KTU">APJ KTU</option>
+                            </select>
+
+                            <label class="fieldlabels">PG CGPA: *</label>
+                            <input type="text" name="pg_cgpa" placeholder="PG CGPA" pattern="^[0-9](\.[0-9]{1,2})?$|^10(\.00)?$" required />
+                        </div>
+                        <input type="button" name="next" class="next action-button" value="Next"/>
+                        <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-card">
+                            <div class="row">
+                        		<div class="col-7">
+                            		<h2 class="fs-title">Technical Information:</h2>
+                            	</div>
+                            	<div class="col-5">
+                            		<h2 class="steps">Step 4 - 6</h2>
+                            	</div>
+                            </div>
+                            <label class="fieldlabels">First Name: *</label>
+                            <input type="text" name="fname" placeholder="First Name"/>
+                            <label class="fieldlabels">Last Name: *</label>
+                            <input type="text" name="lname" placeholder="Last Name"/>
+                            <label class="fieldlabels">Contact No.: *</label>
+                            <input type="text" name="phno" placeholder="Contact No."/>
+                            <label class="fieldlabels">Alternate Contact No.: *</label>
+                            <input type="text" name="phno_2" placeholder="Alternate Contact No."/>
+                        </div>
+                        <input type="button" name="next" class="next action-button" value="Next"/>
+                        <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-card">
+                            <div class="row">
+                        		<div class="col-7">
+                            		<h2 class="fs-title">Image Upload:</h2>
+                            	</div>
+                            	<div class="col-5">
+                            		<h2 class="steps">Step 3 - 4</h2>
+                            	</div>
+                            </div>
+                            <label class="fieldlabels">Upload Your Photo:</label>
+                            <input type="file" name="pic" accept="image/*">
+                            <label class="fieldlabels">Upload Signature Photo:</label>
+                            <input type="file" name="pic" accept="image/*">
+                        </div>
+                        <input type="button" name="next" class="next action-button" value="Submit"/>
+                        <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-card">
+                        	<div class="row">
+                        		<div class="col-7">
+                            		<h2 class="fs-title">Finish:</h2>
+                            	</div>
+                            	<div class="col-5">
+                            		<h2 class="steps">Step 4 - 4</h2>
+                            	</div>
+                            </div>
+                            <br><br>
+                            <h2 class="purple-text text-center"><strong>SUCCESS !</strong></h2>
+                            <br>
+                            <div class="row justify-content-center">
+                                <div class="col-3">
+                                    <img src="https://i.imgur.com/GwStPmg.png" class="fit-image">
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row justify-content-center">
+                                <div class="col-7 text-center">
+                                    <h5 class="purple-text text-center">You Have Successfully Signed Up</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+	</div>
+</div>
 </body>
 </html>
+<script>
+$(document).ready(function(){
+
+var current_fs, next_fs, previous_fs; //fieldsets
+var opacity;
+var current = 1;
+var steps = $("fieldset").length;
+
+setProgressBar(current);
+
+$(".next").click(function(){
+
+    current_fs = $(this).parent();
+    next_fs = $(this).parent().next();
+
+    //Add Class Active
+    $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+    //show the next fieldset
+    next_fs.show();
+    //hide the current fieldset with style
+    current_fs.animate({opacity: 0}, {
+        step: function(now) {
+            // for making fielset appear animation
+            opacity = 1 - now;
+
+            current_fs.css({
+                'display': 'none',
+                'position': 'relative'
+            });
+            next_fs.css({'opacity': opacity});
+        },
+        duration: 500
+    });
+    setProgressBar(++current);
+});
+
+$(".previous").click(function(){
+
+    current_fs = $(this).parent();
+    previous_fs = $(this).parent().prev();
+
+    //Remove class active
+    $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+    //show the previous fieldset
+    previous_fs.show();
+
+    //hide the current fieldset with style
+    current_fs.animate({opacity: 0}, {
+        step: function(now) {
+            // for making fielset appear animation
+            opacity = 1 - now;
+
+            current_fs.css({
+                'display': 'none',
+                'position': 'relative'
+            });
+            previous_fs.css({'opacity': opacity});
+        },
+        duration: 500
+    });
+    setProgressBar(--current);
+});
+
+function setProgressBar(curStep){
+    var percent = parseFloat(100 / steps) * curStep;
+    percent = percent.toFixed();
+    $(".progress-bar")
+      .css("width",percent+"%")
+}
+
+$(".submit").click(function(){
+    return false;
+})
+
+});
+</script>

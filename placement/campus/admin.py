@@ -12,3 +12,10 @@ admin.site.register(ApplyDrive)
 admin.site.register(Payment)
 admin.site.register(QuesModel)
 admin.site.register(QuizResult)
+
+
+class AdminAiken(admin.ModelAdmin):
+    list_display = ['id', 'name', 'uploaded_on', 'file']
+
+
+admin.site.register(AikenQuizFormat, AdminAiken)

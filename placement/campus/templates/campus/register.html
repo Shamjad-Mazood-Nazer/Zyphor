@@ -29,7 +29,7 @@
 					<img src="https://colorlib.com/etc/lf/Login_v1/images/img-01.png" alt="Along with preparation, college placement cells help get the right people to the right place. If left alone, students could really hamper their careers by getting into the wrong place. Therefore, the importance of a good place cell cannot be stressed enough.">
 				</div>
 
-				<form method="post" action="register" class="login100-form validate-form">
+				<form method="post" action="campus:register" class="login100-form validate-form">
 					{% csrf_token %}
 					<span class="login100-form-title">
 						Create Account
@@ -118,7 +118,7 @@
 
 				</form>
 				<div class="container-login100-form-btn">
-					<a href="{% url 'home' %}">
+					<a href="{% url 'campus:home' %}">
 						<button class="login100-form-btn" style="background-color: #de5f1f">
 							<i class="fa fa-chevron-circle-left" aria-hidden="true"> </i>Already have an account?
 						</button>
@@ -136,7 +136,7 @@
    var dataToGo = $('#mail').val();
    console.log(dataToGo);
    $.ajax({
-           url: "{% url 'ajax_generate_code' %}",
+           url: "{% url 'campus:ajax_generate_code' %}",
            type: 'GET',
            data: dataToGo,
            success: function (data) {

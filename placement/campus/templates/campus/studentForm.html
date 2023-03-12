@@ -11,6 +11,10 @@
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="{% static '/css/studentFormStyle.css' %}">
         <script src="{% static '/js/studentFormScript.js' %}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css">
+
     </head>
     <body>
         <div class="row" >
@@ -59,8 +63,10 @@
                             </optgroup>
                         </select>
 
-                        <label for="DoB">Date of Birth:<font color="red">*</font> </label>
-                        <input type="date" id="DoB" name="user_DoB" max="2004-12-31" required autocomplete="off">
+                        <label for="dob">Date of Birth:</label>
+                        <input type="text" id="dob" name="dob" readonly>
+<!--                        <label for="DoB">Date of Birth:<font color="red">*</font> </label>-->
+<!--                        <input type="date" id="DoB" name="user_DoB" max="2004-12-31" required autocomplete="off">-->
 <br><span id="birth" class="new"></span>
                         <label>Gender:<font color="red">*</font></label>
                         <input type="radio" id="Male" value="M" name="user_gender" required autocomplete="off"><label for="Male" class="light">Male</label>
@@ -126,14 +132,23 @@
                         <label for="persslc">SSLC %:<font color="red">*</font></label>
                         <input type="text" id="persslc" name="sslcPer" min="0" max="100" required autocomplete="off">
 <br><span id="sslcper" class="new"></span>
-                        <label for="sslcYoP">SSLC Year of Pass:<font color="red">*</font></label>
-                        <input type="text" id="sslcYoP" name="sslcYoP" min="2010" max="2018" required autocomplete="off">
+    <label for="sslc_year-of-pass">Year of Pass:</label>
+<select id="sslc_year-of-pass" name="sslcYoP">
+  <option value="">--Please select--</option>
+</select>
+<!--                        <label for="sslcYoP">SSLC Year of Pass:<font color="red">*</font></label>-->
+<!--                        <input type="text" id="sslcYoP" name="sslcYoP" min="2010" max="2018" required autocomplete="off">-->
 
                         <label for="sslcBoard">SSLC Board:<font color="red">*</font></label>
                         <input type="text" id="sslcBoard" name="sslcBoard" required autocomplete="off">
 
-                        <label for="perHSE">HSE %:<font color="red">*</font></label>
-                        <input type="text" id="perHSE" name="HSEPer" min="0" max="100" required autocomplete="off">
+
+                        <label for="hse_year-of-pass">Year of Pass:</label>
+                        <select id="hse_year-of-pass" name="sslcYoP">
+                          <option value="">--Please select--</option>
+                        </select>
+<!--                        <label for="perHSE">HSE %:<font color="red">*</font></label>-->
+<!--                        <input type="text" id="perHSE" name="HSEPer" min="0" max="100" required autocomplete="off">-->
 
                         <label for="HSEYoP">HSE Year of Pass:<font color="red">*</font></label>
                         <input type="text" id="HSEYoP" name="HSEYoP" min="2010" max="2020" required autocomplete="off">
@@ -147,8 +162,13 @@
                         <label for="perUG">UG %:<font color="red">*</font></label>
                         <input type="text" id="perUG" name="UG_Per" min="0" max="100" required autocomplete="off">
 
-                        <label for="UGYoP">UG Year of Pass:<font color="red">*</font></label>
-                        <input type="text" id="UGYoP" name="UG_YoP" min="2010" max="2022" required autocomplete="off">
+                        <label for="ug_year-of-pass">Year of Pass:</label>
+                        <select id="ug_year-of-pass" name="sslcYoP">
+                          <option value="">--Please select--</option>
+                        </select>
+
+<!--                        <label for="UGYoP">UG Year of Pass:<font color="red">*</font></label>-->
+<!--                        <input type="text" id="UGYoP" name="UG_YoP" min="2010" max="2022" required autocomplete="off">-->
 
                         <label for="UG_CGPA">UG CGPA:<font color="red">*</font></label>
                         <input type="text" id="UG_CGPA" name="UG_CGPA" min="0" max="10" onkeypress="cgpaValidation(this)" placeholder="eg: 4.00 / 8.32" required autocomplete="off">
@@ -157,8 +177,18 @@
                         <label for="UGCollege">Name of the college:<font color="red">*</font></label>
                         <input type="text" id="UGCollege" name="UG_college_name" required autocomplete="off">
 
-                        <label for="UGUniversity">UG University:<font color="red">*</font></label>
-                        <input type="text" id="UGUniversity" name="UG_UNIVERSIY" required autocomplete="off">
+                        <label for="ug_university">University:</label>
+                            <select id="ug_university" name="ug_university">
+                              <option value="">--Please select--</option>
+                              <option value="APJ KTU">APJ KTU</option>
+                              <option value="University of Kerala">University of Kerala</option>
+                              <option value="Mahatma Gandhi University">Mahatma Gandhi University</option>
+                              <option value="Calicut University">Calicut University</option>
+                              <option value="Kannur University">Kannur University</option>
+                              <option value="Cochin University of Science and Technology">C U S A T</option>
+                            </select>
+<!--                        <label for="UGUniversity">UG University:<font color="red">*</font></label>-->
+<!--                        <input type="text" id="UGUniversity" name="UG_UNIVERSIY" required autocomplete="off">-->
 
                         <label for="entranceRank">Entrance Rank:<font color="red">*</font></label>
                         <input type="text" id="entranceRank" name="entrance_rank" min="1" max="6000" required autocomplete="off">
@@ -166,8 +196,13 @@
                         <label for="arrears">Active Arrears:<font color="red">*</font></label>
                         <input type="text" id="arrears" min="0" max="15" name="active_arrears" required autocomplete="off">
 
-                        <label for="university">University:<font color="red">*</font></label>
-                        <input type="text" id="university" name="university" required autocomplete="off">
+                        <label for="university">University:</label>
+<select id="pg_university" name="pg_university">
+  <option value="">--Please select--</option>
+  <option value="APJ KTU">APJ KTU</option>
+</select>
+<!--                        <label for="university">University:<font color="red">*</font></label>-->
+<!--                        <input type="text" id="university" name="university" required autocomplete="off">-->
 
                         <label for="exam_not">Exams not attended:<font color="red">*</font></label>
                         <input type="text" id="exam_not" name="exam_not_attended" min="0" max="15" required autocomplete="off">
@@ -210,10 +245,102 @@
                     </div>
 
                 </form>
-                    <a href="{% url 'student' %}">
+                    <a href="{% url 'campus:student' %}">
                         <button class="button button1" style="float:right; margin-right:8.7%;">Back to My Home</button>
                     </a>
             </div>
         </div>
     </body>
 </html>
+
+<script>
+    var yearSelect = document.getElementById("sslc_year-of-pass");
+    var currentYear = new Date().getFullYear()-3;
+    var earliestYear = currentYear - 20;
+
+    for (var i = currentYear; i >= earliestYear; i--) {
+      var option = document.createElement("option");
+      option.value = i;
+      option.text = i;
+      yearSelect.add(option);
+    }
+
+    yearSelect.addEventListener("change", function() {
+      if (this.value !== "" && parseInt(this.value) < earliestYear) {
+        alert("Please select a year within the last 20 years.");
+        this.value = "";
+      }
+    });
+
+    var yearSelect = document.getElementById("hse_year-of-pass");
+    var currentYear = new Date().getFullYear()-1;
+    var earliestYear = currentYear - 20;
+
+    for (var i = currentYear; i >= earliestYear; i--) {
+      var option = document.createElement("option");
+      option.value = i;
+      option.text = i;
+      yearSelect.add(option);
+    }
+
+    yearSelect.addEventListener("change", function() {
+      if (this.value !== "" && parseInt(this.value) < earliestYear) {
+        alert("Please select a year within the last 20 years.");
+        this.value = "";
+      }
+    });
+
+    var yearSelect = document.getElementById("ug_year-of-pass");
+    var currentYear = new Date().getFullYear()-1;
+    var earliestYear = currentYear - 20;
+
+    for (var i = currentYear; i >= earliestYear; i--) {
+      var option = document.createElement("option");
+      option.value = i;
+      option.text = i;
+      yearSelect.add(option);
+    }
+
+    yearSelect.addEventListener("change", function() {
+      if (this.value !== "" && parseInt(this.value) < earliestYear) {
+        alert("Please select a year within the last 20 years.");
+        this.value = "";
+      }
+    });
+
+
+    var dobInput = document.getElementById("dob");
+
+  // Create date picker using a library like jQuery UI Datepicker
+  $(function() {
+    $(dobInput).datepicker({
+      dateFormat: "yy-mm-dd",
+      maxDate: "-18y",
+      yearRange: "1995:dob.getFullYear()-18"
+    });
+  });
+
+  dobInput.addEventListener("change", function() {
+    var dob = new Date(this.value);
+    var today = new Date();
+    var minAge = 18;
+
+    if (isNaN(dob.getTime())) {
+      alert("Please select a valid date of birth.");
+      this.value = "";
+    } else if (dob > today) {
+      alert("Please select a date of birth that is not in the future.");
+      this.value = "";
+    } else {
+      var age = today.getFullYear() - dob.getFullYear();
+      var monthDiff = today.getMonth() - dob.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+        age--;
+      }
+      if (age < minAge) {
+        alert("You must be at least 18 years old to register.");
+        this.value = "";
+      }
+    }
+  });
+</script>

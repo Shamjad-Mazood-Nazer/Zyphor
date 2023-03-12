@@ -3,6 +3,8 @@ from django.contrib.auth import views as auth_views
 from . import views
 from .views import applyDrive
 
+app_name = 'campus'
+
 urlpatterns = [
     path('', views.home, name='home'),
 
@@ -26,6 +28,8 @@ urlpatterns = [
     path('thanks', views.thanks, name='thanks'),
 
     path('quiz', views.quiz, name='quiz'),
+    path('quiz_mode', views.quiz_mode, name='quiz_mode'),
+    path('quiz_list', views.quiz_list, name='quiz_list'),
 
     path('ajax_generate_code/', views.ajax_generate_code, name='ajax_generate_code'),
 
