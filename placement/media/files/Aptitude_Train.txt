@@ -1,0 +1,41 @@
+Title: Django Quiz
+
+Question 1
+What does Django offer that helps prevent common web development mistakes?
+A. Built-in authentication and URL routing
+B. Built-in security features
+C. Built-in CSRF protection
+D. All of the above
+ANSWER: D
+
+Question 2
+What is Django's built-in object-relational mapping (ORM) system called?
+A. DjangoORM
+B. DjangoDB
+C. DjangoModels
+D. DjangoData
+ANSWER: C
+
+Question 3
+What is the Django view layer responsible for?
+A. Handling requests and returning responses
+B. Querying the database
+C. Rendering templates
+D. All of the above
+ANSWER: A
+
+Question 4
+What is the recommended way to include static files (CSS, JavaScript) in a Django template?
+A. Use the {% static %} template tag
+B. Use the {% include %} template tag
+C. Use the {% block %} template tag
+D. Use the {% extends %} template tag
+ANSWER: A
+
+Question 5
+What is the Django testing framework called?
+A. DjangoTest
+B. DjangoUnit
+C. DjangoTestCase
+D. DjangoTestRunner
+ANSWER: C
