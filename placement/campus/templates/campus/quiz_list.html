@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% extends 'campus/dependencies.html' %}
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,8 +11,8 @@
 {% block content %}
   <h1>Quiz List</h1>
   <ul>
-    {% for quiz in quizzes %}
-      <li><a href="{% url 'quiz_detail' quiz.id %}">{{ quiz.title }}</a></li>
+    {% for quiz in aiken_quiz %}
+      <li><a href="{% url 'campus:quiz_detail' %}">{{ quiz.name }}</a></li>
     {% endfor %}
   </ul>
 {% endblock %}

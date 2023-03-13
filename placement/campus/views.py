@@ -332,8 +332,8 @@ def quiz_list(request):
     return render(request, 'quiz:quiz_list.html', {'quizzes': quizzes})
 
 
-def quiz_detail(request, quiz_id):
-    quiz = Quiz.objects.get(pk=quiz_id)
+def quiz_detail(request, id):
+    quiz = AikenQuizFormat.objects.get(pk=id)
     questions = Question.objects.filter(quiz=quiz)
     return render(request, 'quiz:quiz_detail.html', {'quiz': quiz, 'questions': questions})
 
@@ -343,4 +343,5 @@ def quiz_mode(request):
 
 
 def quiz_list(request):
-    return render(request, 'campus/quiz_list.html')
+    aiken_quiz = AikenQuizFormat.objects.all()
+    return render(request, 'campus/quiz_list.html', {'aiken_quiz': aiken_quiz})
