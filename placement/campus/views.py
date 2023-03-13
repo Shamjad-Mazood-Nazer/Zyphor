@@ -332,10 +332,10 @@ def quiz_list(request):
     return render(request, 'quiz:quiz_list.html', {'quizzes': quizzes})
 
 
-def quiz_detail(request, id):
-    quiz = AikenQuizFormat.objects.get(pk=id)
-    questions = Question.objects.filter(quiz=quiz)
-    return render(request, 'quiz:quiz_detail.html', {'quiz': quiz, 'questions': questions})
+# def quiz_detail(request, id):
+#     quiz = AikenQuizFormat.objects.get(pk=id)
+#     questions = Question.objects.filter(quiz=quiz)
+#     return render(request, 'quiz:quiz_detail.html', {'quiz': quiz, 'questions': questions})
 
 
 def quiz_mode(request):
@@ -345,3 +345,33 @@ def quiz_mode(request):
 def quiz_list(request):
     aiken_quiz = AikenQuizFormat.objects.all()
     return render(request, 'campus/quiz_list.html', {'aiken_quiz': aiken_quiz})
+
+
+def quiz_detail(request, id):
+    question = AikenQuizFormat.objects.filter(id=id)
+    return render(request, 'campus/quiz_details.html', {'question' : question})
+
+
+def performance_predict(request):
+    import pandas as pd
+    from sklearn.linear_model import LinearRegression
+    from sklearn.model_selection import train_test_split
+
+    # Load the CSV file into a Pandas DataFrame
+    df = pd.read_csv('/content/Student.csv')
+
+    # Split the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(df.drop('output', axis=1), df['output'], test_size=0.2,
+                                                        random_state=0)
+
+    # Create a Linear Regression model and fit it to the training data
+    regressor = LinearRegression()
+    regressor.fit(X_train, y_train)
+
+    # Make predictions on the testing data
+    y_pred = regressor.predict(X_test)
+
+    # Evaluate the performance of the model
+    from sklearn.metrics import mean_squared_error, r2_score
+    print('Mean squared error: %.2f' % mean_squared_error(y_test, y_pred))
+    print('Coefficient of determination (R^2): %.2f' % r2_score(y_test, y_pred))

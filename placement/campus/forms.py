@@ -43,7 +43,3 @@ class SetPasswordForm(SetPasswordForm):
         fields = ['new_password1', 'new_password2']
 
 
-class addQuestionform(ModelForm):
-    class Meta:
-        model = QuesModel
-        fields = "__all__"

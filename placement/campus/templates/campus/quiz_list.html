@@ -12,7 +12,7 @@
   <h1>Quiz List</h1>
   <ul>
     {% for quiz in aiken_quiz %}
-      <li><a href="{% url 'campus:quiz_detail' %}">{{ quiz.name }}</a></li>
+      <li><a href="{% url 'campus:quiz_detail' quiz.id %}">{{ quiz.name }}</a></li>
     {% endfor %}
   </ul>
 {% endblock %}

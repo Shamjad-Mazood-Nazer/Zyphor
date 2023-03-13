@@ -30,7 +30,7 @@ urlpatterns = [
     path('quiz', views.quiz, name='quiz'),
     path('quiz_mode', views.quiz_mode, name='quiz_mode'),
     path('quiz_list', views.quiz_list, name='quiz_list'),
-    path('quiz_detail', views.quiz_detail, name='quiz_detail'),
+    path('quiz_detail/<int:id>/', views.quiz_detail, name='quiz_detail'),
 
     path('ajax_generate_code/', views.ajax_generate_code, name='ajax_generate_code'),
 
