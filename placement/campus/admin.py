@@ -12,13 +12,10 @@ admin.site.register(ApplyDrive)
 admin.site.register(Payment)
 admin.site.register(QuesModel)
 admin.site.register(QuizResult)
-admin.site.register(Quiz)
-admin.site.register(Question)
-admin.site.register(Answer)
 
 
 class AdminAiken(admin.ModelAdmin):
-    list_display = ['id', 'name', 'uploaded_on', 'file']
+    list_display = ['id', 'name', 'uploaded_on', 'file', 'time']
     ordering = ['id']
 
 

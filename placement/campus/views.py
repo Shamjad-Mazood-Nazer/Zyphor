@@ -352,7 +352,7 @@ def quiz_detail(request, id):
 
 
 def performance_predict(correct, total, cgpa, time):
-    print(correct, total, cgpa, time)
+    print(correct, total,  cgpa, time)
     # Load the CSV file into a Pandas DataFrame
     df = pd.read_csv('static/csv/Student.csv')
 
@@ -375,34 +375,3 @@ def performance_predict(correct, total, cgpa, time):
 
     return (r2_score(y_test, y_pred) * 100)
 
-
-class QuizView(View):
-    template_name = 'quiz.html'
-
-    def get(self, request, quiz_id):
-        quiz = Quiz.objects.get(id=quiz_id)
-        questions = quiz.questions.all()
-        context = {
-            'quiz': quiz,
-            'questions': questions,
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request, quiz_id):
-        quiz = Quiz.objects.get(id=quiz_id)
-        questions = quiz.questions.all()
-        score = 0
-        for question in questions:
-            selected_answer = request.POST.get(str(question.id))
-            if selected_answer:
-                selected_answer = int(selected_answer)
-                if question.answers.get(id=selected_answer).is_correct:
-                    score += 1
-        percentage = score / len(questions) * 100
-        context = {
-            'quiz': quiz,
-            'questions': questions,
-            'score': score,
-            'percentage': percentage,
-        }
-        return render(request, 'results.html', context)

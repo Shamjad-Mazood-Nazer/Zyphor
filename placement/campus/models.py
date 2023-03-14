@@ -233,6 +233,7 @@ class AikenQuizFormat(models.Model):
     name = models.CharField(max_length=255, verbose_name='File Name')
     uploaded_on = models.DateField(auto_now_add=True, verbose_name='Upload Date')
     file = models.FileField(upload_to='files', verbose_name='File', default='')
+    time = models.CharField(max_length=10, default='10', verbose_name='Time(Minutes)')
 
     def __str__(self):
         return self.name
@@ -240,17 +241,3 @@ class AikenQuizFormat(models.Model):
     class Meta:
         verbose_name_plural = 'Aiken Quiz File'
 
-
-class Quiz(models.Model):
-    title = models.CharField(max_length=255)
-
-
-class Question(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    text = models.CharField(max_length=255)
-
-
-class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    text = models.CharField(max_length=255)
-    is_correct = models.BooleanField(default=False)
