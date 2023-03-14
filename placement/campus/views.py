@@ -29,6 +29,12 @@ from .decorators import user_login_required
 import random
 from placement.settings import EMAIL_HOST_USER
 
+"""imports for Machine Learning Algorithms"""
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+# user model
 User = get_user_model()
 
 
@@ -293,6 +299,7 @@ def quiz(request):
             wrong = 0
             correct = 0
             total = 0
+            cgpa = 6.9
             for q in questions:
                 total += 1
                 print(request.POST.get(q.question))
@@ -304,18 +311,21 @@ def quiz(request):
                 else:
                     wrong += 1
             percent = (score / total) * 100
+            performance = performance_predict(correct, total, cgpa, time)
             context = {
                 'score': score,
                 'time': time,
                 'correct': correct,
                 'wrong': wrong,
                 'percent': percent,
-                'total': total
+                'total': total,
+                'performance': performance,
             }
             r = QuizResult(email=email, score=score, time=time + ' sec', correct=correct,
                            wrong=wrong, percent=percent, total=total)
             print(r)
             r.save()
+
             return render(request, 'campus/result.html', context)
         else:
             questions = QuesModel.objects.all()
@@ -325,17 +335,6 @@ def quiz(request):
             return render(request, 'campus/quizpage.html', context)
     else:
         return render(request, 'campus/payments.html', )
-
-
-def quiz_list(request):
-    quizzes = Quiz.objects.all()
-    return render(request, 'quiz:quiz_list.html', {'quizzes': quizzes})
-
-
-# def quiz_detail(request, id):
-#     quiz = AikenQuizFormat.objects.get(pk=id)
-#     questions = Question.objects.filter(quiz=quiz)
-#     return render(request, 'quiz:quiz_detail.html', {'quiz': quiz, 'questions': questions})
 
 
 def quiz_mode(request):
@@ -349,16 +348,13 @@ def quiz_list(request):
 
 def quiz_detail(request, id):
     question = AikenQuizFormat.objects.filter(id=id)
-    return render(request, 'campus/quiz_details.html', {'question' : question})
+    return render(request, 'campus/quiz_details.html', {'question': question})
 
 
-def performance_predict(request):
-    import pandas as pd
-    from sklearn.linear_model import LinearRegression
-    from sklearn.model_selection import train_test_split
-
+def performance_predict(correct, total, cgpa, time):
+    print(correct, total, cgpa, time)
     # Load the CSV file into a Pandas DataFrame
-    df = pd.read_csv('/content/Student.csv')
+    df = pd.read_csv('static/csv/Student.csv')
 
     # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(df.drop('output', axis=1), df['output'], test_size=0.2,
@@ -375,3 +371,38 @@ def performance_predict(request):
     from sklearn.metrics import mean_squared_error, r2_score
     print('Mean squared error: %.2f' % mean_squared_error(y_test, y_pred))
     print('Coefficient of determination (R^2): %.2f' % r2_score(y_test, y_pred))
+    print('Accuracy : %.2f' % (r2_score(y_test, y_pred) * 100))
+
+    return (r2_score(y_test, y_pred) * 100)
+
+
+class QuizView(View):
+    template_name = 'quiz.html'
+
+    def get(self, request, quiz_id):
+        quiz = Quiz.objects.get(id=quiz_id)
+        questions = quiz.questions.all()
+        context = {
+            'quiz': quiz,
+            'questions': questions,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, quiz_id):
+        quiz = Quiz.objects.get(id=quiz_id)
+        questions = quiz.questions.all()
+        score = 0
+        for question in questions:
+            selected_answer = request.POST.get(str(question.id))
+            if selected_answer:
+                selected_answer = int(selected_answer)
+                if question.answers.get(id=selected_answer).is_correct:
+                    score += 1
+        percentage = score / len(questions) * 100
+        context = {
+            'quiz': quiz,
+            'questions': questions,
+            'score': score,
+            'percentage': percentage,
+        }
+        return render(request, 'results.html', context)

@@ -240,3 +240,17 @@ class AikenQuizFormat(models.Model):
     class Meta:
         verbose_name_plural = 'Aiken Quiz File'
 
+
+class Quiz(models.Model):
+    title = models.CharField(max_length=255)
+
+
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
+
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=False)
