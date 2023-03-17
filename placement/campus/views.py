@@ -29,6 +29,8 @@ from .decorators import user_login_required
 import random
 from placement.settings import EMAIL_HOST_USER
 
+from .aiken import Aiken
+
 """imports for Machine Learning Algorithms"""
 import pandas as pd
 from sklearn.linear_model import LinearRegression
@@ -107,6 +109,18 @@ def login(request):
         return render(request, 'campus/login.html', {'form': form})
 
 
+def update_password(request):
+    return render(request, 'campus/update_password.html')
+
+
+def password_changed(request):
+    form = PasswordChangeForm()
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        if
+
+
 def tpoLogin(request):
     form = LoginForm()
     if request.method == 'POST':
@@ -153,10 +167,17 @@ def home(request):
 
 @user_login_required
 def studentDash(request):
+    email = request.session['email']
     user = get_user(request)
     myData = StudentReg.objects.filter(admino=user.admino)
+    quiz_result = QuizResult.objects.filter(email=email)
     # print(myData)
-    return render(request, 'campus/studentDashboard.html', {'user': user, 'myData': myData})
+    context = {
+        'user': user,
+        'myData': myData,
+        'quiz_result': quiz_result,
+    }
+    return render(request, 'campus/studentDashboard.html', context)
 
 
 def logout(request):
@@ -263,8 +284,8 @@ def payment(request):
                 'quantity': 1,
             }],
             mode='payment',
-            success_url=request.build_absolute_uri(reverse('thanks')) + '?session_id = {CHECKOUT_SESSION_ID}',
-            cancel_url=request.build_absolute_uri(reverse('student')),
+            success_url=request.build_absolute_uri(reverse('campus:thanks')) + '?session_id = {CHECKOUT_SESSION_ID}',
+            cancel_url=request.build_absolute_uri(reverse('campus:student')),
         )
         context = {
             'session_id': session.id,
@@ -311,7 +332,9 @@ def quiz(request):
                 else:
                     wrong += 1
             percent = (score / total) * 100
-            performance = performance_predict(correct, total, cgpa, time)
+            analysis = performance_predict(correct, total, cgpa, time)
+            performance = round(analysis, 2)
+            print('performance:', performance)
             context = {
                 'score': score,
                 'time': time,
@@ -321,9 +344,11 @@ def quiz(request):
                 'total': total,
                 'performance': performance,
             }
+
             r = QuizResult(email=email, score=score, time=time + ' sec', correct=correct,
                            wrong=wrong, percent=percent, total=total)
-            print(r)
+            print('email:', r.email, '\nscore:', r.score, '\ntime:', r.time, '\ncorrect:', r.correct, '\nwrong:',
+                  r.wrong, '\npercentage:', r.percent, '\ntotal:', r.total)
             r.save()
 
             return render(request, 'campus/result.html', context)
@@ -348,11 +373,12 @@ def quiz_list(request):
 
 def quiz_detail(request, id):
     question = AikenQuizFormat.objects.filter(id=id)
+    print(question)
     return render(request, 'campus/quiz_details.html', {'question': question})
 
 
 def performance_predict(correct, total, cgpa, time):
-    print(correct, total,  cgpa, time)
+    print(correct, total, cgpa, time)
     # Load the CSV file into a Pandas DataFrame
     df = pd.read_csv('static/csv/Student.csv')
 
@@ -374,4 +400,3 @@ def performance_predict(correct, total, cgpa, time):
     print('Accuracy : %.2f' % (r2_score(y_test, y_pred) * 100))
 
     return (r2_score(y_test, y_pred) * 100)
-

@@ -8,7 +8,7 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
   <!------ Include the above in your HEAD tag ---------->
-    <title>Welcome Back!</title>
+    <title>Zyphor-Student</title>
       <link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
     <link rel="stylesheet" href="{% static '/css/studentDashStyle.css' %}">
 <!--      <script src="{% static '/js/logoutScript.js' %}"></script>-->
@@ -36,6 +36,11 @@
                                 <li>
                                     <a href="#">
                                         <i class="fa fa-user-secret"></i> My Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'campus:update_password' %}">
+                                        <i class="fa fa-key"></i> Change Password
                                     </a>
                                 </li>
                             </ul>
@@ -90,6 +95,38 @@
                         <th>Your Email Address : </th>
                         <td>{{user.email}}</td>
                     </tr>
+                </table>
+                <br><br>
+                <div class="card">
+                    <table border="1" style="width:92%">
+                            <div class="card-body">
+                                <tr>
+                                    <th style="text-align: center;">Attempts</th>
+                                    <th style="text-align: center;">Correct</th>
+                                    <th style="text-align: center;">Wrong</th>
+                                    <th style="text-align: center;">No. Questions</th>
+                                    <th style="text-align: center;">Time</th>
+                                </tr>
+                                {% for result in quiz_result %}
+                                    {% if forloop.counter is None %}
+                                        <tr>
+                                            <td style="text-align: center;">Didn't attended any quiz</td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td style="text-align: center;">{{ forloop.counter }}</td>
+                                            <td style="text-align: center;">{{ result.correct }}</td>
+                                            <td style="text-align: center;">{{ result.wrong }}</td>
+                                            <td style="text-align: center;">{{ result.total }}</td>
+                                            <td style="text-align: center;">{{ result.time }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                    </table>
+                </div>
+                <table>
 
 <!--                    {% for data in myData %}-->
 <!--                    <tr>-->
@@ -123,3 +160,11 @@
         background-color: #f2f2f2;
     }
 </style>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>

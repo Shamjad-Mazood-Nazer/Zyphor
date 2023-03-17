@@ -13,9 +13,17 @@
     color: #fff;
     margin-right: 20px;
   }
-</style>
+  div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: yellow;
+  padding: 50px;
+  font-size: 20px;
+}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+</style>
+<nav id="nav-div" class="navbar navbar-expand-lg navbar-dark bg-primary" style="position: sticky; z-index: 1; top: 0;">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -24,7 +32,7 @@
     <ul class="navbar-nav">
 
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'campus:student' %}">Dashboard</a>
+        <a class="nav-link" href="{% url 'campus:student' %}"><em style="font-size: 15px">Dashboard</em></a>
       </li>
       </li>
     </ul>

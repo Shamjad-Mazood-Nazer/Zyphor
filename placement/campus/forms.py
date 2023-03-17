@@ -43,3 +43,7 @@ class SetPasswordForm(SetPasswordForm):
         fields = ['new_password1', 'new_password2']
 
 
+class PasswordChangeForm(forms.ModelForm):
+    class Meta:
+        model = StudentReg
+        fields = ['password']

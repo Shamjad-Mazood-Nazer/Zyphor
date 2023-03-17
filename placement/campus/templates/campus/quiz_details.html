@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% extends 'campus/dependencies.html' %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,7 +22,10 @@
         <br>
       {% endfor %}
     {% endfor %}
-    <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+      <center>
+          <button type="submit" name="submit" class="btn btn-success">Submit</button>
+      </center>
+
   </form>
 {% endblock %}
 
