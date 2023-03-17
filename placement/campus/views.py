@@ -118,7 +118,8 @@ def password_changed(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-        if
+        if email == 'shamjad@gmail.com':
+            pass
 
 
 def tpoLogin(request):
