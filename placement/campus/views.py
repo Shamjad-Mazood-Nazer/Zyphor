@@ -115,11 +115,20 @@ def update_password(request):
 
 def password_changed(request):
     form = PasswordChangeForm()
+    email = request.session['email']
+    uemail = request.POST.get['email']
     if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
-        if email == 'shamjad@gmail.com':
-            pass
+        if form.is_valid():
+            if email == uemail:
+                password = request.POST.get['password']
+                print(password)
+                return render(request, 'campus/adminDashboard.html')
+            else:
+                return HttpResponse("<script>alert('oops! Registered email and entered email does not match! Try again');window.location='/';</script>")
+        else:
+            messages.error(request, 'Please correct the error below.')
+
+
 
 
 def tpoLogin(request):
