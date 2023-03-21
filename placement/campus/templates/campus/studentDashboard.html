@@ -29,6 +29,21 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                             <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                                <i class="fa fa-bell"></i> Notifications
+                                <span class="caret"></span>
+                            </a>
+                            <ul>
+                                {% for notification in  user.notifications.unread %}
+                                <div>
+                                    Message from <b>{{ notification.actor }}</b>
+                                    <button class="dropdown-item" type="button">Hello{{ notification.description }}</button>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
                                 <i class="fa fa-user-circle"></i> Hi, {{user.first_name}} !
                                 <span class="caret"></span>
                             </a>
@@ -43,10 +58,12 @@
                                         <i class="fa fa-key"></i> Change Password
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{% url 'campus:logout' %}">
+                                        <i class="fa fa-sign-out"></i> Logout
+                                    </a>
+                                </li>
                             </ul>
-                        </li>
-                        <li>
-                            <a href="{% url 'campus:logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
                         </li>
                     </ul>
                 </div>

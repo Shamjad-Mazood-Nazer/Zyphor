@@ -234,6 +234,8 @@ class AikenQuizFormat(models.Model):
     uploaded_on = models.DateField(auto_now_add=True, verbose_name='Upload Date')
     file = models.FileField(upload_to='files', verbose_name='File', default='')
     time = models.CharField(max_length=10, default='10', verbose_name='Time(Minutes)')
+    start_date = models.DateField(verbose_name='Start Date')
+    end_date = models.DateField(verbose_name='End Date')
 
     def __str__(self):
         return self.name

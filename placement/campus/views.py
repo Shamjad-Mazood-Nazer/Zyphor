@@ -29,6 +29,8 @@ from .decorators import user_login_required
 import random
 from placement.settings import EMAIL_HOST_USER
 
+from notifications.signals import notify
+
 from .aiken import Aiken
 
 """imports for Machine Learning Algorithms"""
@@ -39,8 +41,14 @@ from sklearn.model_selection import train_test_split
 # user model
 User = get_user_model()
 
-
 # Create your views here.
+
+# sender = User.objects.get(username=request.user)
+# recipient = User.objects.get(id=user_id)
+# message = "This is an simple message"
+# notify.send(actor=sender, recipient=recipient, verb='Message',
+#             description=message)
+
 
 def ajax_generate_code(request):
     print(request.GET)
@@ -124,11 +132,10 @@ def password_changed(request):
                 print(password)
                 return render(request, 'campus/adminDashboard.html')
             else:
-                return HttpResponse("<script>alert('oops! Registered email and entered email does not match! Try again');window.location='/';</script>")
+                return HttpResponse(
+                    "<script>alert('oops! Registered email and entered email does not match! Try again');window.location='/';</script>")
         else:
             messages.error(request, 'Please correct the error below.')
-
-
 
 
 def tpoLogin(request):
@@ -295,7 +302,7 @@ def payment(request):
             }],
             mode='payment',
             success_url=request.build_absolute_uri(reverse('campus:thanks')) + '?session_id = {CHECKOUT_SESSION_ID}',
-            cancel_url=request.build_absolute_uri(reverse('campus:student')),
+            cancel_url=request.build_absolute_uri(reverse('campus:home')),
         )
         context = {
             'session_id': session.id,
@@ -364,21 +371,37 @@ def quiz(request):
             return render(request, 'campus/result.html', context)
         else:
             questions = QuesModel.objects.all()
-            context = {
-                'questions': questions,
-            }
-            return render(request, 'campus/quizpage.html', context)
+            print(questions)
+            if not questions:
+                return HttpResponse(
+                    "<script>alert('No Quiz for the practice mode. Try again later!..'); window.location='quiz_mode'; </script>"
+                )
+            else:
+                context = {
+                    'questions': questions,
+                }
+                return render(request, 'campus/quizpage.html', context)
     else:
         return render(request, 'campus/payments.html', )
 
 
 def quiz_mode(request):
-    return render(request, 'campus/quiz_mode.html')
+    email = request.session['email']
+    if Payment.objects.filter(email=email).exists():
+        return render(request, 'campus/quiz_mode.html')
+    else:
+        return render(request, 'campus/payments.html', )
 
 
 def quiz_list(request):
     aiken_quiz = AikenQuizFormat.objects.all()
-    return render(request, 'campus/quiz_list.html', {'aiken_quiz': aiken_quiz})
+    print(aiken_quiz)
+    if not aiken_quiz:
+        return HttpResponse(
+            "<script>alert('Nothing is Scheduled by the TPO!'); window.location='quiz_mode'; </script>"
+        )
+    else:
+        return render(request, 'campus/quiz_list.html', {'aiken_quiz': aiken_quiz})
 
 
 def quiz_detail(request, id):
