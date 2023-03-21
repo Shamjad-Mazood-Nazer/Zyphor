@@ -15,7 +15,7 @@ admin.site.register(QuizResult)
 
 
 class AdminAiken(admin.ModelAdmin):
-    list_display = ['id', 'name', 'uploaded_on', 'file', 'time']
+    list_display = ['id', 'name', 'uploaded_on', 'file', 'start_date', 'end_date', 'time']
     ordering = ['id']
 
 
