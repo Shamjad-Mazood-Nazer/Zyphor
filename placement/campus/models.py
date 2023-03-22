@@ -230,7 +230,7 @@ class QuesModel(models.Model):
 
 
 class AikenQuizFormat(models.Model):
-    name = models.CharField(max_length=255, verbose_name='File Name')
+    name = models.CharField(max_length=255, verbose_name='Quiz Name')
     uploaded_on = models.DateField(auto_now_add=True, verbose_name='Upload Date')
     file = models.FileField(upload_to='files', verbose_name='File', default='')
     time = models.CharField(max_length=10, default='10', verbose_name='Time(Minutes)')

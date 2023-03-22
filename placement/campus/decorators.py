@@ -3,9 +3,9 @@ from django.shortcuts import redirect
 
 
 def user_login_required(function):
-    def wrapper(request, login_url='login', *args, **kwargs):
+    def wrapper(request, *args, **kwargs):
         if not 'email' in request.session:
-            return redirect(login_url)
+            return redirect('/')
         else:
             return function(request, *args, **kwargs)
 
