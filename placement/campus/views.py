@@ -41,6 +41,7 @@ from sklearn.model_selection import train_test_split
 # user model
 User = get_user_model()
 
+
 # Create your views here.
 
 # sender = User.objects.get(username=request.user)
@@ -55,9 +56,9 @@ def ajax_generate_code(request):
     for x in request.GET:
         if x != '_':
             email = x
-            ## Generate Code and save it in a session
+            # Generate Code and save it in a session
             request.session['code'] = random.randint(111111, 999999)
-            ## Send email Functionality
+            # Send email Functionality
             text_content = "Your Email Verification Code for Placement-Cell Registration is " + str(
                 request.session['code'])
             msg = EmailMultiAlternatives('Verify Email', text_content, EMAIL_HOST_USER, [email])
