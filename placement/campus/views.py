@@ -315,7 +315,7 @@ def payment(request):
 @user_login_required
 def thanks(request):
     email = request.session['email']
-    status = 1
+    status = 'paid'
     print(email)
     if not Payment.objects.filter(email=email).exists():
         r = Payment(email=email, status=status)
@@ -396,19 +396,29 @@ def quiz_mode(request):
 
 def quiz_list(request):
     aiken_quiz = AikenQuizFormat.objects.all()
-    print(aiken_quiz)
+    quizzes = Quiz.objects.all()
+
+    print(quizzes)
+    # print(aiken_quiz)
+
     if not aiken_quiz:
         return HttpResponse(
             "<script>alert('Nothing is Scheduled by the TPO!'); window.location='quiz_mode'; </script>"
         )
     else:
-        return render(request, 'campus/quiz_list.html', {'aiken_quiz': aiken_quiz})
+        return render(request, 'campus/quiz_list.html', {'quizzes': quizzes})
 
 
 def quiz_detail(request, id):
-    question = AikenQuizFormat.objects.filter(id=id)
-    print(question)
-    return render(request, 'campus/quiz_details.html', {'question': question})
+    # question = AikenQuizFormat.objects.filter(id=id)
+    quiz = Quiz.objects.get(id=id)
+    questions = quiz.question_set.all()
+    print(questions)
+    context = {
+        'quiz': quiz,
+        'questions': questions
+    }
+    return render(request, 'campus/quiz_details.html', context)
 
 
 def performance_predict(correct, total, cgpa, time):

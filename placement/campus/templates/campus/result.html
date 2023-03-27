@@ -25,7 +25,12 @@
                 <p class="card-text">Incorrect answers: {{wrong}}</p>
                 <p class="card-text">Total questions: {{total}}</p>
                 <p class="card-text">Your Performance: {{performance}}</p>
-                <h5>All the best for next quiz!</h5><a href="{% url 'campus:student' %}">Home page</a>
+                <h5>All the best for next quiz!</h5>
+                <a href="{% url 'campus:student' %}">
+                    <center>
+                        <button class="btn btn-danger" name="home" type="button" value="Home page">Home</button>
+                    </center>
+                </a>
             </div>
         </div>
     </div>

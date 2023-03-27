@@ -6,6 +6,11 @@ from django.contrib.auth.models import User, AbstractUser
 
 User = settings.AUTH_USER_MODEL
 
+payment_choice = (
+    ('paid', 'paid'),
+    ('not paid', 'not paid'),
+)
+
 
 class User(AbstractUser):
     is_student = models.BooleanField(default=False)
@@ -192,7 +197,7 @@ class ApplyDrive(models.Model):
 class Payment(models.Model):
     email = models.EmailField(max_length=100, unique=True)
     payment_on = models.DateTimeField(auto_now_add=True)
-    status = models.IntegerField(default=0)
+    status = models.CharField(max_length=25, default='Not Paid', choices=payment_choice)
 
     def __str__(self):
         return self.email
@@ -209,6 +214,7 @@ class QuizResult(models.Model):
     wrong = models.CharField(max_length=3, default=0)
     percent = models.CharField(max_length=3, default=0)
     total = models.CharField(verbose_name='total questions', max_length=3, default=0)
+    quiz_taken_on = models.DateTimeField(auto_now_add=True, verbose_name='Date & Time')
 
     class Meta:
         verbose_name_plural = 'Quiz - Result'
@@ -243,3 +249,23 @@ class AikenQuizFormat(models.Model):
     class Meta:
         verbose_name_plural = 'Aiken Quiz File'
 
+
+class AikenFile(models.Model):
+    file = models.FileField(upload_to='files')
+
+
+class Quiz(models.Model):
+    title = models.CharField(max_length=255)
+
+
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    text = models.TextField()
+    correct_answer = models.CharField(max_length=255)
+    explanation = models.TextField()
+
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
+    is_correct = models.BooleanField()

@@ -17,11 +17,9 @@
             <h1>Quiz List</h1>
         </div>
         <ul class="list-group list-group-flush">
-            {% for quiz in aiken_quiz %}
+            {% for quiz in quizzes %}
                 <li class="list-group-item"> Name of Quiz :
-                    <a href="{% url 'campus:quiz_detail' quiz.id %}">{{ quiz.name }}</a>
-                    <br>Uploaded On &nbsp;: {{ quiz.uploaded_on }}
-                    <br>Allotted Time : {{ quiz.time }} Minutes
+                    <a href="{% url 'campus:quiz_detail' quiz.id %}">{{ quiz.title }}</a>
                 </li>
             {% endfor %}
         </ul>

@@ -15,13 +15,13 @@
 <div class="container ">
 <h1>Welcome to Quiz Training</h1>
 
-    <div style="position: sticky; padding: 10px;" align="right" id="displaytimer"><b>Time you are taking : <u>0 seconds</u></b></div>
+    <div style="position: sticky; padding: 10px;" align="right" id="displaytimer"><b>Time you are taking : <u>0m : 0s</u></b></div>
 
  <form method='post' action=''>
     {% csrf_token %}
     {% for q  in questions %}
     <div class="form-group">
-      <label for="question">{{q.question}}</label>
+      <label for="question">{{ forloop.counter }}) {{q.question}}</label>
     </div>
     <div class="form-check">
         <div class="form-check">
@@ -58,17 +58,20 @@
     {% block script %}
         <script>
 
-            console.log('Testing...')
-            const timer=document.getElementById('displaytimer')
-            console.log(timer.textContent)
-            const inputtag = document.getElementById('timer')
+            console.log('Testing...');
 
-            t=0
-            setInterval(()=>{
-                t+=1
-                timer.innerHTML ="<b>Time you are taking : <u>" +t+" seconds</u></b>"
-                inputtag.value = t
-            },1000)
+            const timer = document.getElementById('displaytimer');
+            const inputtag = document.getElementById('timer');
+
+            let t = 0;
+            setInterval(() => {
+                t += 1;
+                const minutes = Math.floor(t / 60);
+                const seconds = t % 60;
+                timer.innerHTML = "<b>Time you are taking : <u>" + minutes + "m : " + seconds + "s</u></b>";
+                inputtag.value = t;
+            }, 1000);
+
         </script>
     {% endblock script %}
 
