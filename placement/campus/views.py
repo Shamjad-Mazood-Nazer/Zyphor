@@ -21,7 +21,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.urls import reverse
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import *
 from .forms import RegisterForm, LoginForm
@@ -424,6 +424,20 @@ def quiz_detail(request, id):
         'questions': questions
     }
     return render(request, 'campus/quiz_details.html', context)
+
+
+def submit_quiz(request, id):
+    quiz = get_object_or_404(Quiz, pk=id)
+    if request.method == 'POST':
+        score = 0
+        for question in quiz.question_set.all():
+            answer_id = request.POST.get(f'question_{question.id}')
+            if answer_id:
+                answer = get_object_or_404(Answer, pk=answer_id)
+                if answer.is_correct:
+                    score += 1
+        return render(request, 'campus/quiz_results.html', {'score': score, 'quiz': quiz})
+    return render(request, 'campus/quiz_list.html', {'quiz': quiz})
 
 
 def performance_predict(correct, total, cgpa, time):

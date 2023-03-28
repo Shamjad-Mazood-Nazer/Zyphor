@@ -34,6 +34,8 @@ urlpatterns = [
     path('quiz_list', views.quiz_list, name='quiz_list'),
     path('quiz_detail/<int:id>/', views.quiz_detail, name='quiz_detail'),
 
+    path('submit_quiz/<int:id>/', views.submit_quiz, name='submit_quiz'),
+
     path('ajax_generate_code/', views.ajax_generate_code, name='ajax_generate_code'),
 
     path('reset_password/',

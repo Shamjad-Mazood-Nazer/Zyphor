@@ -255,7 +255,18 @@ class AikenQuizFormat(models.Model):
 
 
 class AikenFile(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Quiz Name', default='')
     file = models.FileField(upload_to='files')
+    uploaded_on = models.DateTimeField(auto_now_add=True, verbose_name='uploaded on')
+    start_date = models.DateField(verbose_name='Start Date', default='2023-03-28')
+    end_date = models.DateField(verbose_name='End Date', default='2023-03-28')
+    time = models.IntegerField(default=15, verbose_name='Time(Minutes)')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'Aiken Aptitude Quiz'
 
 
 class Quiz(models.Model):

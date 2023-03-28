@@ -12,9 +12,9 @@ admin.site.register(ApplyDrive)
 admin.site.register(Payment)
 admin.site.register(QuesModel)
 admin.site.register(QuizResult)
-admin.site.register(Question)
-admin.site.register(Answer)
-admin.site.register(Quiz)
+# admin.site.register(Question)
+# admin.site.register(Answer)
+# admin.site.register(Quiz)
 
 
 class AdminAiken(admin.ModelAdmin):
@@ -22,12 +22,13 @@ class AdminAiken(admin.ModelAdmin):
     ordering = ['id']
 
 
-admin.site.register(AikenQuizFormat, AdminAiken)
+# admin.site.register(AikenQuizFormat, AdminAiken)
 
 
 @admin.register(AikenFile)
 class AikenFileAdmin(admin.ModelAdmin):
-    list_display = ('file',)
+    list_display = ('name', 'uploaded_on', 'file', 'start_date', 'end_date', 'time')
+    ordering = ['id']
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
@@ -45,6 +46,7 @@ class AikenFileAdmin(admin.ModelAdmin):
             return
 
         quiz = Quiz.objects.create(title=quiz_title)
+        print(quiz)
 
         for i in range(1, len(lines), 6):
             if i + 5 > len(lines):
@@ -57,6 +59,7 @@ class AikenFileAdmin(admin.ModelAdmin):
                 return
 
             question = Question.objects.create(quiz=quiz, text=question_text)
+            print(question)
 
             answers = []
             for j in range(i + 1, i + 5):
@@ -72,6 +75,7 @@ class AikenFileAdmin(admin.ModelAdmin):
                 is_correct = lines[j].startswith('ANSWER: ')
                 answer = Answer(question=question, text=answer_text, is_correct=is_correct)
                 answers.append(answer)
+                print(answers)
 
             if len(answers) == 4:
                 Answer.objects.bulk_create(answers)

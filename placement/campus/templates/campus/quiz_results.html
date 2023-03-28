@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% extends 'campus/dependencies.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aptitude Result</title>
+</head>
+<body>
+{% block content %}
+<div class="container">
+    <h2>Quiz Results</h2>
+    <p>Your score: {{ score }}/{{ quiz.question_set.count }}</p>
+    <p><a href="{% url 'campus:home' %}">Back to Home</a></p>
+</div>
+{% endblock %}
+</body>
+</html>
