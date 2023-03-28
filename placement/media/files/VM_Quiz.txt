@@ -1,0 +1,80 @@
+VM Quiz
+1. What is a virtual machine?
+A) A physical computer
+B) An operating system
+C) A software environment that emulates a physical computer
+D) A networking protocol
+
+Answer: C
+
+2. What is the purpose of a virtual machine?
+A) To run multiple operating systems on a single physical computer
+B) To increase the performance of a physical computer
+C) To connect multiple physical computers together
+D) To improve the security of a physical computer
+
+Answer: A
+
+3. Which of the following is an example of a type 2 hypervisor?
+A) VMware ESXi
+B) Microsoft Hyper-V
+C) Oracle VirtualBox
+D) KVM
+
+Answer: C
+
+4. What is a snapshot in a virtual machine environment?
+A) A backup copy of the virtual machine
+B) A copy of the virtual machine's configuration settings
+C) A copy of the virtual machine's hard disk at a specific point in time
+D) A copy of the virtual machine's memory at a specific point in time
+
+Answer: C
+
+5. What is the main benefit of using virtual machines?
+A) Improved performance
+B) Improved security
+C) Improved scalability
+D) Improved reliability
+
+Answer: B
+
+6. What is the difference between a virtual machine and a container?
+A) A virtual machine emulates a physical computer, while a container shares the host operating system
+B) A virtual machine is designed for running applications, while a container is designed for running entire operating systems
+C) A virtual machine is more lightweight than a container
+D) A container is more secure than a virtual machine
+
+Answer: A
+
+7. Which of the following is a type 1 hypervisor?
+A) VirtualBox
+B) VMware Workstation
+C) VMware ESXi
+D) Microsoft Hyper-V
+
+Answer: C
+
+8. What is the purpose of a virtual switch in a virtual machine environment?
+A) To connect virtual machines to physical networks
+B) To provide additional security for virtual machines
+C) To improve the performance of virtual machines
+D) To allow virtual machines to communicate with each other
+
+Answer: A
+
+9. What is a virtual CPU?
+A) A physical CPU that is shared by multiple virtual machines
+B) A software-based CPU that is emulated by the virtual machine environment
+C) A virtual machine's representation of the host system's physical CPU
+D) A CPU that is physically installed in a virtual machine
+
+Answer: C
+
+10. What is the purpose of virtualization software?
+A) To manage virtual machines
+B) To create virtual machines
+C) To monitor virtual machines
+D) All of the above
+
+Answer: D
