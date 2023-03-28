@@ -107,13 +107,14 @@ def login(request):
             for std in user:
                 email = std.email
                 id = std.admino
-                print(email)
+                print(email, id)
                 request.session['email'] = std.email
                 """This is a session variable and will remain existing as long as you don't delete this manually or 
                 clear your browser cache """
-                request.session['admino'] = std.admino
+                request.session['admino'] = id
                 return redirect('campus:student')
-        return render(request, 'campus/login.html', {'form': form})
+        error = "Credentials not match! Try again"
+        return render(request, 'campus/login.html', {'form': form, 'error': error})
     else:
         return render(request, 'campus/login.html', {'form': form})
 
@@ -238,10 +239,6 @@ def updateStudentDetails(request):
         return render(request, 'campus/payments.html', )
 
 
-# def adminDash(request):
-#     return render(request, 'campus/adminDashboard.html')
-
-
 @login_required(login_url='login')
 def password_change(request):
     user = request.user
@@ -352,6 +349,14 @@ def quiz(request):
             percent = (score / total) * 100
             analysis = performance_predict(correct, total, cgpa, time)
             performance = round(analysis, 2)
+            if percent < 30:
+                performance = 'You must have to improve yourself'
+            elif percent <= 60:
+                performance = 'Above average performance. But have to improve'
+            elif 60 < percent <= 85:
+                performance = 'Awsome performance!'
+            else:
+                performance = 'Mind blowing! Congrats Champ'
             print('performance:', performance)
             context = {
                 'score': score,

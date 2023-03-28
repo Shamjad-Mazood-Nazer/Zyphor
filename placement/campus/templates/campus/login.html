@@ -17,13 +17,17 @@
 			  var recaptcha = document.forms["loginForm"]["g-recaptcha-response"];
 			  recaptcha.required = true;
 			  recaptcha.oninvalid = function(e) {
-				// do something
-				alert("oops! it seems like you didn't verified that you are a human\nPlease complete the captcha and try again!");
+				alert("Please complete all the details and try again!");
 			  }
 			}
 		</script>
 	</head>
 	<body>
+	<font size="5px" color="red">
+		{% if error %}
+			<div align="center"> {{ error }} </div>
+		{% endif %}
+	</font>
 		<div class="limiter">
 			<div class="container-login100">
 				<div class="wrap-login100">

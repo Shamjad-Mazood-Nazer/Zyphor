@@ -85,7 +85,7 @@
                 <li><a href="{% url 'campus:student' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
                 <li><a href="{% url 'campus:updateStudentDetails'  %}"><i class="fa fa-database"></i> Update Details</a></li>
 <!--                <li><a href="#"><i class="fa fa-history"></i> My history / Drives</a></li>-->
-                <li><a href="{% url 'campus:reset_password' %}"><i class="fa fa-lock"></i> Change Password</a></li>
+<!--                <li><a href=""><i class="fa fa-lock"></i> Change Password</a></li>-->
                 <li><a href="{% url 'campus:viewDrive' %}"><i class="fa fa-folder"></i> Drives</a></li>
                 <li><a href="{% url 'campus:payment' %}"><i class="fa fa-money"></i> One Time Payment</a></li>
                 <li><a href="{% url 'campus:quiz_mode' %}"><i class="fa fa-question"></i> Quiz</a></li>
@@ -161,22 +161,44 @@
                         {% endif %}
                     </table>
                 </div>
-                <table>
-
-<!--                    {% for data in myData %}-->
-<!--                    <tr>-->
-<!--                        <td>Admission Number :{{ data.admino }}</td>-->
-<!--                        <td>First Name :{{ data.first_name }}</td>-->
-<!--                        <td>Last Name :{{ data.last_name }}</td>-->
-<!--                        <td>Email ID :{{ data.email }}</td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
+            <div class="card">
+                <h2><u>Aptitude Quiz</u></h2><br>
+                <table border="1">
+                    <tr>
+                        <th style="text-align: center;">Attempts</th>
+                        <th style="text-align: center;">Quiz Name</th>
+                        <th style="text-align: center;">Attended On</th>
+                        <th style="text-align: center;">Correct</th>
+                        <th style="text-align: center;">Wrong</th>
+                        <th style="text-align: center;">No. Questions</th>
+                        <th style="text-align: center;">Time</th>
+                    </tr>
+                    {% if quiz_result %}
+                        {% for result in quiz_result %}
+                            <tr>
+                                <td style="text-align: center;">{{ forloop.counter }}</td>
+                                <td style="text-align: center;">{{ result.quiz_taken_on }}</td>
+                                <td style="text-align: center;">{{ result.correct }}</td>
+                                <td style="text-align: center;">{{ result.wrong }}</td>
+                                <td style="text-align: center;">{{ result.total }}</td>
+                                <td style="text-align: center;">{{ result.time }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" style="text-align: center;">No record</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center;">No record</td>
+                        </tr>
+                    {% endif %}
                 </table>
             </div>
-
-{% endblock %}
         </div>
-    </body>
+{% endblock %}
+    </div>
+</body>
 </html>
 
 <style>
