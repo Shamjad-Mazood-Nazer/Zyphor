@@ -48,6 +48,12 @@
                 {{q.op4}}
             </label>
         </div>
+        <div class="btn-block">
+            <button type="button" name="answer" onclick="myFunction()">Show Ans</button>
+            <div id="myDIV">
+                Answer : {{q.explanation}}
+            </div>
+        </div>
         <br>
     </div>
     {% endfor %}
@@ -79,3 +85,13 @@
 {% endblock %}
 </body>
 </html>
+<script>
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>

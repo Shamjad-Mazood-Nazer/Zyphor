@@ -401,7 +401,7 @@ def quiz_list(request):
     print(quizzes)
     # print(aiken_quiz)
 
-    if not aiken_quiz:
+    if not quizzes:
         return HttpResponse(
             "<script>alert('Nothing is Scheduled by the TPO!'); window.location='quiz_mode'; </script>"
         )

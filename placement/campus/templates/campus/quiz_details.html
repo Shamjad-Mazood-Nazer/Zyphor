@@ -11,7 +11,7 @@
 
 
 {% block content %}
-  <h1>{{ quiz.title }}</h1>
+<h5>Quiz Name: {{ quiz.title }}</h5>
   <form method="post" action="">
     {% csrf_token %}
     {% for question in questions %}

@@ -32,7 +32,10 @@
                             <i class="fa fa-bell"></i> Notifications
                             <span class="caret"></span>
                         </a>
-                        <ul>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <p style="text-align: center;">No new notifications from your TPO</p>
+                            </li>
                             {% for notification in  user.notifications.unread %}
                             <div>
                                 Message from <b>{{ notification.actor }}</b>

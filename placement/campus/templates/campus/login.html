@@ -12,6 +12,16 @@
 		<link rel="stylesheet" href="{% static '/css/loginStyle.css' %}">
 		<script src="{% static '/js/loginScript.js' %}"></script>
 		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+		<script>
+			window.onload = function() {
+			  var recaptcha = document.forms["loginForm"]["g-recaptcha-response"];
+			  recaptcha.required = true;
+			  recaptcha.oninvalid = function(e) {
+				// do something
+				alert("oops! it seems like you didn't verified that you are a human\nPlease complete the captcha and try again!");
+			  }
+			}
+		</script>
 	</head>
 	<body>
 		<div class="limiter">
@@ -21,7 +31,7 @@
 						<img style="text-align: justify;" src="https://colorlib.com/etc/lf/Login_v1/images/img-01.png" alt="IMG">
 					</div>
 
-					<form method="post" action="login" class="login100-form validate-form">
+					<form name="loginForm" method="post" action="login" class="login100-form validate-form">
 						{% csrf_token %}
 						<span class="login100-form-title">
 <!--							<a class="txt3" href="http://127.0.0.1:8000/admin">ADMIN?</a>-->

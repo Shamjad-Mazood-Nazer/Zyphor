@@ -51,7 +51,7 @@ class AikenFileAdmin(admin.ModelAdmin):
                 # Not enough lines left to create another question
                 return
 
-            question_text = lines[i].strip()[2:]
+            question_text = lines[i].strip()[:]
             if not question_text:
                 # Question text is empty
                 return
@@ -75,3 +75,4 @@ class AikenFileAdmin(admin.ModelAdmin):
 
             if len(answers) == 4:
                 Answer.objects.bulk_create(answers)
+
