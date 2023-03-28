@@ -27,8 +27,7 @@ class AdminAiken(admin.ModelAdmin):
 
 @admin.register(AikenFile)
 class AikenFileAdmin(admin.ModelAdmin):
-    list_display = ('name', 'uploaded_on', 'file', 'start_date', 'end_date', 'time')
-    ordering = ['id']
+    list_display = ('file',)
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
