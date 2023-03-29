@@ -255,11 +255,28 @@ class AikenQuizFormat(models.Model):
 
 
 class AikenFile(models.Model):
-    file = models.FileField(upload_to='files')
+    name = models.CharField(max_length=255, verbose_name='Quiz Name', default='')
+    uploaded_on = models.DateField(auto_now_add=True, verbose_name='Upload Date')
+    file = models.FileField(upload_to='files', verbose_name='File', default='')
+    time = models.CharField(max_length=10, default='10', verbose_name='Time(Minutes)')
+    start_date = models.DateField(verbose_name='Start Date')
+    end_date = models.DateField(verbose_name='End Date')
+
+    def __str__(self):
+        return self.file
+
+    class Meta:
+        verbose_name_plural = 'Aiken Quiz'
 
 
 class Quiz(models.Model):
     title = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = 'Quiz'
 
 
 class Question(models.Model):
@@ -268,8 +285,20 @@ class Question(models.Model):
     correct_answer = models.CharField(max_length=255)
     explanation = models.TextField()
 
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        verbose_name_plural = 'Questions'
+
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
     is_correct = models.BooleanField()
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        verbose_name_plural = 'Answers'

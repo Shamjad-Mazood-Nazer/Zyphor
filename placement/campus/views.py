@@ -428,14 +428,20 @@ def quiz_detail(request, id):
 
 def submit_quiz(request, id):
     quiz = get_object_or_404(Quiz, pk=id)
+    print('Quiz ID: ', quiz)
     if request.method == 'POST':
         score = 0
         for question in quiz.question_set.all():
             answer_id = request.POST.get(f'question_{question.id}')
+            print('Answer ID :', answer_id)
             if answer_id:
                 answer = get_object_or_404(Answer, pk=answer_id)
+                print('Answer :', answer)
                 if answer.is_correct:
+                    print('Correct/not :', answer.is_correct)
                     score += 1
+                else:
+                    print('if not working')
         return render(request, 'campus/quiz_results.html', {'score': score, 'quiz': quiz})
     return render(request, 'campus/quiz_list.html', {'quiz': quiz})
 

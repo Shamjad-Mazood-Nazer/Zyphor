@@ -12,9 +12,9 @@ admin.site.register(ApplyDrive)
 admin.site.register(Payment)
 admin.site.register(QuesModel)
 admin.site.register(QuizResult)
-# admin.site.register(Question)
-# admin.site.register(Answer)
-# admin.site.register(Quiz)
+admin.site.register(Question)
+admin.site.register(Answer)
+admin.site.register(Quiz)
 
 
 class AdminAiken(admin.ModelAdmin):
