@@ -1,0 +1,24 @@
+Linux Quiz
+What command can be used to display the contents of a file?
+A. list
+*B. cat
+C. print
+D. view
+
+What command can be used to move a file?
+*A. mv
+B. cp
+C. mvfile
+D. copy
+
+What command can be used to create a new directory?
+A. md
+*B. mkdir
+C. newdir
+D. create_dir
+
+What command can be used to display the current working directory?
+*A. pwd
+B. dir
+C. ls
+D. cd

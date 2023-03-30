@@ -440,6 +440,7 @@ def submit_quiz(request, id):
                 if answer.is_correct:
                     print('Correct/not :', answer.is_correct)
                     score += 1
+                    print(score)
                 else:
                     print('if not working')
         return render(request, 'campus/quiz_results.html', {'score': score, 'quiz': quiz})

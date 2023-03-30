@@ -263,7 +263,7 @@ class AikenFile(models.Model):
     end_date = models.DateField(verbose_name='End Date')
 
     def __str__(self):
-        return self.file
+        return self.name
 
     class Meta:
         verbose_name_plural = 'Aiken Quiz'

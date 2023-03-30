@@ -66,12 +66,17 @@ class AikenFileAdmin(admin.ModelAdmin):
                     # Not enough lines left to create another answer
                     return
 
-                answer_text = lines[j].strip()[2:]
+                # answer_text = lines[j].strip()[2:]
+                answer_text = lines[j].strip()[3:].lstrip('. ')
                 if not answer_text:
                     # Answer text is empty
                     return
 
-                is_correct = lines[j].startswith('ANSWER: ')
+                print('line[j] : ', lines[j].strip()[3:])
+                print('start with : ', lines[j].startswith('*'))
+
+                is_correct = lines[j].startswith('*')
+                # print(is_correct)
                 answer = Answer(question=question, text=answer_text, is_correct=is_correct)
                 answers.append(answer)
                 print(answers)
