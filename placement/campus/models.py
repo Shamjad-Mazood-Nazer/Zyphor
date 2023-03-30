@@ -302,3 +302,22 @@ class Answer(models.Model):
 
     class Meta:
         verbose_name_plural = 'Answers'
+
+
+class Aiken_Result(models.Model):
+    user = models.ForeignKey(StudentReg, on_delete=models.CASCADE, verbose_name='Student')
+    score = models.CharField(max_length=3, default=0, verbose_name='Score')
+    quiz_name = models.CharField(max_length=255, verbose_name='Name of Quiz')
+    time = models.CharField(max_length=4, default=0, verbose_name='Time')
+    correct = models.CharField(max_length=3, default=0, verbose_name='correct')
+    wrong = models.CharField(max_length=3, default=0, verbose_name='Wrong')
+    percent = models.CharField(max_length=3, default=0, verbose_name='Percent')
+    total = models.CharField(verbose_name='total questions', max_length=3, default=0)
+    quiz_taken_on = models.DateTimeField(auto_now_add=True, verbose_name='Date & Time')
+    counter = models.IntegerField(verbose_name='counter')
+
+    def __str__(self):
+        return self.user.first_name
+
+    class Meta:
+        verbose_name_plural = 'Answers'
