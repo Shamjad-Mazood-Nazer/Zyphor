@@ -12,9 +12,9 @@ admin.site.register(ApplyDrive)
 admin.site.register(Payment)
 admin.site.register(QuesModel)
 admin.site.register(QuizResult)
-admin.site.register(Question)
-admin.site.register(Answer)
-admin.site.register(Quiz)
+# admin.site.register(Question)
+# admin.site.register(Answer)
+# admin.site.register(Quiz)
 
 
 class AdminAiken(admin.ModelAdmin):
@@ -27,7 +27,7 @@ class AdminAiken(admin.ModelAdmin):
 
 @admin.register(AikenFile)
 class AikenFileAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'file', 'uploaded_on', 'time', 'start_date', 'end_date', 'attempts']
+    list_display = ['id', 'name', 'uploaded_on', 'time', 'start_date', 'end_date', 'attempts', 'file']
     ordering = ['id']
 
     def save_model(self, request, obj, form, change):

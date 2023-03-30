@@ -402,6 +402,7 @@ def quiz_mode(request):
 def quiz_list(request):
     aiken_quiz = AikenQuizFormat.objects.all()
     quizzes = Quiz.objects.all()
+    Aiken_Quiz = AikenFile.objects.all()
 
     print(quizzes)
     # print(aiken_quiz)
