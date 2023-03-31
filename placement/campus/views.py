@@ -190,11 +190,13 @@ def studentDash(request):
     user = get_user(request)
     myData = StudentReg.objects.filter(admino=user.admino)
     quiz_result = QuizResult.objects.filter(email=email)
+    aiken_result = Aiken_Result.objects.filter(email=email)
     # print(myData)
     context = {
         'user': user,
         'myData': myData,
         'quiz_result': quiz_result,
+        'aiken_result': aiken_result,
     }
     return render(request, 'campus/studentDashboard.html', context)
 
@@ -417,38 +419,72 @@ def quiz_list(request):
 
 def quiz_detail(request, id):
     # question = AikenQuizFormat.objects.filter(id=id)
+    data = AikenFile.objects.get(id=id)
+    print(id)
+    times = AikenFile.objects.filter(id=id).values('time').get()['time']
+    print(times)
     quiz = Quiz.objects.get(id=id)
     questions = quiz.question_set.all()
-    Aiken_Quiz = AikenFile.objects.all()
-    print(questions)
-    print(quiz)
-    print('Aiken_Quiz:', Aiken_Quiz)
+
+    print('questions : \n', questions)
+    print('Quiz:', quiz)
+
     context = {
         'quiz': quiz,
         'questions': questions,
-        'Aiken_Quiz': Aiken_Quiz,
+        'times': times,
     }
     return render(request, 'campus/quiz_details.html', context)
 
 
 def submit_quiz(request, id):
+    email = request.session['email']
     quiz = get_object_or_404(Quiz, pk=id)
     print('Quiz ID: ', quiz)
     if request.method == 'POST':
         score = 0
+        quiz_name = quiz
+        time = request.POST.get('total_sec')
+        correct = 0
+        wrong = 0
+        percent = 0
+        total = 0
+        counter = 0
+
         for question in quiz.question_set.all():
             answer_id = request.POST.get(f'question_{question.id}')
             print('Answer ID :', answer_id)
+            total += 1
             if answer_id:
                 answer = get_object_or_404(Answer, pk=answer_id)
                 print('Answer :', answer)
                 if answer.is_correct:
-                    print('Correct/not :', answer.is_correct)
+                    print('Correct Answer :', answer.is_correct)
                     score += 1
                     print(score)
                 else:
-                    print('if not working')
-        return render(request, 'campus/quiz_results.html', {'score': score, 'quiz': quiz})
+                    wrong += 1
+                    print('Wrong Answer')
+        percent = (score / total) * 100
+        print('Total Mark : ', score)
+
+        r = Aiken_Result(email=email, score=score, quiz_name=quiz_name, time=time, correct=correct, wrong=wrong,
+                         percent=percent, total=total, counter=counter)
+        r.save()
+        print(r)
+        context = {
+            'quiz': quiz,
+            'email': email,
+            'score': score,
+            'quiz_name': quiz_name,
+            'time': time,
+            'correct': correct,
+            'wrong': wrong,
+            'percent': percent,
+            'total': total,
+            'counter': counter
+        }
+        return render(request, 'campus/quiz_results.html', context)
     return render(request, 'campus/quiz_list.html', {'quiz': quiz})
 
 
@@ -474,4 +510,4 @@ def performance_predict(correct, total, cgpa, time):
     print('Coefficient of determination (R^2): %.2f' % r2_score(y_test, y_pred))
     print('Accuracy : %.2f' % (r2_score(y_test, y_pred) * 100))
 
-    return (r2_score(y_test, y_pred) * 100)
+    return r2_score(y_test, y_pred) * 100

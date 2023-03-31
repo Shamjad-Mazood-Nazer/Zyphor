@@ -7,15 +7,19 @@ admin.site.register(StudentReg)
 # admin.site.register(Tpo)
 # admin.site.register(BTechStudentDetails)
 admin.site.register(MCAStudentDetails)
+
 admin.site.register(Drives)
 admin.site.register(ApplyDrive)
+
 admin.site.register(Payment)
+
 admin.site.register(QuesModel)
 admin.site.register(QuizResult)
+
 # admin.site.register(Question)
 # admin.site.register(Answer)
 # admin.site.register(Quiz)
-
+admin.site.register(Aiken_Result)
 
 class AdminAiken(admin.ModelAdmin):
     list_display = ['id', 'name', 'uploaded_on', 'file', 'start_date', 'end_date', 'time']

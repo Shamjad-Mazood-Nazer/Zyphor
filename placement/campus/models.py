@@ -98,7 +98,7 @@ class MCAStudentDetails(models.Model):
     languagesKnown = models.CharField(max_length=500)
 
     def __str__(self):
-        return "%s" % self.admino
+        return "%s" % self.user
 
     class Meta:
         verbose_name_plural = 'STUDENT DETAILS'
@@ -307,7 +307,8 @@ class Answer(models.Model):
 
 
 class Aiken_Result(models.Model):
-    user = models.ForeignKey(StudentReg, on_delete=models.CASCADE, verbose_name='Student')
+    # user = models.ForeignKey(StudentReg, on_delete=models.CASCADE, verbose_name='Student')
+    email = models.EmailField(max_length=100, verbose_name='student email')
     score = models.CharField(max_length=3, default=0, verbose_name='Score')
     quiz_name = models.CharField(max_length=255, verbose_name='Name of Quiz')
     time = models.CharField(max_length=4, default=0, verbose_name='Time')
@@ -316,10 +317,10 @@ class Aiken_Result(models.Model):
     percent = models.CharField(max_length=3, default=0, verbose_name='Percent')
     total = models.CharField(verbose_name='total questions', max_length=3, default=0)
     quiz_taken_on = models.DateTimeField(auto_now_add=True, verbose_name='Date & Time')
-    counter = models.IntegerField(verbose_name='counter')
+    counter = models.IntegerField(verbose_name='counter', default=0)
 
     def __str__(self):
-        return self.user.first_name
+        return self.email
 
     class Meta:
         verbose_name_plural = 'Answers'
