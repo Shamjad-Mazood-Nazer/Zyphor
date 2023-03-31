@@ -403,7 +403,11 @@ def quiz_list(request):
     aiken_quiz = AikenQuizFormat.objects.all()
     quizzes = Quiz.objects.all()
     Aiken_Quiz = AikenFile.objects.all()
-
+    context = {
+        'aiken_quiz': aiken_quiz,
+        'quizzes': quizzes,
+        'Aiken_Quiz': Aiken_Quiz,
+    }
     print(quizzes)
     # print(aiken_quiz)
 
@@ -412,7 +416,7 @@ def quiz_list(request):
             "<script>alert('Nothing is Scheduled by the TPO!'); window.location='quiz_mode'; </script>"
         )
     else:
-        return render(request, 'campus/quiz_list.html', {'quizzes': quizzes})
+        return render(request, 'campus/quiz_list.html', context)
 
 
 def quiz_detail(request, id):
