@@ -19,7 +19,7 @@
     </nav>
     <div id="modal" class="modal">
       <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close">&times; close<hr></span>
         <p> 1. Read the instructions carefully: Before starting the aptitude quiz, read all the instructions and guidelines provided. Make sure you understand the rules of the quiz and how it will be graded.</p>
         <p> 2. Manage your time wisely: Aptitude quizzes usually have a time limit, so it is important to manage your time wisely. Try to answer all the questions within the allotted time, but also make sure to allocate enough time for more difficult questions.</p>
         <p> 3. Focus on accuracy: Aptitude quizzes are designed to test your problem-solving abilities and critical thinking skills. Therefore, it is important to focus on accuracy rather than speed. Take your time to read each question carefully and ensure that you understand what is being asked before answering.</p>
@@ -101,6 +101,28 @@
         t += 1;
         inputtag.value = t;
     }, 1000);
+
+    var modal = document.getElementById("modal");
+    var btn = document.getElementById("open-modal");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    window.onload = function() {
+      modal.style.display = "block";
+    }
 </script>
 
 <style>
@@ -158,28 +180,3 @@
     }
 
 </style>
-
-
-<script>
-    var modal = document.getElementById("modal");
-    var btn = document.getElementById("open-modal");
-    var span = document.getElementsByClassName("close")[0];
-
-    btn.onclick = function() {
-      modal.style.display = "block";
-    }
-
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
-
-    window.onload = function() {
-      modal.style.display = "block";
-    }
-</script>

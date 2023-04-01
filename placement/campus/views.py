@@ -419,8 +419,17 @@ def quiz_list(request):
 
 def quiz_detail(request, id):
     # question = AikenQuizFormat.objects.filter(id=id)
+    attempts = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
+    print('attempts: ',attempts)
+
+    # attempt_counter = Aiken_Result.objects.filter(id=id).values('counter').get()['counter']
+    # print(attempt_counter)
+
+    # if attempt_counter < attempts:
     data = AikenFile.objects.get(id=id)
+    print(data)
     print(id)
+
     times = AikenFile.objects.filter(id=id).values('time').get()['time']
     print(times)
     quiz = Quiz.objects.get(id=id)
@@ -435,13 +444,22 @@ def quiz_detail(request, id):
         'times': times,
     }
     return render(request, 'campus/quiz_details.html', context)
+    # else:
+    #     return HttpResponse(
+    #         "<script>alert('You have already completed all of your attempts!'); window.location='/quiz_list'; </script>"
+    #     )
 
 
 def submit_quiz(request, id):
     email = request.session['email']
     quiz = get_object_or_404(Quiz, pk=id)
+    quiz_name=AikenFile.objects.filter(id=id).values('id').get()['id']
+    print('quiz_name: ', quiz_name)
+    counter = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
+    print('counter: ', counter)
     print('Quiz ID: ', quiz)
     if request.method == 'POST':
+        quiz_id = id
         score = 0
         quiz_name = quiz
         time = request.POST.get('total_sec')
@@ -449,7 +467,6 @@ def submit_quiz(request, id):
         wrong = 0
         percent = 0
         total = 0
-        counter = 0
 
         for question in quiz.question_set.all():
             answer_id = request.POST.get(f'question_{question.id}')
@@ -459,6 +476,7 @@ def submit_quiz(request, id):
                 answer = get_object_or_404(Answer, pk=answer_id)
                 print('Answer :', answer)
                 if answer.is_correct:
+                    correct += 1
                     print('Correct Answer :', answer.is_correct)
                     score += 1
                     print(score)
@@ -467,12 +485,14 @@ def submit_quiz(request, id):
                     print('Wrong Answer')
         percent = (score / total) * 100
         print('Total Mark : ', score)
-
-        r = Aiken_Result(email=email, score=score, quiz_name=quiz_name, time=time, correct=correct, wrong=wrong,
+        counter += 1
+        print('counter: ', counter)
+        r = Aiken_Result(quiz_id=quiz_name, email=email, score=score, quiz_name=quiz_name, time=time, correct=correct, wrong=wrong,
                          percent=percent, total=total, counter=counter)
         r.save()
         print(r)
         context = {
+            'quiz_id': id,
             'quiz': quiz,
             'email': email,
             'score': score,

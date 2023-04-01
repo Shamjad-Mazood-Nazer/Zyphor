@@ -308,6 +308,7 @@ class Answer(models.Model):
 
 class Aiken_Result(models.Model):
     # user = models.ForeignKey(StudentReg, on_delete=models.CASCADE, verbose_name='Student')
+    quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     email = models.EmailField(max_length=100, verbose_name='student email')
     score = models.CharField(max_length=3, default=0, verbose_name='Score')
     quiz_name = models.CharField(max_length=255, verbose_name='Name of Quiz')
