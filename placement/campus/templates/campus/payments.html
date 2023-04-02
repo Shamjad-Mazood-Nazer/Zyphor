@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+{% extends 'campus/dashboard_base.html' %}
 {% load static %}
+{% block content %}
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
@@ -8,17 +10,6 @@
 	<title>Placement Payment</title>
 	<link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
 	<style>
-
-	* {
-		box-sizing: border-box;
-		padding: 0px;
-		margin: 0px;
-		font-family: cursive;
-	}
-	html,
-	body {
-		height: 100%;
-	}
 	body {
 		background-color: #f1f5f8;
 		display: flex;
@@ -26,12 +17,17 @@
 		align-items: center;
 	}
 	.card {
-		background-color: white;
+		position: absolute;
+		height: 250px;
+		top: 100px;
+		left: 50%;
+		transform: translate(-50%, -50%);		background-color: white;
 		padding: 25px;
 		border: 1px solid #bbbbbb;
 		border-radius: 5px;
 		box-shadow: 1px 1px 10px 0px rgb(0 0 0 / 25%);
 	}
+
 	.title {
 		text-align: center;
 		letter-spacing: 1px;
@@ -65,15 +61,15 @@
 
 <body>
 	<div class="card">
-	<h1 class="title">Complete your Fee Payment</h1>
-	<small class="muted">You have to pay ₹5000 /-</small>
-	<div class="btn_container">
-		<!-- Payment Button -->
-		<button class="btn" id="btn_pay">Ready to Pay</button>
-		<a href="{% url 'campus:student' %}">
-			<button class="btn button5">Cancel!</button>
-		</a>
-	</div>
+		<h1 class="title">Complete your Fee Payment</h1>
+		<small class="muted">You have to pay ₹5000 /- for unlocking your account</small>
+		<div class="btn_container">
+			<!-- Payment Button -->
+			<button class="btn" id="btn_pay">Ready to Pay</button>
+			<a href="{% url 'campus:student' %}">
+				<button class="btn button5">Cancel!</button>
+			</a>
+		</div>
 	</div>
 </body>
 
@@ -119,3 +115,4 @@
     }
 
 </style>
+{% endblock %}

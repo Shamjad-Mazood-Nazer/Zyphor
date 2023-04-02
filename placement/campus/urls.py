@@ -28,6 +28,7 @@ urlpatterns = [
 
     path('payment', views.payment, name='payment'),
     path('thanks', views.thanks, name='thanks'),
+    path('receipt/', views.generate_receipt, name='generate_receipt'),
 
     path('quiz', views.quiz, name='quiz'),
     path('quiz_mode', views.quiz_mode, name='quiz_mode'),

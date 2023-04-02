@@ -31,7 +31,12 @@ from placement.settings import EMAIL_HOST_USER
 
 from notifications.signals import notify
 
-from easy_pdf.views import PDFTemplateView
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table
+from reportlab.lib.styles import getSampleStyleSheet
+from django.template.loader import get_template
+from django.template import Context
 
 from .aiken import Aiken
 
@@ -315,10 +320,11 @@ def payment(request):
             'session_id': session.id,
             'stripe_public_key': settings.STRIPE_PUBLIC_KEY
         }
+        print(context)
     return render(request, 'campus/payments.html', context)
 
 
-@user_login_required
+# @user_login_required
 def thanks(request):
     email = request.session['email']
     status = 'paid'
@@ -328,20 +334,52 @@ def thanks(request):
         r.save()
         print(r)
     else:
-        return HttpResponse("<script>alert('You just Paid your fee!');window.location='/student';</script>")
+        return HttpResponse("<script>alert('You just Paid your fee!');window.location='/payment';</script>")
 
-    return render(request, 'campus/studentDashboard.html')
+    return render(request, 'campus/thanks.html')
 
 
-class PaymentReceiptView(PDFTemplateView):
-    template_name = "receipt.html"
+def generate_receipt(request):
+    # Get the payment information from the request or database
+    email = request.session['email']
+    first_name = StudentReg.objects.filter(email=email).values('first_name').get()['first_name']
+    last_name = StudentReg.objects.filter(email=email).values('last_name').get()['last_name']
+    payment_amount = 5000
+    fetch_date = Payment.objects.filter(email=email).values('payment_on').get()['payment_on']
+    payment_date = fetch_date.date()
+    payment_method = 'Credit card'
+    customer_name = first_name+' '+last_name
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Add context data to the template
-        context["payment_amount"] = 100.00
-        context["payment_date"] = "April 2, 2023"
-        return context
+    # Create a PDF document using ReportLab
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="payment_receipt.pdf"'
+
+    doc = SimpleDocTemplate(response, pagesize=A4)
+    styles = getSampleStyleSheet()
+
+    # Define the elements for the PDF document
+    elements = []
+    elements.append(Paragraph('Zyphor - Payment Receipt', styles['Heading1']))
+    elements.append(Spacer(1, 0.2 * inch))
+
+    # Add the payment information to the PDF document
+    table_data = [
+        ['Recipient Name:', customer_name],
+        ['Payment Amount:', payment_amount],
+        ['Payment Date:', payment_date],
+        ['Payment Method:', payment_method],
+    ]
+    table_style = [('ALIGN', (0, 0), (-1, -1), 'LEFT')]
+    elements.append(Table(table_data, style=table_style))
+
+    # Add a thank you message to the PDF document
+    elements.append(Spacer(1, 0.5 * inch))
+    elements.append(Paragraph('Thank you for your payment!', styles['Normal']))
+
+    # Build the PDF document from the elements
+    doc.build(elements)
+
+    return response
 
 
 def quiz(request):
