@@ -31,6 +31,8 @@ from placement.settings import EMAIL_HOST_USER
 
 from notifications.signals import notify
 
+from easy_pdf.views import PDFTemplateView
+
 from .aiken import Aiken
 
 """imports for Machine Learning Algorithms"""
@@ -331,6 +333,17 @@ def thanks(request):
     return render(request, 'campus/studentDashboard.html')
 
 
+class PaymentReceiptView(PDFTemplateView):
+    template_name = "receipt.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add context data to the template
+        context["payment_amount"] = 100.00
+        context["payment_date"] = "April 2, 2023"
+        return context
+
+
 def quiz(request):
     email = request.session['email']
     if Payment.objects.filter(email=email).exists():
@@ -431,7 +444,7 @@ def quiz_list(request):
 def quiz_detail(request, id):
     # question = AikenQuizFormat.objects.filter(id=id)
     attempts = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
-    print('attempts: ',attempts)
+    print('attempts: ', attempts)
 
     # attempt_counter = Aiken_Result.objects.filter(id=id).values('counter').get()['counter']
     # print(attempt_counter)
@@ -464,7 +477,7 @@ def quiz_detail(request, id):
 def submit_quiz(request, id):
     email = request.session['email']
     quiz = get_object_or_404(Quiz, pk=id)
-    quiz_name=AikenFile.objects.filter(id=id).values('id').get()['id']
+    quiz_name = AikenFile.objects.filter(id=id).values('id').get()['id']
     print('quiz_name: ', quiz_name)
     counter = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
     print('counter: ', counter)
@@ -498,7 +511,8 @@ def submit_quiz(request, id):
         print('Total Mark : ', score)
         counter += 1
         print('counter: ', counter)
-        r = Aiken_Result(quiz_id=quiz_name, email=email, score=score, quiz_name=quiz_name, time=time, correct=correct, wrong=wrong,
+        r = Aiken_Result(quiz_id=quiz_name, email=email, score=score, quiz_name=quiz_name, time=time, correct=correct,
+                         wrong=wrong,
                          percent=percent, total=total, counter=counter)
         r.save()
         print(r)
