@@ -14,7 +14,7 @@
   </head>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
 <body>
-        <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
+        <div id="top-nav" class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -69,7 +69,7 @@
 
         <!-- Main -->
 
-        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12" style="margin-top: 60px">
 
             <ul class="nav nav-pills nav-stacked" style="border-right:1px solid black">
                 <!--<li class="nav-header"></li>-->
@@ -86,8 +86,8 @@
         <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
             <!-- Right -->
 
-            <a href="{% url 'campus:student' %}"><strong> My Dashboard </strong></a>/
-            <a href="{% url 'campus:viewDrive' %}"><strong></span> Drives </strong></a>/
+            <a href="{% url 'campus:student' %}"><strong><span class="fa fa-dashboard"></span> My Dashboard </strong></a>/
+            <a href="{% url 'campus:viewDrive' %}"><strong><i class="fa fa-folder"></i> Drives </strong></a>/
             <hr>
             <marquee>
                 <h3 align="center" style="color: red;">Latest Update on Drives</h3>

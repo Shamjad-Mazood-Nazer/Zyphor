@@ -286,9 +286,14 @@ def registerDrive(request):
 @user_login_required
 def payment(request):
     email = request.session['email']
+    user = get_user(request)
+    myData = StudentReg.objects.filter(admino=user.admino)
     if Payment.objects.filter(email=email).exists():
         info = Payment.objects.filter(email=email).values('payment_on').get()['payment_on']
-        context = {'info': info}
+        context = {
+            'info': info,
+            'myData': myData,
+        }
         print(info)
         return render(request, 'campus/payment_done.html', context)
         # return HttpResponse("<script>alert('Already Paid!');window.location='/';</script>")
@@ -395,8 +400,14 @@ def quiz(request):
 
 def quiz_mode(request):
     email = request.session['email']
+    user = get_user(request)
+    myData = StudentReg.objects.filter(admino=user.admino)
+    context = {
+        'user': user,
+        'myData': myData,
+    }
     if Payment.objects.filter(email=email).exists():
-        return render(request, 'campus/quiz_mode.html')
+        return render(request, 'campus/quiz_mode.html', context)
     else:
         return render(request, 'campus/payments.html', )
 

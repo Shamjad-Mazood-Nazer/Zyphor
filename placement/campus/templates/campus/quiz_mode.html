@@ -1,29 +1,104 @@
 <!DOCTYPE html>
-{% extends 'campus/dependencies.html' %}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quiz Mode</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Work+Sans:300,400,700" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
-    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
-    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/mediaelementplayer.min.css" >
-    <link rel="stylesheet" href="{% static 'fonts/flaticon/font/flaticon.css' %}" >
-    <link rel="stylesheet" href="{% static 'css/aos.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
 {% block content %}
+
+<html lang="en">
+  <head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <!------ Include the above in your HEAD tag ---------->
+    <title>Zyphor-Student</title>
+      <link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
+      <link rel="stylesheet" href="{% static '/css/studentDashStyle.css' %}">
+<!--      <script src="{% static '/js/logoutScript.js' %}"></script>-->
+  </head>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+<body>
+    <div id="top-nav" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'campus:student' %}">Dashboard</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                            <i class="fa fa-bell"></i> Notifications
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <p style="text-align: center;">No new notifications from your TPO</p>
+                            </li>
+                            {% for notification in  user.notifications.unread %}
+                            <div>
+                                Message from <b>{{ notification.actor }}</b>
+                                <button class="dropdown-item" type="button">Hello{{ notification.description }}</button>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user-circle"></i> Hi, {{user.first_name}} !
+                            <span class="caret"></span>
+                        </a>
+                        <ul id="g-account-menu" class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-user-secret"></i> My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'campus:update_password' %}">
+                                    <i class="fa fa-key"></i> Change Password
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'campus:logout' %}">
+                                    <i class="fa fa-sign-out"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+            <!-- /container -->
+        </div>
+
+        <!-- /Header -->
+
+        <!-- Main -->
+
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12" style="margin-top: 60px">
+
+            <ul class="nav nav-pills nav-stacked" style="border-right:1px solid black">
+                <!--<li class="nav-header"></li>-->
+                <li><a href="{% url 'campus:student' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                <li><a href="{% url 'campus:updateStudentDetails'  %}"><i class="fa fa-database"></i> Update Details</a></li>
+<!--                <li><a href="#"><i class="fa fa-history"></i> My history / Drives</a></li>-->
+<!--                <li><a href=""><i class="fa fa-lock"></i> Change Password</a></li>-->
+                <li><a href="{% url 'campus:viewDrive' %}"><i class="fa fa-folder"></i> Drives</a></li>
+                <li><a href="{% url 'campus:payment' %}"><i class="fa fa-money"></i> One Time Payment</a></li>
+                <li><a href="{% url 'campus:quiz_mode' %}"><i class="fa fa-question"></i> Quiz</a></li>
+
+            </ul>
+        </div><!-- /span-3 -->
+        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+            <!-- Right -->
+
+            <a href="{% url 'campus:student' %}"><strong><span class="fa fa-dashboard"></span> My Dashboard / </strong></a>
+            <a href="{% url 'campus:student' %}"><strong><span class="fa fa-question"></span> Quiz / </strong></a>
+            <hr>
+
 <div class="row">
   <div class="col-sm-5">
     <div class="card" style="top: 50px; left: 20px;">
@@ -48,3 +123,11 @@
 {% endblock %}
 </body>
 </html>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
