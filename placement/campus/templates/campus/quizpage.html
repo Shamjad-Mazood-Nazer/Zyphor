@@ -58,10 +58,10 @@
             </label>
         </div>
 
-<!--        <button onclick="myFunction()">Show Ans</button>-->
-<!--        <div id="answer">-->
-<!--            -->
-<!--        </div>-->
+        <button onclick="myFunction()">Show Ans</button>
+        <div id="answer">
+            {{ q.explanation }}
+        </div>
 
         <br>
     </div>
@@ -88,15 +88,10 @@
             }, 1000);
 
 
-            function myFunction() {
-              var x = document.getElementById("myDIV");
-              if (x.style.display === "none") {
-                x.style.display = "block";
-              } else {
-                x.style.display = "none";
-              }
+            function myFunction(qId) {
+                const answerDiv = document.getElementById(`answer-${qId}`);
+                answerDiv.style.display = answerDiv.style.display === "none" ? "block" : "none";
             }
-
         </script>
     {% endblock script %}
 

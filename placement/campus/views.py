@@ -33,7 +33,8 @@ from notifications.signals import notify
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from django.template.loader import get_template
 from django.template import Context
@@ -131,20 +132,30 @@ def update_password(request):
 
 
 def password_changed(request):
-    form = PasswordChangeForm()
+    # form = PasswordChangeForm()
     email = request.session['email']
-    uemail = request.POST.get['email']
+    print(email)
     if request.method == 'POST':
-        if form.is_valid():
-            if email == uemail:
-                password = request.POST.get['password']
-                print(password)
-                return render(request, 'campus/adminDashboard.html')
-            else:
-                return HttpResponse(
-                    "<script>alert('oops! Registered email and entered email does not match! Try again');window.location='/';</script>")
+        uemail = request.POST['email']
+        if email == uemail:
+            student = StudentReg.objects.filter(email=uemail)
+            print(student)
+            password = request.POST['password']
+            print(password)
+            admino = StudentReg.objects.filter(email=email).values('admino').get()['admino']
+            first_name = StudentReg.objects.filter(email=email).values('first_name').get()['first_name']
+            last_name = StudentReg.objects.filter(email=email).values('last_name').get()['last_name']
+            r = StudentReg(admino=admino, first_name=first_name, last_name=last_name, email=email, password=password)
+            r.save()
+            print(r)
+            message = "Your password is now changed successfully!"
+            return render(request, 'campus/studentDashboard.html', {'message': message})
         else:
-            messages.error(request, 'Please correct the error below.')
+            return HttpResponse(
+                "<script>alert('oops! Registered email and entered email does not match! Try again');window.location='/';</script>")
+    else:
+        print('not post')
+        messages.error(request, 'Please correct the error below.')
 
 
 def tpoLogin(request):
@@ -364,12 +375,22 @@ def generate_receipt(request):
 
     # Add the payment information to the PDF document
     table_data = [
+        ['Bill'],
         ['Recipient Name:', customer_name],
         ['Payment Amount:', payment_amount],
         ['Payment Date:', payment_date],
         ['Payment Method:', payment_method],
     ]
-    table_style = [('ALIGN', (0, 0), (-1, -1), 'LEFT')]
+    table_style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 14),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ])
     elements.append(Table(table_data, style=table_style))
 
     # Add a thank you message to the PDF document
