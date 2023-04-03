@@ -262,7 +262,8 @@ class AikenFile(models.Model):
     time = models.CharField(max_length=10, default='10', verbose_name='Time(Minutes)')
     start_date = models.DateField(verbose_name='Start Date')
     end_date = models.DateField(verbose_name='End Date')
-    attempts = models.IntegerField(verbose_name='Count of Attempts', default=1)
+
+    # attempts = models.IntegerField(verbose_name='Count of Attempts', default=1)
 
     def __str__(self):
         return self.name
@@ -325,3 +326,9 @@ class Aiken_Result(models.Model):
 
     class Meta:
         verbose_name_plural = 'Answers'
+
+
+class Quiz_Counter(models.Model):
+    email = models.ForeignKey(StudentReg, verbose_name='email', on_delete=models.CASCADE)
+    quiz_id = models.ForeignKey(Quiz, verbose_name='quiz id', on_delete=models.CASCADE)
+    counter = models.IntegerField(default=1, verbose_name='counter')

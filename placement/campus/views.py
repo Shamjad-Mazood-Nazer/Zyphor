@@ -502,35 +502,35 @@ def quiz_list(request):
 
 def quiz_detail(request, id):
     # question = AikenQuizFormat.objects.filter(id=id)
-    attempts = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
-    print('attempts: ', attempts)
+    # attempts = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
+    # print('attempts: ', attempts)
 
-    # attempt_counter = Aiken_Result.objects.filter(id=id).values('counter').get()['counter']
-    # print(attempt_counter)
+    attempt_counter = Aiken_Result.objects.filter(id=id).values('counter').get()['counter']
+    print(attempt_counter)
 
-    # if attempt_counter < attempts:
-    data = AikenFile.objects.get(id=id)
-    print(data)
-    print(id)
+    if attempt_counter == 0:
+        data = AikenFile.objects.get(id=id)
+        print(data)
+        print(id)
 
-    times = AikenFile.objects.filter(id=id).values('time').get()['time']
-    print(times)
-    quiz = Quiz.objects.get(id=id)
-    questions = quiz.question_set.all()
+        times = AikenFile.objects.filter(id=id).values('time').get()['time']
+        print(times)
+        quiz = Quiz.objects.get(id=id)
+        questions = quiz.question_set.all()
 
-    print('questions : \n', questions)
-    print('Quiz:', quiz)
+        print('questions : \n', questions)
+        print('Quiz:', quiz)
 
-    context = {
-        'quiz': quiz,
-        'questions': questions,
-        'times': times,
-    }
-    return render(request, 'campus/quiz_details.html', context)
-    # else:
-    #     return HttpResponse(
-    #         "<script>alert('You have already completed all of your attempts!'); window.location='/quiz_list'; </script>"
-    #     )
+        context = {
+            'quiz': quiz,
+            'questions': questions,
+            'times': times,
+        }
+        return render(request, 'campus/quiz_details.html', context)
+    else:
+        return HttpResponse(
+            "<script>alert('You have already attended this Quiz'); window.location='/quiz_list'; </script>"
+        )
 
 
 def submit_quiz(request, id):
@@ -568,7 +568,7 @@ def submit_quiz(request, id):
                     print('Wrong Answer')
         percent = (score / total) * 100
         print('Total Mark : ', score)
-        counter += 1
+        counter = 1
         print('counter: ', counter)
         r = Aiken_Result(quiz_id=quiz_name, email=email, score=score, quiz_name=quiz_name, time=time, correct=correct,
                          wrong=wrong,
@@ -586,7 +586,6 @@ def submit_quiz(request, id):
             'wrong': wrong,
             'percent': percent,
             'total': total,
-            'counter': counter
         }
         return render(request, 'campus/quiz_results.html', context)
     return render(request, 'campus/quiz_list.html', {'quiz': quiz})

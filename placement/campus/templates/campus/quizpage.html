@@ -57,13 +57,15 @@
                 {{q.op4}}
             </label>
         </div>
-
-        <button onclick="myFunction()">Show Ans</button>
-        <div id="answer">
-            {{ q.explanation }}
-        </div>
-
         <br>
+
+        <button onclick="myFunction('{{ q.id }}')">Show Ans</button>
+<div id="answer-{{ q.id }}" style="display: none; border: 1px solid black; height: 200px; margin-top: 10px;">
+    {{ q.explanation }}
+</div>
+
+
+        <br><br>
     </div>
     {% endfor %}
     <input id='timer' type='hidden' name="timer" value="">
@@ -88,10 +90,14 @@
             }, 1000);
 
 
-            function myFunction(qId) {
-                const answerDiv = document.getElementById(`answer-${qId}`);
-                answerDiv.style.display = answerDiv.style.display === "none" ? "block" : "none";
-            }
+function myFunction(qId) {
+    const answerDiv = document.getElementById(`answer-${qId}`);
+    if (answerDiv.style.display === "none") {
+        answerDiv.style.display = "block";
+    } else {
+        answerDiv.style.display = "none";
+    }
+}
         </script>
     {% endblock script %}
 
