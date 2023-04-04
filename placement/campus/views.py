@@ -200,7 +200,7 @@ def home(request):
         user = get_user(request)
         return render(request, 'campus/studentDashboard.html', {'user': user})
     else:
-        return render(request, 'campus/login.html')
+        return render(request, 'campus/index.html')
 
 
 @user_login_required
