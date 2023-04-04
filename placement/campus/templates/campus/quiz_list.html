@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% extends 'campus/dependencies.html' %}
+{% extends 'campus/dashboard_base.html' %}
 {% load static %}
 <html lang="en">
 <head>
@@ -24,18 +24,27 @@
 
 {% block content %}
 
-    <div class="card" style="width: 80rem; top: 20px; left: 20px">
+    <div class="card" style="width: 40rem; margin-top: 90px; margin-left: 280px; border-radius: 5px; border: 1px solid #00000044; box-shadow: 1px 2px 20px 5px #00000020">
         <div class="card-header">
             <h1>Quiz List</h1>
         </div>
         <ul class="list-group list-group-flush">
-            {% for quiz in quizzes %}
-                <li class="list-group-item"> Name of Quiz :
-                    <a href="{% url 'campus:quiz_detail' quiz.id %}">{{ quiz.title }}</a>
+            {% for quiz in quiz_details %}
+                <li class="list-group-item">
+                    Quiz {{ forloop.counter }}
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"> Name of Quiz :
+                            <a href="{% url 'campus:quiz_detail' quiz.id %}">{{ quiz.name }}</a>
+                        </li>
+                        <li class="list-group-item"> Duration : {{ quiz.time }} minutes</li>
+                        <li class="list-group-item"> Start Date : {{ quiz.start_date }} </li>
+                        <li class="list-group-item"> End Date : {{ quiz.end_date }} </li>
+                    </ul>
                 </li>
             {% endfor %}
         </ul>
     </div>
+
 {% endblock %}
 
 </body>

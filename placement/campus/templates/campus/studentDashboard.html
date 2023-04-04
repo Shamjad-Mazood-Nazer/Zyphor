@@ -20,7 +20,7 @@
             <a href="{% url 'campus:student' %}"><strong><span class="fa fa-dashboard"></span> My Dashboard</strong></a>
             <hr>
 <!--            <div class="container p-3 my-3 bg-dark text-white">-->
-            <div class="card">
+            <div class="card" style="width: auto; height: auto;">
                 <h2><u>Account Info</u></h2><br>
                 <table>
                     <tr>
@@ -93,26 +93,26 @@
                         <th style="text-align: center;">Correct</th>
                         <th style="text-align: center;">Wrong</th>
                         <th style="text-align: center;">No. Questions</th>
-                        <th style="text-align: center;">Time</th>
                     </tr>
                     {% if aiken_result %}
                         {% for result in aiken_result %}
                             <tr>
                                 <td style="text-align: center;">{{ forloop.counter }}</td>
                                 <td style="text-align: center;">{{ result.quiz_name }}</td>
+                                <td style="text-align: center;">{{ result.quiz_taken_on }}</td>
                                 <td style="text-align: center;">{{ result.correct }}</td>
                                 <td style="text-align: center;">{{ result.wrong }}</td>
                                 <td style="text-align: center;">{{ result.total }}</td>
-                                <td style="text-align: center;">{{ result.quiz_taken_on }}</td>
+
                             </tr>
                         {% empty %}
                             <tr>
-                                <td colspan="7" style="text-align: center;">No record</td>
+                                <td colspan="6" style="text-align: center;">No record</td>
                             </tr>
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="7" style="text-align: center;">No record</td>
+                            <td colspan="6" style="text-align: center;">No record</td>
                         </tr>
                     {% endif %}
                 </table>

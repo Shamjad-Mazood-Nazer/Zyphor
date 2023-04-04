@@ -59,9 +59,9 @@
         </div>
         <br>
 
-        <button onclick="myFunction('{{ q.id }}')">Show Ans</button>
-<div id="answer-{{ q.id }}" style="display: none; border: 1px solid black; height: 200px; margin-top: 10px;">
-    {{ q.explanation }}
+        <button type="button" onclick="myFunction('{{ q.id }}')">Show Ans</button>
+<div id="answer-{{ q.id }}" style="display: none; border: 1px solid black; margin-top: 10px;">
+    {{ q.explanation|safe }}
 </div>
 
 

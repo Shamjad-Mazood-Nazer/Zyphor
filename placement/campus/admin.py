@@ -21,8 +21,9 @@ admin.site.register(QuizResult)
 # admin.site.register(Quiz)
 admin.site.register(Aiken_Result)
 
+
 class AdminAiken(admin.ModelAdmin):
-    list_display = ['id', 'name', 'uploaded_on', 'file', 'start_date', 'end_date', 'time']
+    list_display = ['name', 'uploaded_on', 'file', 'start_date', 'end_date', 'time']
     ordering = ['id']
 
 
@@ -88,4 +89,3 @@ class AikenFileAdmin(admin.ModelAdmin):
 
             if len(answers) == 4:
                 Answer.objects.bulk_create(answers)
-

@@ -101,7 +101,7 @@ class MCAStudentDetails(models.Model):
         return "%s" % self.user
 
     class Meta:
-        verbose_name_plural = 'STUDENT DETAILS'
+        verbose_name_plural = 'Student Details'
 
 
 class BTechStudentDetails(models.Model):
@@ -325,10 +325,17 @@ class Aiken_Result(models.Model):
         return self.email
 
     class Meta:
-        verbose_name_plural = 'Answers'
+        verbose_name_plural = 'Aiken Quiz Result'
 
 
 class Quiz_Counter(models.Model):
-    email = models.ForeignKey(StudentReg, verbose_name='email', on_delete=models.CASCADE)
+    email = models.EmailField(max_length=255, verbose_name='email')
     quiz_id = models.ForeignKey(Quiz, verbose_name='quiz id', on_delete=models.CASCADE)
     counter = models.IntegerField(default=1, verbose_name='counter')
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        verbose_name_plural = 'Quiz Counter'
+

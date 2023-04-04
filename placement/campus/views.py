@@ -17,6 +17,7 @@ from django.contrib import messages
 from django.contrib import auth
 from django.contrib.auth import authenticate, get_user_model
 from django.core.mail import EmailMultiAlternatives
+from datetime import *
 
 from django.conf import settings
 from django.urls import reverse
@@ -145,8 +146,8 @@ def password_changed(request):
             admino = StudentReg.objects.filter(email=email).values('admino').get()['admino']
             first_name = StudentReg.objects.filter(email=email).values('first_name').get()['first_name']
             last_name = StudentReg.objects.filter(email=email).values('last_name').get()['last_name']
-            r = StudentReg(admino=admino, first_name=first_name, last_name=last_name, email=email, password=password)
-            r.save()
+            r = StudentReg(password=password)
+            r.update()
             print(r)
             message = "Your password is now changed successfully!"
             return render(request, 'campus/studentDashboard.html', {'message': message})
@@ -209,6 +210,7 @@ def studentDash(request):
     myData = StudentReg.objects.filter(admino=user.admino)
     quiz_result = QuizResult.objects.filter(email=email)
     aiken_result = Aiken_Result.objects.filter(email=email)
+    print(aiken_result)
     # print(myData)
     context = {
         'user': user,
@@ -359,7 +361,7 @@ def generate_receipt(request):
     fetch_date = Payment.objects.filter(email=email).values('payment_on').get()['payment_on']
     payment_date = fetch_date.date()
     payment_method = 'Credit card'
-    customer_name = first_name+' '+last_name
+    customer_name = first_name + ' ' + last_name
 
     # Create a PDF document using ReportLab
     response = HttpResponse(content_type='application/pdf')
@@ -486,8 +488,10 @@ def quiz_mode(request):
 
 def quiz_list(request):
     quizzes = Quiz.objects.all()
+    quiz_details = AikenFile.objects.all()
     context = {
         'quizzes': quizzes,
+        'quiz_details': quiz_details,
     }
     print(quizzes)
     # print(aiken_quiz)
@@ -500,36 +504,77 @@ def quiz_list(request):
         return render(request, 'campus/quiz_list.html', context)
 
 
+# def quiz_detail(request, id):
+#     # question = AikenQuizFormat.objects.filter(id=id)
+#     # attempts = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
+#     # print('attempts: ', attempts)
+#
+#     attempt_counter = Aiken_Result.objects.filter(id=id).values('counter').get()['counter']
+#     print(attempt_counter)
+#
+#     if not attempt_counter:
+#         data = AikenFile.objects.get(id=id)
+#         print(data)
+#         print(id)
+#
+#         times = AikenFile.objects.filter(id=id).values('time').get()['time']
+#         print(times)
+#         quiz = Quiz.objects.get(id=id)
+#         questions = quiz.question_set.all()
+#
+#         print('questions : \n', questions)
+#         print('Quiz:', quiz)
+#
+#         context = {
+#             'quiz': quiz,
+#             'questions': questions,
+#             'times': times,
+#         }
+#         return render(request, 'campus/quiz_details.html', context)
+#     else:
+#         return HttpResponse(
+#             "<script>alert('You have already attended this Quiz'); window.location='/quiz_list'; </script>"
+#         )
 def quiz_detail(request, id):
-    # question = AikenQuizFormat.objects.filter(id=id)
-    # attempts = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
-    # print('attempts: ', attempts)
+    email = request.session['email']
+    # Get the quiz and its questions from the AikenFile model
+    quiz = Quiz.objects.get(id=id)
+    questions = quiz.question_set.all()
+    times = AikenFile.objects.filter(id=id).values('time').get()['time']
+    start_date = AikenFile.objects.filter(id=id).values('start_date').get()['start_date']
+    end_date = AikenFile.objects.filter(id=id).values('end_date').get()['end_date']
 
-    attempt_counter = Aiken_Result.objects.filter(id=id).values('counter').get()['counter']
-    print(attempt_counter)
+    # Check if the quiz is still active
+    if datetime.today().date() > end_date:
+        return HttpResponse(
+            "<script>alert('Sorry, this quiz's time is already ended on {}!..'); window.location='/quiz_list'; </script>".format(
+                end_date.strftime('%d-%m-%Y'))
+        )
+    elif datetime.today().date() < start_date:
+        return HttpResponse(
+            "<script>alert('This quiz will only be opened on {}!..'); window.location='/quiz_list'; </script>".format(
+                start_date.strftime('%d-%m-%Y'))
+        )
 
-    if attempt_counter == 0:
-        data = AikenFile.objects.get(id=id)
-        print(data)
-        print(id)
+    # Get the attempt counter for this quiz and this user
+    attempt_counter = Aiken_Result.objects.filter(
+        quiz_id=id, email=email
+    ).values_list("counter", flat=True).first()
 
-        times = AikenFile.objects.filter(id=id).values('time').get()['time']
-        print(times)
-        quiz = Quiz.objects.get(id=id)
-        questions = quiz.question_set.all()
+    context = {
+        "quiz": quiz,
+        "questions": questions,
+        "times": times,
+    }
 
-        print('questions : \n', questions)
-        print('Quiz:', quiz)
+    if not attempt_counter:
+        # If the user has not attempted the quiz yet, render the quiz details
+        return render(request, "campus/quiz_details.html", context)
 
-        context = {
-            'quiz': quiz,
-            'questions': questions,
-            'times': times,
-        }
-        return render(request, 'campus/quiz_details.html', context)
+    # If the user has already attempted the quiz, show an alert message
     else:
         return HttpResponse(
-            "<script>alert('You have already attended this Quiz'); window.location='/quiz_list'; </script>"
+            "<script>alert('Already attended this quiz!..'); window.location='/quiz_list'; </script>"
         )
 
 
@@ -538,8 +583,8 @@ def submit_quiz(request, id):
     quiz = get_object_or_404(Quiz, pk=id)
     quiz_name = AikenFile.objects.filter(id=id).values('id').get()['id']
     print('quiz_name: ', quiz_name)
-    counter = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
-    print('counter: ', counter)
+    # counter = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
+    # print('counter: ', counter)
     print('Quiz ID: ', quiz)
     if request.method == 'POST':
         quiz_id = id

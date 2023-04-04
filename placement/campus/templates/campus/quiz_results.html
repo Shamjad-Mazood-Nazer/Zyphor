@@ -9,7 +9,8 @@
 {% block content %}
 <div class="container">
     <h2>Quiz Results</h2>
-    <p>Your score: {{ score }}/{{ quiz.question_set.count }}</p>
+    <p>Quiz Name : {{ quiz_name }}</p>
+    <p>Your score : {{ score }}/{{ quiz.question_set.count }}</p>
     <p><a href="{% url 'campus:home' %}">Back to Home</a></p>
 </div>
 {% endblock %}
