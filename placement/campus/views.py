@@ -352,6 +352,7 @@ def thanks(request):
     return render(request, 'campus/thanks.html')
 
 
+@user_login_required
 def generate_receipt(request):
     # Get the payment information from the request or database
     email = request.session['email']
@@ -472,6 +473,7 @@ def quiz(request):
         return render(request, 'campus/payments.html', )
 
 
+@user_login_required
 def quiz_mode(request):
     email = request.session['email']
     user = get_user(request)
@@ -486,6 +488,7 @@ def quiz_mode(request):
         return render(request, 'campus/payments.html', )
 
 
+@user_login_required
 def quiz_list(request):
     quizzes = Quiz.objects.all()
     quiz_details = AikenFile.objects.all()
@@ -535,7 +538,10 @@ def quiz_list(request):
 #         return HttpResponse(
 #             "<script>alert('You have already attended this Quiz'); window.location='/quiz_list'; </script>"
 #         )
+
+@user_login_required
 def quiz_detail(request, id):
+
     email = request.session['email']
     # Get the quiz and its questions from the AikenFile model
     quiz = Quiz.objects.get(id=id)
@@ -544,13 +550,18 @@ def quiz_detail(request, id):
     start_date = AikenFile.objects.filter(id=id).values('start_date').get()['start_date']
     end_date = AikenFile.objects.filter(id=id).values('end_date').get()['end_date']
 
+    # today = datetime.now(local_tz).date()
+
+    print(end_date,)
     # Check if the quiz is still active
-    if datetime.today().date() > end_date:
+    if datetime.now().date() > end_date:
+        print('if : ', datetime.today().date())
         return HttpResponse(
             "<script>alert('Sorry, this quiz's time is already ended on {}!..'); window.location='/quiz_list'; </script>".format(
                 end_date.strftime('%d-%m-%Y'))
         )
     elif datetime.today().date() < start_date:
+        print('else : ', datetime.today().date())
         return HttpResponse(
             "<script>alert('This quiz will only be opened on {}!..'); window.location='/quiz_list'; </script>".format(
                 start_date.strftime('%d-%m-%Y'))
@@ -577,7 +588,7 @@ def quiz_detail(request, id):
             "<script>alert('Already attended this quiz!..'); window.location='/quiz_list'; </script>"
         )
 
-
+@user_login_required
 def submit_quiz(request, id):
     email = request.session['email']
     quiz = get_object_or_404(Quiz, pk=id)
