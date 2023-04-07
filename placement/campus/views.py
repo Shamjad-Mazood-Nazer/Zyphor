@@ -541,7 +541,6 @@ def quiz_list(request):
 
 @user_login_required
 def quiz_detail(request, id):
-
     email = request.session['email']
     # Get the quiz and its questions from the AikenFile model
     quiz = Quiz.objects.get(id=id)
@@ -552,7 +551,7 @@ def quiz_detail(request, id):
 
     # today = datetime.now(local_tz).date()
 
-    print(end_date,)
+    print(end_date, )
     # Check if the quiz is still active
     if datetime.now().date() > end_date:
         print('if : ', datetime.today().date())
@@ -587,6 +586,7 @@ def quiz_detail(request, id):
         return HttpResponse(
             "<script>alert('Already attended this quiz!..'); window.location='/quiz_list'; </script>"
         )
+
 
 @user_login_required
 def submit_quiz(request, id):
@@ -670,3 +670,9 @@ def performance_predict(correct, total, cgpa, time):
     print('Accuracy : %.2f' % (r2_score(y_test, y_pred) * 100))
 
     return r2_score(y_test, y_pred) * 100
+
+
+def chat_to_admin(request):
+    email = request.session['email']
+    print(email)
+    return render(request, 'campus/chat.html')

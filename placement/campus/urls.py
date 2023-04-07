@@ -39,6 +39,8 @@ urlpatterns = [
 
     path('ajax_generate_code/', views.ajax_generate_code, name='ajax_generate_code'),
 
+    path('chat_to_admin', views.chat_to_admin, name='chat_to_admin'),
+
     path('reset_password/',
          auth_views.PasswordResetView.as_view(template_name='campus/password_reset.html'),
          name='reset_password'),
