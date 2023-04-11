@@ -1,13 +1,33 @@
-<!DOCTYPE html>
 {% extends 'campus/dashboard_base.html' %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Zyphor - Chat</title>
-</head>
-<body>
+{% load static %}
 {% block content %}
-<p style="margin-top: 100px; margin-left: 100px;">Test - Althaf ML</p>
+<link rel="stylesheet" href="{% static '/css/chat.css' %}">
+<!--<p style="margin-top: 100px; margin-left: 100px;">Test - Althaf ML</p>-->
+<div class="container">
+    <div class="chatbox">
+        <div class="col-1">
+            <div class="msg-row">
+                <div class="msg-text">
+                    <h2>Shamjad</h2>
+                    <p>Test Chat</p>
+                </div>
+                <img src="{% static '/img/placement.png' %}" class="msg-img">
+            </div>
+
+            <div class="msg-row msg-row2">
+                <img src="{% static '/img/gallery-img-01.jpg' %}" class="msg-img">
+                <div class="msg-text">
+                    <h2>Rony Tom</h2>
+                    <p>Response chat</p>
+                </div>
+            </div>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Enter your message here...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><i class="fa fa-paper-plane"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
-</body>
-</html>

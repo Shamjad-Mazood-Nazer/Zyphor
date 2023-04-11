@@ -653,8 +653,7 @@ def performance_predict(correct, total, cgpa, time):
     df = pd.read_csv('static/csv/Student.csv')
 
     # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(df.drop('output', axis=1), df['output'], test_size=0.2,
-                                                        random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(df.drop('output', axis=1), df['output'], test_size=0.2, random_state=0)
 
     # Create a Linear Regression model and fit it to the training data
     regressor = LinearRegression()
