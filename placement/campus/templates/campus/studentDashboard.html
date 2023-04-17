@@ -49,6 +49,19 @@
                     </tr>
                 </table>
             </div>
+
+            <div class="card" style="width: 350px; height: 350px; margin-top: 10px;">
+                <h3>Alerts:</h3>
+                <font size="5px" color="red">
+                    {% if message %}
+                        <div align="center"> {{ message }} </div>
+                        <div align="center"> <img src="{% static 'campus/animate/shield.gif' %}" width="50%"> </div>
+                    {% else %}
+                        <div align="center"> Hurray! Account looks fine. </div>
+                    {% endif %}
+                </font>
+            </div>
+
                 <br><br>
                 <div class="card" style="height: 300px; overflow: auto;">
                     <h2><u>Practice Mode Result</u></h2><br>
@@ -87,7 +100,7 @@
                 <h2><u>Aptitude Quiz</u></h2><br>
                 <table border="1">
                     <tr>
-                        <th style="text-align: center;">Attempts</th>
+                        <th style="text-align: center;">No.</th>
                         <th style="text-align: center;">Quiz Name</th>
                         <th style="text-align: center;">Attended On</th>
                         <th style="text-align: center;">Correct</th>

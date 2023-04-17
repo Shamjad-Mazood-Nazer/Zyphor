@@ -1,35 +1,46 @@
 {% extends 'campus/dashboard_base.html' %}
 {% load static %}
-{% block content %}
 <link rel="stylesheet" href="{% static '/css/chat.css' %}">
 <!--<p style="margin-top: 100px; margin-left: 100px;">Test - Althaf ML</p>-->
-<div class="container">
-    <div class="chatbox">
-        <div class="col-1">
-            <div class="msg-row">
-                <div class="msg-text">
-                    <h2>Shamjad</h2>
-                    <p>Test Chat</p>
-                </div>
-                <img src="{% static '/img/placement.png' %}" class="msg-img">
-            </div>
 
-            <div class="msg-row msg-row2">
-                <img src="{% static '/img/gallery-img-01.jpg' %}" class="msg-img">
-                <div class="msg-text">
-                    <h2>Rony Tom</h2>
-                    <p>Response chat</p>
-                </div>
-            </div>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Enter your message here...">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">
-                        <i class="fa fa-paper-plane"></i>
-                    </button>
-                </span>
-            </div>
+{% block content %}
+<div class="container" style="margin-top: 30px;">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <h1>Chat with {{ recipient.username }}</h1>
+      <hr>
+      <div id="chat" class="card card-body mb-3">
+        {% if not message %}
+          <div class="container ">
+            <p> You have not initiated any chat with Admin yet.</p>
+<!--            <p> Your chat history will be show here.</p>-->
+          </div>
+        {% else %}
+          {% for message in messages %}
+            {% if message.sender == user %}
+              <div class="outgoing-message mb-3">
+                <p>{{ message.text }}</p>
+                <span class="small">{{ message.timestamp|date:"F j, Y, g:i a" }}</span>
+              </div>
+            {% else %}
+              <div class="incoming-message mb-3">
+                <p>{{ message.text }}</p>
+                <span class="small">{{ message.timestamp|date:"F j, Y, g:i a" }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </div>
+      <form name="Chat_Form" method="POST" action="sent_message">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+          <input type="text" name="message" placeholder="Type your message here..." class="form-control"><br>
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Send</button>
+          </div>
         </div>
+      </form>
     </div>
+  </div>
 </div>
 {% endblock %}

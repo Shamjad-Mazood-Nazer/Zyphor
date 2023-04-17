@@ -159,40 +159,42 @@ class BTechStudentDetails(models.Model):
         return "%s" % self.admino
 
 
-class Tpo(models.Model):
-    tpoName = models.CharField(max_length=50)
-    tpoMail = models.EmailField(max_length=75)
-    tpoPassword = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.tpoName
-
-
 class Drives(models.Model):
-    drive_id = models.IntegerField(primary_key=True)
-    company_name = models.CharField(max_length=50)
-    salary_package = models.CharField(max_length=10)
-    description = models.TextField(blank=True)
-    last_date = models.DateField()
-    status = models.BooleanField()
+    company_name = models.CharField(max_length=50, verbose_name='Name', default='')
+    salary_package = models.FloatField(max_length=10, verbose_name='CTC(LPA)', default='')
+    description = models.TextField(blank=True, verbose_name='Job Role', default='')
+    ug_percentage = models.IntegerField(default='60', verbose_name='UG Percent')
+    pg_percentage = models.IntegerField(default='60', verbose_name='PG Percent')
+    cgpa = models.FloatField(default='6', verbose_name='Required CGPA')
+    backlog = models.IntegerField(default=0, verbose_name='Backlog Count')
+    last_date = models.DateField(verbose_name='Last Date', default='')
+    status = models.BooleanField(default=False, verbose_name='Accept Response')
 
     class Meta:
-        verbose_name_plural = 'Company Details'
+        verbose_name_plural = 'Drive Details'
 
     def __str__(self):
         return self.company_name
 
 
 class ApplyDrive(models.Model):
+    drive_name = models.ForeignKey(Drives, verbose_name='Drive Name', on_delete=models.CASCADE)
     email = models.EmailField(max_length=100)
-    full_name = models.CharField(max_length=50)
-    job_name = models.CharField(max_length=100)
+    applied_on = models.DateField(auto_now_add=True)
+    status = models.BooleanField(default=False, verbose_name='Applied')
 
     def __str__(self):
-        return self.full_name
+        return self.email
 
     class Meta:
-        verbose_name_plural = 'Students Applied'
+        verbose_name_plural = 'Drives Applied'
+
+
+class Company_Image(models.Model):
+    image = models.ImageField(upload_to='company image', verbose_name='Company Image', default='')
+
+    class Meta:
+        verbose_name_plural = "Company's Images"
 
 
 class Payment(models.Model):
@@ -338,4 +340,3 @@ class Quiz_Counter(models.Model):
 
     class Meta:
         verbose_name_plural = 'Quiz Counter'
-

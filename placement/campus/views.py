@@ -106,7 +106,7 @@ def register(request):
     return render(request, 'campus/register.html', {'form': form, 'success': success})
 
 
-def login(request):
+def login_view(request):
     form = LoginForm()
     if request.method == 'POST':
         email = request.POST['email']
@@ -129,34 +129,49 @@ def login(request):
 
 
 def update_password(request):
-    return render(request, 'campus/update_password.html')
+    email = request.session['email']
+    user = StudentReg.objects.get(email=email)
+    context = {
+        'user': user,
+    }
+    return render(request, 'campus/update_password.html', context)
 
 
 def password_changed(request):
     # form = PasswordChangeForm()
     email = request.session['email']
+    quiz_result = QuizResult.objects.filter(email=email)
+    aiken_result = Aiken_Result.objects.filter(email=email)
     print(email)
+    old_password = StudentReg.objects.filter(email=email).values('password').get()['password']
+    print(old_password)
+    current_password = request.POST['current-password']
+    password = request.POST['new-password']
+    print(current_password)
+    print(password)
     if request.method == 'POST':
-        uemail = request.POST['email']
-        if email == uemail:
-            student = StudentReg.objects.filter(email=uemail)
-            print(student)
-            password = request.POST['password']
-            print(password)
-            admino = StudentReg.objects.filter(email=email).values('admino').get()['admino']
-            first_name = StudentReg.objects.filter(email=email).values('first_name').get()['first_name']
-            last_name = StudentReg.objects.filter(email=email).values('last_name').get()['last_name']
-            r = StudentReg(password=password)
-            r.update()
+        if current_password == old_password:
+            r = StudentReg.objects.get(email=email)
+            r.password = password
+            r.save()
             print(r)
-            message = "Your password is now changed successfully!"
-            return render(request, 'campus/studentDashboard.html', {'message': message})
+            user = StudentReg.objects.get(email=email)
+            print('Admino: ', user.admino)
+            message = "Your password is now updated successfully!"
+            context = {
+                'quiz_result': quiz_result,
+                'aiken_result': aiken_result,
+                'message': message,
+                'user': user,
+            }
+            return render(request, 'campus/update_password_success.html', context)
         else:
             return HttpResponse(
-                "<script>alert('oops! Registered email and entered email does not match! Try again');window.location='/';</script>")
+                "<script>alert('Current password is incorrect! Try again');window.location='/';</script>")
     else:
         print('not post')
         messages.error(request, 'Please correct the error below.')
+        return render(request, 'campus/studentDashboard.html', {})
 
 
 def tpoLogin(request):
@@ -196,11 +211,21 @@ def get_user(request):
 
 
 def home(request):
+    images = Company_Image.objects.all()
     if 'email' in request.session:
+        email = request.session['email']
         user = get_user(request)
-        return render(request, 'campus/studentDashboard.html', {'user': user})
+        print('ID: ', user.id)
+        quiz_result = QuizResult.objects.filter(email=email)
+        aiken_result = Aiken_Result.objects.filter(email=email)
+        context = {
+            'user': user,
+            'quiz_result': quiz_result,
+            'aiken_result': aiken_result,
+        }
+        return render(request, 'campus/studentDashboard.html', context)
     else:
-        return render(request, 'campus/index.html')
+        return render(request, 'campus/index.html', {'images': images})
 
 
 @user_login_required
@@ -275,7 +300,7 @@ def viewDrive(request):
         user = get_user(request)
         viewDrive = Drives.objects.all()
         myData = StudentReg.objects.get(email=user.email)
-        return render(request, 'campus/viewDrive.html', {'myData': myData, 'viewDrive': viewDrive})
+        return render(request, 'campus/viewDrive.html', {'user': myData, 'viewDrive': viewDrive})
     else:
         return render(request, 'campus/payments.html', )
 
@@ -306,13 +331,14 @@ def registerDrive(request):
 @user_login_required
 def payment(request):
     email = request.session['email']
-    user = get_user(request)
-    myData = StudentReg.objects.filter(admino=user.admino)
+    # user = get_user(request)
+    # myData = StudentReg.objects.filter(admino=user.admino)
+    user = StudentReg.objects.get(email=email)
     if Payment.objects.filter(email=email).exists():
         info = Payment.objects.filter(email=email).values('payment_on').get()['payment_on']
         context = {
             'info': info,
-            'myData': myData,
+            'user': user,
         }
         print(info)
         return render(request, 'campus/payment_done.html', context)
@@ -462,7 +488,8 @@ def quiz(request):
             print(questions)
             if not questions:
                 return HttpResponse(
-                    "<script>alert('No Quiz for the practice mode. Try again later!..'); window.location='quiz_mode'; </script>"
+                    "<script>alert('No Quiz for the practice mode. Try again later!..'); window.location='quiz_mode'; "
+                    "</script>"
                 )
             else:
                 context = {
@@ -490,11 +517,14 @@ def quiz_mode(request):
 
 @user_login_required
 def quiz_list(request):
+    email = request.session['email']
     quizzes = Quiz.objects.all()
     quiz_details = AikenFile.objects.all()
+    user = StudentReg.objects.get(email=email)
     context = {
         'quizzes': quizzes,
         'quiz_details': quiz_details,
+        'user': user,
     }
     print(quizzes)
     # print(aiken_quiz)
@@ -551,13 +581,13 @@ def quiz_detail(request, id):
 
     # today = datetime.now(local_tz).date()
 
-    print(end_date, )
+    print('start: ', start_date, 'end: ', end_date)
     # Check if the quiz is still active
-    if datetime.now().date() > end_date:
+    if datetime.today().date() > end_date:
         print('if : ', datetime.today().date())
-        return HttpResponse(
-            "<script>alert('Sorry, this quiz's time is already ended on {}!..'); window.location='/quiz_list'; </script>".format(
-                end_date.strftime('%d-%m-%Y'))
+        return HttpResponse("<script>alert('This quiz is longer available from {}!..'); window.location='/quiz_list'; "
+                            "</script>".format(
+            end_date.strftime('%d-%m-%Y'))
         )
     elif datetime.today().date() < start_date:
         print('else : ', datetime.today().date())
@@ -647,13 +677,18 @@ def submit_quiz(request, id):
     return render(request, 'campus/quiz_list.html', {'quiz': quiz})
 
 
+def sent_message(request):
+    return render(request, 'chat_to_admin')
+
+
 def performance_predict(correct, total, cgpa, time):
     print(correct, total, cgpa, time)
     # Load the CSV file into a Pandas DataFrame
     df = pd.read_csv('static/csv/Student.csv')
 
     # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(df.drop('output', axis=1), df['output'], test_size=0.2, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(df.drop('output', axis=1), df['output'], test_size=0.2,
+                                                        random_state=0)
 
     # Create a Linear Regression model and fit it to the training data
     regressor = LinearRegression()
@@ -674,4 +709,8 @@ def performance_predict(correct, total, cgpa, time):
 def chat_to_admin(request):
     email = request.session['email']
     print(email)
-    return render(request, 'campus/chat.html')
+    user = StudentReg.objects.get(email=email)
+    context = {
+        'user': user,
+    }
+    return render(request, 'campus/chat.html', context)

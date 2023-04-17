@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Zyphor</title>
-    <link rel="icon" type="image/x-icon" href="static/campus/images/placement.png">
+    <link rel="icon" type="image/x-icon" href="{% static '/campus/images/placement.png' %}">
 </head>
 <body>
     <div class="site-navbar-wrap bg-danger">
@@ -16,7 +16,7 @@
               <div class="col-2">
                 <h5 class="brand">
                   <a href="{% url 'campus:home' %}">
-                    <img src="static/campus/images/placement.png" width="40px">
+                    <img src="{% static 'campus/images/placement.png' %}" width="40px">
                      <strong style="color:rgb(44, 44, 44);">Zyphor</strong>
                   </a>
                 </h5>
@@ -63,41 +63,18 @@
             <h2>VISITING COMPANIES</h2>
           </div>
         </div>
-
-        <!-- Image Slider Starts -->
-         <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-            {% for object in images %}
-            <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
-                <img src="{{object.image.url}}" style="height:650px;" class="testi-overly d-block w-100" alt="sliderImg">
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 class="animate__animated
-                    {% if forloop.counter0 == 0 %}
-                    animate__fadeInDown
-                    {% endif %}
-                    {% if forloop.revcounter == 1 %}
-                    animate__bounce
-                    {% endif %}
-                    {% if forloop.revcounter == 2 %}
-                    animate__fadeInRight
-                    {% endif %}">{{object.caption}}</h1>
-                    <h3 class="animate__animated animate__zoomIn">{{object.caption}}</h3>
-                    <a href="{{object.link}}" class="button animate__animated animate__zoomIn mt-3 py-3 px-5 btn font-weight-bold">{{object.action_name}}</a>
-                </div>
+          <div class="row">
+          {% for image in images %}
+            {% ifchanged %}
+              {% if forloop.counter0|divisibleby:3 %}
+                </div><div class="row">
+              {% endif %}
+            {% endifchanged %}
+            <div class="col-md-4">
+              <img src="{{ image.image.url }}" alt="" width="70%" style="display: block; margin: 0 auto;">
             </div>
-            {% endfor %}
+          {% endfor %}
         </div>
-    </div>
-
-        <!-- Image Slider End -->
 
       </div>
     </div>
@@ -109,7 +86,7 @@
         <div class="row">
           <div class="col-md-4">
             <h3 class="footer-heading mb-4 text-white">About</h3>
-            <p>This Project is about Campus recruitment System where both IT companies as well as student can register themselves on the on the same platform to interact with each other.</p>
+            <p>This Zyphor Project is about AJCE Campus recruitment System where student can register themselves on the same platform to interact with Admin. We provide MOCK Test for the Students who are registered with oru System.</p>
             <p><a href="#" class="btn btn-primary pill text-white px-4">Read More</a></p>
           </div>
           <div class="col-md-6">
@@ -140,10 +117,11 @@
             <div class="col-md-12"><h3 class="footer-heading mb-4 text-white">Social Icons</h3></div>
               <div class="col-md-12">
                 <p>
-                  <a href="https://www.facebook.com/tpc.iitbhu/" class="pb-2 pr-2 pl-0"><span class="icon-facebook"></span></a>
-                  <a href="https://twitter.com/iitbhu_varanasi?lang=en" class="p-2"><span class="icon-twitter"></span></a>
-                  <a href="https://www.instagram.com/technexiitbhu/?hl=en" class="p-2"><span class="icon-instagram"></span></a>
-                  <a href="https://www.youtube.com/channel/UClQf58OQvm6OkGbQARqqhMg" class="p-2"><span class="icon-youtube"></span></a>
+                  <a href="https://www.facebook.com/amaljyothicollege/" class="pb-2 pr-2 pl-0"><span class="icon-facebook"></span></a>
+                  <a href="https://www.youtube.com/user/amaljyothivideos" class="p-2"><span class="icon-youtube"></span></a>
+                  <a href="https://twitter.com/" class="p-2"><span class="icon-twitter"></span></a>
+                  <a href="https://www.instagram.com/" class="p-2"><span class="icon-instagram"></span></a>
+
 
 
                 </p>
@@ -156,7 +134,7 @@
             Copyright &copy;
               <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
               <script>document.write(new Date().getFullYear());</script>
-              All Rights Reserved | Campus Recruitment Management System
+              All Rights Reserved | Zyphor - AJCE Placement Cell Management System
             </p>
           </div>
         </div>
@@ -164,7 +142,7 @@
     </footer>
 
 
-
+    <script type="text/javascript" src="{% static 'campus/js/chatbot.js' %}"></script>
     <script src="{% static 'campus/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'campus/js/jquery-migrate-3.0.1.min.js' %}"></script>
     <script src="{% static 'campus/js/jquery-ui.js' %}"></script>
@@ -187,7 +165,7 @@
     <link rel="stylesheet" href="{% static 'campus/css/owl.carousel.min.css' %}">
     <link rel="stylesheet" href="{% static 'campus/css/owl.theme.default.min.css' %}">
     <link rel="stylesheet" href="{% static 'campus/css/animate.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/mediaelementplayer.min.css" >
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/mediaelementplayer.min.css" >-->
     <link rel="stylesheet" href="{% static 'campus/fonts/flaticon/font/flaticon.css' %}" >
     <link rel="stylesheet" href="{% static 'campus/css/aos.css' %}">
     <link rel="stylesheet" href="{% static 'campus/css/style.css' %}">

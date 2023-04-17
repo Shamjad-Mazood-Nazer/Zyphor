@@ -365,7 +365,7 @@ function dobValidation(inputTxt){
 
 function universityNoValidation(inputTxt){
 
-    var regx = /AJC\d\d+[A-Z]+-\d\d\d\d/;
+    var regx = /^AJC(18|19|20|21|22)(MCA|INTMCA|CSE|ME|EEE|ECE|FT|IT)-\d{4}$/;
     var textField = document.getElementById("universityno");
 
     if(inputTxt.value != '' ){

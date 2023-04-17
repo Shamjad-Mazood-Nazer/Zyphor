@@ -1,157 +1,75 @@
-<!DOCTYPE html>
+{% extends 'campus/dashboard_base.html' %}
 {% load static %}
 {% block content %}
-<html lang="en">
-  <head>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-  <!------ Include the above in your HEAD tag ---------->
-    <title>Drives</title>
-      <link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
-    <link rel="stylesheet" href="{% static '/css/studentDashStyle.css' %}">
-<!--      <script src="{% static '/js/logoutScript.js' %}"></script>-->
-  </head>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
-<body>
-        <div id="top-nav" class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{% url 'campus:student' %}">Dashboard</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                                <i class="fa fa-bell"></i> Notifications
-                                <span class="caret"></span>
-                            </a>
-                            <ul>
+    <div style="margin-top: 80px;">
+        <marquee>
+            <h3 align="center" style="color: red;">Latest Update on Drives</h3>
+        </marquee>
 
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                                <i class="fa fa-user-circle"></i> Hi, {{myData.first_name}} !
-                                <span class="caret"></span>
-                            </a>
-                            <ul id="g-account-menu" class="dropdown-menu" role="menu">
-
-                                <li>
-                                     <a href="#">
-                                        <i class="fa fa-user-secret"></i> My Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'campus:update_password' %}">
-                                        <i class="fa fa-key"></i> Change Password
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'campus:logout' %}">
-                                        <i class="fa fa-sign-out"></i> Logout
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- /container -->
-        </div>
-
-        <!-- /Header -->
-
-        <!-- Main -->
-
-        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12" style="margin-top: 60px">
-
-            <ul class="nav nav-pills nav-stacked" style="border-right:1px solid black">
-                <!--<li class="nav-header"></li>-->
-                <li><a href="{% url 'campus:student' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                <li><a href="{% url 'campus:updateStudentDetails' %}"><i class="fa fa-database"></i> Update Details</a></li>
-<!--                <li><a href="#"><i class="fa fa-history"></i> My history / Drives</a></li>-->
-<!--                <li><a href=""><i class="fa fa-lock"></i> Change Password</a></li>-->
-                <li><a href="{% url 'campus:viewDrive' %}"><i class="fa fa-folder"></i> Drives</a></li>
-                <li><a href="{% url 'campus:payment' %}"><i class="fa fa-money"></i> One Time Payment</a></li>
-                <li><a href="{% url 'campus:quiz_mode' %}"><i class="fa fa-question"></i> Quiz</a></li>
-
-            </ul>
-        </div><!-- /span-3 -->
-        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
-            <!-- Right -->
-
-            <a href="{% url 'campus:student' %}"><strong><span class="fa fa-dashboard"></span> My Dashboard </strong></a>/
-            <a href="{% url 'campus:viewDrive' %}"><strong><i class="fa fa-folder"></i> Drives </strong></a>/
-            <hr>
-            <marquee>
-                <h3 align="center" style="color: red;">Latest Update on Drives</h3>
-            </marquee>
-
-            <table>
-                <tr style="height: 50px;">
-                    <th>Sl. No</th>
-                    <th>Company Name</th>
-                    <th>Salary Package(LPA)</th>
-                    <th>Description</th>
-                    <th>Due Date</th>
-                    <th>Status</th>
-                    <th>Pick</th>
+        <table>
+            <tr>
+                <th>No</th>
+                <th>Company</th>
+                <th>Package(LPA)</th>
+                <th>Description</th>
+                <th>Due Date</th>
+<!--                <th>Status</th>-->
+                <th>Action</th>
+            </tr>
+            {% for view in viewDrive %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td> {{ view.company_name }} </td>
+                    <td> {{ view.salary_package }} </td>
+                    <td> {{ view.description }} </td>
+                    <td> {{ view.last_date }} </td>
+<!--                    <td> {{ view.status }}</td>-->
+                    <td>
+                        <a href="{% url 'campus:registerDrive' %}">
+                            <button class="btn btn-primary">Apply</button>
+                        </a>
+                    </td>
                 </tr>
-                {% for view in viewDrive %}
-                    <tr style="height: 50px;">
-                        <td>{{view.drive_id}}</td>
-                        <td> {{ view.company_name }} </td>
-                        <td> {{ view.salary_package }} </td>
-                        <td> {{ view.description }} </td>
-                        <td> {{ view.last_date }} </td>
-                        <td> {{ view.status }}</td>
-                        <td>
-                            <a href="{% url 'campus:registerDrive' %}">
-                                <button class="btn btn-primary">Apply</button>
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
+            {% endfor %}
 
-            </table>
-
-
-{% endblock %}
-        </div>
-    </body>
-</html>
-
+        </table>
+    </div>
 <style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
-    th, td {
-        text-align: justify;
-        padding: 18px;
-    }
+th, td {
+  padding: 8px;
+  text-align: left;
+}
 
-    tr:nth-child(even){
-        background-color: #f2f2f2
-    }
+th {
+  background-color: #6d64b5;
+  color: white;
+    height: 40px;
+}
 
-    th {
-        background-color: #6d64b5;
-        color: white;
-    }
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
 </style>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+{% endblock %}

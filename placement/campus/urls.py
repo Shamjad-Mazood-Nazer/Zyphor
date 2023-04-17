@@ -13,7 +13,7 @@ urlpatterns = [
     path('adminDash', views.adminDash, name='adminDash'),
     path('tpoLogout', views.tpoLogout, name='tpoLogout'),
 
-    path('login', views.login, name='login'),
+    path('login', views.login_view, name='login'),
     path('register', views.register, name='register'),
     path('update_password', views.update_password, name='update_password'),
     path('password_changed', views.password_changed, name='password_changed'),
@@ -40,6 +40,7 @@ urlpatterns = [
     path('ajax_generate_code/', views.ajax_generate_code, name='ajax_generate_code'),
 
     path('chat_to_admin', views.chat_to_admin, name='chat_to_admin'),
+    path('sent_message', views.sent_message, name='sent_message'),
 
     path('reset_password/',
          auth_views.PasswordResetView.as_view(template_name='campus/password_reset.html'),

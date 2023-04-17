@@ -4,12 +4,13 @@ from .models import *
 # Register your models here.
 
 admin.site.register(StudentReg)
-# admin.site.register(Tpo)
+
 # admin.site.register(BTechStudentDetails)
 admin.site.register(MCAStudentDetails)
 
 admin.site.register(Drives)
 admin.site.register(ApplyDrive)
+# admin.site.register(Company_Image)
 
 admin.site.register(Payment)
 
