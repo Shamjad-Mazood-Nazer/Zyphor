@@ -16,21 +16,33 @@
 <!--                <th>Status</th>-->
                 <th>Action</th>
             </tr>
-            {% for view in viewDrive %}
+            {% if error %}
                 <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td> {{ view.company_name }} </td>
-                    <td> {{ view.salary_package }} </td>
-                    <td> {{ view.description }} </td>
-                    <td> {{ view.last_date }} </td>
-<!--                    <td> {{ view.status }}</td>-->
-                    <td>
-                        <a href="{% url 'campus:registerDrive' %}">
-                            <button class="btn btn-primary">Apply</button>
-                        </a>
+                    <td colspan="6">
+                        <p style="color:red; text-align: center;" size="4px"> {{ error }} </p>
                     </td>
                 </tr>
-            {% endfor %}
+            {% else %}
+                {% for view in viewDrive %}
+                    {% for display in display_drives %}
+                        <tr>
+                            {% if display == view.id %}
+                                <td>{{ forloop.counter }}</td>
+                                <td> {{ view.company_name }} </td>
+                                <td> {{ view.salary_package }} </td>
+                                <td> {{ view.description }} </td>
+                                <td> {{ view.last_date }} </td>
+            <!--                    <td> {{ view.status }}</td>-->
+                                <td>
+                                    <a href="{% url 'campus:registerDrive' %}">
+                                        <button class="btn btn-primary">Apply</button>
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
 
         </table>
     </div>

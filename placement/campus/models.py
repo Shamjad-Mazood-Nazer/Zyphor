@@ -11,6 +11,104 @@ payment_choice = (
     ('not paid', 'not paid'),
 )
 
+nationality_choice = (
+    ('Indian', 'Indian'),
+    ('American', 'American'),
+    ('British', 'British'),
+    ('Canadian', 'Canadian'),
+    ('Australian', 'Australian'),
+    ('Bangladeshi', 'Bangladeshi'),
+)
+
+sslc_yop_choice = (
+    ('2010', '2010'),
+    ('2011', '2011'),
+    ('2012', '2012'),
+    ('2013', '2013'),
+    ('2014', '2014'),
+    ('2015', '2015'),
+    ('2016', '2016'),
+    ('2017', '2017'),
+    ('2018', '2018'),
+    ('2019', '2019'),
+)
+
+sslc_board_choice = (
+    ('CBSE', 'CBSE'),
+    ('ICSE', 'ICSE'),
+    ('State Board of Kerala', 'State Board of Kerala'),
+    ('State Board of Andhra Pradesh', 'State Board of Andhra Pradesh'),
+    ('State Board of Tamil Nadu', 'State Board of Tamil Nadu'),
+    ('State Board of Karnataka', 'State Board of Karnataka'),
+)
+
+hse_yop_choice = (
+    ('2010', '2010'),
+    ('2011', '2011'),
+    ('2012', '2012'),
+    ('2013', '2013'),
+    ('2014', '2014'),
+    ('2015', '2015'),
+    ('2016', '2016'),
+    ('2017', '2017'),
+    ('2018', '2018'),
+    ('2019', '2019'),
+    ('2020', '2020'),
+    ('2021', '2021'),
+    ('2022', '2022'),
+)
+
+hse_board_choice = (
+    ('CBSE', 'CBSE'),
+    ('HSE', 'HSE'),
+    ('ISC', 'ISC'),
+    ('VHSE', 'VHSE'),
+    ('IHRD', 'IHRD')
+)
+
+plan_after_graduate_choice = (
+    ('Job', 'Job'),
+    ('start-up', 'start-up'),
+    ('Higher Studies', 'Higher Studies'),
+)
+
+ug_name_choice = (
+    ('BCA', 'BCA'),
+    ('BBA', 'BBA'),
+    ('B.Sc CS', 'B.Sc CS'),
+    ('B.Sc Electronics', 'B.Sc Electronics'),
+    ('B.Com', 'B.Com'),
+)
+
+ug_yop_choices = (
+    ('2010', '2010'),
+    ('2011', '2011'),
+    ('2012', '2012'),
+    ('2013', '2013'),
+    ('2014', '2014'),
+    ('2015', '2015'),
+    ('2016', '2016'),
+    ('2017', '2017'),
+    ('2018', '2018'),
+    ('2019', '2019'),
+    ('2020', '2020'),
+    ('2021', '2021'),
+    ('2022', '2022'),
+)
+
+ug_university_choices = (
+    ('APJ KTU', 'APJ KTU'),
+    ('Mahatma Gandhi University', 'Mahatma Gandhi University'),
+    ('Kannur University', 'Kannur University'),
+    ('CUSAT', 'CUSAT'),
+    ('University of Kerala', 'University of Kerala'),
+    ('National Institute of Technology', 'National Institute of Technology'),
+)
+
+pg_university_choice = (
+    ('APJ KTU', 'APJ KTU'),
+)
+
 
 class User(AbstractUser):
     is_student = models.BooleanField(default=False)
@@ -68,26 +166,28 @@ class MCAStudentDetails(models.Model):
     motherNo = models.CharField(max_length=15, verbose_name="Mother's Mobile")
     fullAddress = models.CharField(max_length=50, verbose_name='Address')
     pincode = models.CharField(max_length=6, verbose_name='Pincode')
-    nationality = models.CharField(max_length=15, verbose_name='Nationality')
+    nationality = models.CharField(max_length=15, verbose_name='Nationality', choices=nationality_choice)
     planAfterGraduate = models.CharField(max_length=15, verbose_name='Future Plan')
     sslcPer = models.FloatField(max_length=5, verbose_name='SSLC/10 Percent')
-    sslcYoP = models.CharField(max_length=4, verbose_name='SSLC/10 Year of Pass')
-    sslcBoard = models.CharField(max_length=35, verbose_name='SSLC/10 Board')
+    sslcYoP = models.CharField(max_length=4, verbose_name='SSLC/10 Year of Pass', choices=sslc_yop_choice)
+    sslcBoard = models.CharField(max_length=35, verbose_name='SSLC/10 Board', choices=sslc_board_choice)
     hsePer = models.CharField(max_length=5, verbose_name='HSE/12 Percent')
-    hseYoP = models.CharField(max_length=4, verbose_name='HSE/12 Year of Pass')
-    hseBoard = models.CharField(max_length=30, verbose_name='HSE/12 Board')
-    nameOfUG = models.CharField(max_length=10, verbose_name='UG Programme')
+    hseYoP = models.CharField(max_length=4, verbose_name='HSE/12 Year of Pass', choices=hse_yop_choice)
+    hseBoard = models.CharField(max_length=30, verbose_name='HSE/12 Board', choices=hse_board_choice)
+    nameOfUG = models.CharField(max_length=50, verbose_name='UG Programme', choices=ug_name_choice)
     ugPer = models.CharField(max_length=5, verbose_name='UG Percent')
     ugCgpa = models.CharField(max_length=5, verbose_name='UG CGPA')
-    ugYoP = models.CharField(max_length=4, verbose_name='UG Year of Pass')
+    ugYoP = models.CharField(max_length=4, verbose_name='UG Year of Pass', choices=ug_yop_choices)
     collegeNameUg = models.CharField(max_length=50, verbose_name='UG College Name')
-    ugUniversity = models.CharField(max_length=50, verbose_name='UG University')
+    ugUniversity = models.CharField(max_length=50, verbose_name='UG University', choices=ug_university_choices)
     entranceRank = models.CharField(max_length=6, verbose_name='Entrance Rank')
     mcaAggregateCgpa = models.CharField(max_length=4, verbose_name='PG CGPA')
+    mcaPer = models.CharField(max_length=5, verbose_name='PG Percent')
     activeArrears = models.CharField(max_length=2, verbose_name='Active Arrears (Count)')
     historyOfArrears = models.CharField(max_length=2, verbose_name='Arrears History(Active + Cleared)')
     examsNotAttended = models.CharField(max_length=2, verbose_name='Exam not Attended (Count)')
-    pgUniversity = models.CharField(max_length=50, default='APJ KTU', verbose_name='PG University')
+    pgUniversity = models.CharField(max_length=50, choices=pg_university_choice, verbose_name='PG University')
+    plan_after_graduate = models.CharField(max_length=15, choices=plan_after_graduate_choice)
     technicalSkills = models.CharField(max_length=500)
     certifications = models.CharField(max_length=500)
     internships = models.CharField(max_length=500)
@@ -163,8 +263,8 @@ class Drives(models.Model):
     company_name = models.CharField(max_length=50, verbose_name='Name', default='')
     salary_package = models.FloatField(max_length=10, verbose_name='CTC(LPA)', default='')
     description = models.TextField(blank=True, verbose_name='Job Role', default='')
-    ug_percentage = models.IntegerField(default='60', verbose_name='UG Percent')
-    pg_percentage = models.IntegerField(default='60', verbose_name='PG Percent')
+    ug_percentage = models.FloatField(default='60', verbose_name='UG Percent')
+    pg_percentage = models.FloatField(default='60', verbose_name='PG Percent')
     cgpa = models.FloatField(default='6', verbose_name='Required CGPA')
     backlog = models.IntegerField(default=0, verbose_name='Backlog Count')
     last_date = models.DateField(verbose_name='Last Date', default='')

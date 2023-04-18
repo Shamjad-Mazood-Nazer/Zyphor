@@ -264,8 +264,19 @@ def tpo(request):
     return render(request, 'campus/adminLogin.html')
 
 
-# def studentDash(request):
-#     return render(request, 'campus/studentDashboard.html')
+def student_profile(request):
+    email = request.session['email']
+    user = get_user(request)
+    myData = StudentReg.objects.get(email=user.email)
+    id = myData.id
+    details = MCAStudentDetails.objects.get(user=id)
+
+    context = {
+        'user': myData,
+        'details': details,
+    }
+    return render(request, 'campus/student_profile.html', context)
+
 
 # @login_required(login_url='login')
 def updateStudentDetails(request):
@@ -297,10 +308,60 @@ def password_change(request):
 def viewDrive(request):
     email = request.session['email']
     if Payment.objects.filter(email=email).exists():
+        display_drives = []
         user = get_user(request)
         viewDrive = Drives.objects.all()
         myData = StudentReg.objects.get(email=user.email)
-        return render(request, 'campus/viewDrive.html', {'user': myData, 'viewDrive': viewDrive})
+        print(myData.id, myData.first_name)
+        id = myData.id
+        try:
+            stddetails = MCAStudentDetails.objects.get(user=id)
+        except MCAStudentDetails.DoesNotExist:
+            # Handle the case where no MCAStudentDetails record is found
+            stddetails = None
+        print(stddetails)
+        if stddetails is None:
+            return HttpResponse(
+                "<script>alert('Your details were not uploaded! Please do that first.'); "
+                "window.location='updateStudentDetails'; </script>"
+            )
+        else:
+            print('DOB: ', stddetails.DoB)
+            print('Foreign Obj: ', stddetails)
+            print('Student CGPA: ', stddetails.ugCgpa)
+            # return render(request, 'campus/viewDrive.html', {'user': myData, 'viewDrive': viewDrive})
+
+            for drive in viewDrive:
+                print('Drive ID: ', drive.id)
+                print(stddetails.ugCgpa, '>=', drive.cgpa)
+                print(stddetails.ugPer, '>=', drive.ug_percentage)
+                print(stddetails.mcaPer, '>=', drive.pg_percentage)
+                print(stddetails.activeArrears, '>=', drive.backlog)
+
+                if float(stddetails.ugCgpa) >= drive.cgpa and float(stddetails.ugPer) >= drive.ug_percentage and float(
+                        stddetails.mcaPer) >= drive.pg_percentage and int(stddetails.activeArrears) <= drive.backlog:
+                    display_drives.append(drive.id)
+                    print('Drives Count: ', display_drives)
+                else:
+                    print('Drives Count: ', display_drives)
+
+            if not display_drives:
+                error = "Sorry, Your profile was not met the Academic profile that recruiters needs. Kindly " \
+                        "please wait for your turn"
+                context = {
+                    'user': myData,
+                    'error': error
+                }
+                return render(request, 'campus/viewDrive.html', context)
+            else:
+                context = {
+                    'user': myData,
+                    'viewDrive': viewDrive,
+                    'display_drives': display_drives,
+                }
+                # print(display_drives.company_name)
+                return render(request, 'campus/viewDrive.html', context)
+            # return render(request, 'campus/viewDrive.html', {'user': myData, 'viewDrive': viewDrive})
     else:
         return render(request, 'campus/payments.html', )
 

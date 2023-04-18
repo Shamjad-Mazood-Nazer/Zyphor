@@ -1,0 +1,138 @@
+{% extends 'campus/dashboard_base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'campus/css/student_profile.css' %}">
+    <div class="container" style="margin-top: 50px;">
+		<div class="main-body">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex flex-column align-items-center text-center">
+								<img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="Admin" class="rounded-circle p-1 bg-primary" width="110">
+								<div class="mt-3">
+									<h4>{{ user.first_name }} {{ user.last_name }}</h4>
+									<p class="text-secondary mb-1">Register Number : {{ details.universityReg }}</p>
+									<p class="text-muted font-size-sm">Phone: {{ details.mobileNoIndian }}</p>
+									<p class="text-muted font-size-sm">DOB: {{ details.DoB }}</p>
+									<button class="btn btn-primary">Change Profile</button>
+									<button class="btn btn-outline-primary">Message</button>
+								</div>
+							</div>
+							<hr class="my-4">
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+									<a href="{{ details.linkedIn }}">
+									<h6 class="mb-0">
+										<svg width="30px" height="30px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><path fill="#0A66C2" d="M12.225 12.225h-1.778V9.44c0-.664-.012-1.519-.925-1.519-.926 0-1.068.724-1.068 1.47v2.834H6.676V6.498h1.707v.783h.024c.348-.594.996-.95 1.684-.925 1.802 0 2.135 1.185 2.135 2.728l-.001 3.14zM4.67 5.715a1.037 1.037 0 01-1.032-1.031c0-.566.466-1.032 1.032-1.032.566 0 1.031.466 1.032 1.032 0 .566-.466 1.032-1.032 1.032zm.889 6.51h-1.78V6.498h1.78v5.727zM13.11 2H2.885A.88.88 0 002 2.866v10.268a.88.88 0 00.885.866h10.226a.882.882 0 00.889-.866V2.865a.88.88 0 00-.889-.864z"/></svg>LinkedIn</h6>
+									<span class="text-secondary"></span></a>
+								</li>
+								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+									<a href="{{ details.projectGithub }}">
+										<h6 class="mb-0">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github me-2 icon-inline">
+												<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+											</svg>Github
+										</h6>
+									</a>
+									<span class="text-secondary"></span>
+								</li>
+							</ul>
+							<hr class="my-4">
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+									Address : {{ details.fullAddress }}
+								</li>
+								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+									Pin Code : {{ details.pincode }}
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-7">
+					<div class="card">
+						<div class="card-body">
+							<div class="row mb-3">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Full Name</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									<input type="text" class="form-control" value="John Doe">
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Email</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									<input type="text" class="form-control" value="john@example.com">
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Phone</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									<input type="text" class="form-control" value="(239) 816-9029">
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Mobile</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									<input type="text" class="form-control" value="(320) 380-4539">
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Address</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									<input type="text" class="form-control" value="Bay Area, San Francisco, CA">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-9 text-secondary">
+									<input type="button" class="btn btn-primary px-4" value="Save Changes">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="d-flex align-items-center mb-3">Project Status</h5>
+									<p>Web Design</p>
+									<div class="progress mb-3" style="height: 5px">
+										<div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+									</div>
+									<p>Website Markup</p>
+									<div class="progress mb-3" style="height: 5px">
+										<div class="progress-bar bg-danger" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+									</div>
+									<p>One Page</p>
+									<div class="progress mb-3" style="height: 5px">
+										<div class="progress-bar bg-success" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+									</div>
+									<p>Mobile Template</p>
+									<div class="progress mb-3" style="height: 5px">
+										<div class="progress-bar bg-warning" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+									</div>
+									<p>Backend API</p>
+									<div class="progress" style="height: 5px">
+										<div class="progress-bar bg-info" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

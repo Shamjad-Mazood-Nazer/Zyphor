@@ -18,6 +18,7 @@ urlpatterns = [
     path('update_password', views.update_password, name='update_password'),
     path('password_changed', views.password_changed, name='password_changed'),
     path('studentDash', views.studentDash, name='student'),
+    path('student_profile', views.student_profile, name='student_profile'),
     path('updateStudentDetails', views.updateStudentDetails, name='updateStudentDetails'),
     path('logout', views.logout, name='logout'),
 
