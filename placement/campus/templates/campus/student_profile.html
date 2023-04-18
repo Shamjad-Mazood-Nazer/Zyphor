@@ -39,13 +39,19 @@
 									<span class="text-secondary"></span>
 								</li>
 							</ul>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-body">Basic Details:
 							<hr class="my-4">
 							<ul class="list-group list-group-flush">
 								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									Address : {{ details.fullAddress }}
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									Pin Code : {{ details.pincode }}
+									<p class="text-muted font-size-sm">Address : {{ details.fullAddress }}</p>
+									<p class="text-muted font-size-sm">Father's Name: {{ details.fatherName }}</p>
+									<p class="text-muted font-size-sm">Father's Phone: {{ details.fatherNo }}</p>
+									<p class="text-muted font-size-sm">Mother's Name: {{ details.motherName }}</p>
+									<p class="text-muted font-size-sm">Mother's Phone: {{ details.motherNo }}</p>
+
 								</li>
 							</ul>
 						</div>
