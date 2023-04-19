@@ -279,15 +279,15 @@ class Drives(models.Model):
 
 class ApplyDrive(models.Model):
     drive_name = models.ForeignKey(Drives, verbose_name='Drive Name', on_delete=models.CASCADE)
-    email = models.EmailField(max_length=100)
+    user = models.ForeignKey(StudentReg, verbose_name='Student Name', on_delete=models.CASCADE)
     applied_on = models.DateField(auto_now_add=True)
     status = models.BooleanField(default=False, verbose_name='Applied')
 
     def __str__(self):
-        return self.email
+        return "%s" % self.drive_name
 
     class Meta:
-        verbose_name_plural = 'Drives Applied'
+        verbose_name_plural = "Students Applied Drives"
 
 
 class Company_Image(models.Model):
@@ -440,3 +440,14 @@ class Quiz_Counter(models.Model):
 
     class Meta:
         verbose_name_plural = 'Quiz Counter'
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(StudentReg, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Message'
+

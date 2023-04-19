@@ -384,9 +384,42 @@ def applyDrive(request):
 
 
 @user_login_required
-def registerDrive(request):
-    viewDrive = Drives.objects.all()
-    return render(request, 'campus/registerDrive.html')
+def register_drive(request, id):
+    email = request.session['email']
+    user = get_user(request)
+    drives = Drives.objects.all()
+    last_date = Drives.objects.filter(id=id).values('last_date').get()['last_date']
+    drive_id = Drives.objects.get(id=id)
+    # applied_date = ApplyDrive.objects.filter(drive_name=id).values('applied_on').get()['applied_on']
+    myData = StudentReg.objects.get(email=user.email)
+    print('Drives: ', drives, '\nlast_date: ', last_date, '\ndrive_id: ', drive_id, '\nmyData: ', myData)
+    print('Today: ', datetime.today().date(), '\n', )
+    if datetime.today().date() <= last_date:
+        print('Test on IF')
+        if ApplyDrive.objects.filter(drive_name=drive_id, user=myData).exists():
+            print('working on IF')
+            return HttpResponse(
+                "<script>alert('Already applied on {}!..'); window.location='/viewDrive'; </script>".format(
+                    drive_id.last_date.strftime('%d-%m-%Y'))
+            )
+        else:
+            print('testing on else')
+            r = ApplyDrive(drive_name=drive_id, user=myData, status=True)
+            print('drive_name: ', drive_id, 'user: ', myData.id, 'status: ', True)
+            r.save()
+
+            context = {
+                'user': myData,
+                'drives': drives,
+            }
+            return HttpResponse("<script>alert('Successfully Applied to {} !..'); window.location='/viewDrive'; "
+                                "</script>".format(drive_id)
+                                )
+    else:
+        print('testing outer else')
+        return HttpResponse("<script>alert('Currently we are not accepting any request for this Drive from {}!..'); "
+                            "window.location='/viewDrive';</script>".format(last_date.strftime('%d-%m-%Y'))
+                            )
 
 
 @user_login_required

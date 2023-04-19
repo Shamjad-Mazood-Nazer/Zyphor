@@ -23,8 +23,9 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
 
     path('viewDrive', views.viewDrive, name='viewDrive'),
-    path('registerDrive', views.registerDrive, name='registerDrive'),
-    path('applyDrive', views.applyDrive, name='applyDrive'),
+    path('register_drive/<int:id>/', views.register_drive, name='register_drive'),
+    # path('applyDrive', views.applyDrive, name='applyDrive'),
+    # path('apply_drive/<int:id>/', views.apply_drive, name='apply_drive'),
     # path('applyDrive/<drive_id>/', applyDrive.as_view(), name='applyDrive'),
 
     path('payment', views.payment, name='payment'),

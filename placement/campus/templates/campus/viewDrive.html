@@ -34,7 +34,7 @@
                                 <td> {{ view.last_date }} </td>
             <!--                    <td> {{ view.status }}</td>-->
                                 <td>
-                                    <a href="{% url 'campus:registerDrive' %}">
+                                    <a href="{% url 'campus:register_drive' view.id %}">
                                         <button class="btn btn-primary">Apply</button>
                                     </a>
                                 </td>
