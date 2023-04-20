@@ -37,7 +37,7 @@
                 {% for question in quiz.question_set.all %}
                     <div class="card mt-4">
                         <div class="card-header">
-                            <h5>{{ question.text }}</h5>
+                            <h5>{{ forloop.counter }}. {{ question.text }}</h5>
                         </div>
                         <div class="card-body">
                             {% for answer in question.answer_set.all %}

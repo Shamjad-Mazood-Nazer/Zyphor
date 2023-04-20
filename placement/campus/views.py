@@ -300,7 +300,8 @@ def updateStudentDetails(request):
 def update_profile(request):
     email = request.session['email']
     user = get_user(request)
-    myData = StudentReg.objects.filter(admino=user.admino)
+    print(user)
+    myData = StudentReg.objects.filter(admino=user)
     quiz_result = QuizResult.objects.filter(email=email)
     aiken_result = Aiken_Result.objects.filter(email=email)
     phone1 = request.POST['phone1']
@@ -308,10 +309,10 @@ def update_profile(request):
     address = request.POST['address']
     pincode = request.POST['pincode']
     district = request.POST['district']
-    id = myData.id
+    id = myData
     print(id)
     if request.method == 'POST':
-        r = MCAStudentDetails.objects.get(user=id)
+        r = MCAStudentDetails.objects.get(user=user)
         r.mobileNoIndian = phone1
         r.alternativeNo = phone2
         r.fullAddress = address
@@ -320,10 +321,11 @@ def update_profile(request):
         r.save()
         print(r)
         context = {
-                'myData': myData,
-                'quiz_result': quiz_result,
-                'aiken_result': aiken_result,
-            }
+            'user': user,
+            'myData': myData,
+            'quiz_result': quiz_result,
+            'aiken_result': aiken_result,
+        }
         return render(request, 'campus/studentDashboard.html', context)
     return render(request, 'campus/student_profile.html')
 
@@ -706,7 +708,7 @@ def quiz_detail(request, id):
 
     # today = datetime.now(local_tz).date()
 
-    print('start: ', start_date, 'end: ', end_date)
+    print('start: ', start_date, '\nend: ', end_date)
     # Check if the quiz is still active
     if datetime.today().date() > end_date:
         print('if : ', datetime.today().date())
