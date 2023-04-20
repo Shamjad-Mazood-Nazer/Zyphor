@@ -297,6 +297,37 @@ def updateStudentDetails(request):
         return render(request, 'campus/payments.html', )
 
 
+def update_profile(request):
+    email = request.session['email']
+    user = get_user(request)
+    myData = StudentReg.objects.filter(admino=user.admino)
+    quiz_result = QuizResult.objects.filter(email=email)
+    aiken_result = Aiken_Result.objects.filter(email=email)
+    phone1 = request.POST['phone1']
+    phone2 = request.POST['phone2']
+    address = request.POST['address']
+    pincode = request.POST['pincode']
+    district = request.POST['district']
+    id = myData.id
+    print(id)
+    if request.method == 'POST':
+        r = MCAStudentDetails.objects.get(user=id)
+        r.mobileNoIndian = phone1
+        r.alternativeNo = phone2
+        r.fullAddress = address
+        r.pincode = pincode
+        r.district = district
+        r.save()
+        print(r)
+        context = {
+                'myData': myData,
+                'quiz_result': quiz_result,
+                'aiken_result': aiken_result,
+            }
+        return render(request, 'campus/studentDashboard.html', context)
+    return render(request, 'campus/student_profile.html')
+
+
 @login_required(login_url='login')
 def password_change(request):
     user = request.user

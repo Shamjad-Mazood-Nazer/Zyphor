@@ -20,6 +20,7 @@ urlpatterns = [
     path('studentDash', views.studentDash, name='student'),
     path('student_profile', views.student_profile, name='student_profile'),
     path('updateStudentDetails', views.updateStudentDetails, name='updateStudentDetails'),
+    path('update_profile', views.update_profile, name='update_profile'),
     path('logout', views.logout, name='logout'),
 
     path('viewDrive', views.viewDrive, name='viewDrive'),

@@ -3,6 +3,7 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'campus/css/student_profile.css' %}">
+<script src="{% static 'js/studentFormScript.js' %}"></script>
     <div class="container" style="margin-top: 50px;">
 		<div class="main-body">
 			<div class="row">
@@ -16,7 +17,9 @@
 									<p class="text-secondary mb-1">Register Number : {{ details.universityReg }}</p>
 									<p class="text-muted font-size-sm">Phone: {{ details.mobileNoIndian }}</p>
 									<p class="text-muted font-size-sm">DOB: {{ details.DoB }}</p>
-									<button class="btn btn-primary">Change Profile</button>
+									<a href="">
+										<button class="btn btn-primary">Change Picture</button>
+									</a>
 									<button class="btn btn-outline-primary">Message</button>
 								</div>
 							</div>
@@ -57,55 +60,90 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-7">
+				<div class="col-lg-6">
 					<div class="card">
 						<div class="card-body">
-							<div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">Full Name</h6>
+							<form name="update_profile" method="post" action="{% url 'campus:update_profile' %}">
+								{% csrf_token %}
+								<div class="row mb-3">
+									<div class="col-sm-3">
+										<h6 class="mb-0">Primary Email</h6>
+									</div>
+									<div class="col-sm-9 text-secondary">
+										<input type="email" class="form-control" onkeypress="emailValidation(this)" value="{{ user.email }}" readonly>
+									</div>
 								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="John Doe">
+								<div class="row mb-3">
+									<div class="col-sm-3">
+										<h6 class="mb-0">College Email</h6>
+									</div>
+									<div class="col-sm-9 text-secondary">
+										<input type="text" class="form-control" onkeypress="emailValidation(this)" value="{{ details.collegeMail }}" readonly>
+									</div>
 								</div>
-							</div>
-							<div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">Email</h6>
+								<div class="row mb-3">
+									<div class="col-sm-3">
+										<h6 class="mb-0">Primary Mobile</h6>
+									</div>
+									<div class="col-sm-9 text-secondary">
+										<input type="text" class="form-control" name="phone1" maxlength="10" onkeypress="phone1Validation(this)" value="{{ details.mobileNoIndian }}" autocomplete="off">
+									</div>
 								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="john@example.com">
+								<div class="row mb-3">
+									<div class="col-sm-3">
+										<h6 class="mb-0">Secondary Mobile</h6>
+									</div>
+									<div class="col-sm-9 text-secondary">
+										<input type="text" class="form-control" name="phone2" maxlength="10" value="{{ details.alternativeNo }}" autocomplete="off">
+									</div>
 								</div>
-							</div>
-							<div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">Phone</h6>
+								<div class="row mb-3">
+									<div class="col-sm-3">
+										<h6 class="mb-0">Address</h6>
+									</div>
+									<div class="col-sm-9 text-secondary">
+										<input type="text" class="form-control" name="address" value="{{ details.fullAddress }}" autocomplete="off">
+									</div>
 								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="(239) 816-9029">
+								<div class="row mb-3">
+									<div class="col-sm-3">
+										<h6 class="mb-0">Pin Code</h6>
+									</div>
+									<div class="col-sm-9 text-secondary">
+										<input type="number" class="form-control" name="pincode" value="{{ details.pincode }}" autocomplete="off">
+									</div>
 								</div>
-							</div>
-							<div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">Mobile</h6>
+								<div class="row mb-3">
+									<div class="col-sm-3">
+										<h6 class="mb-0">District</h6>
+									</div>
+									<div class="col-sm-9 text-secondary">
+										<select name="district">
+											<option value="">{{ details.district }}</option>
+											<option value="Alappuzha">Alappuzha</option>
+											<option value="Eranakulam">Eranakulam</option>
+											<option value="Idukki">Idukki</option>
+											<option value="Kannur">Kannur</option>
+											<option value="Kasargod">Kasargod</option>
+											<option value="Kollam">Kollam</option>
+											<option value="Kottayam">Kottayam</option>
+											<option value="Kozhikkodu">Kozhikkodu</option>
+											<option value="Malappuram">Malappuram</option>
+											<option value="Palakkad">Palakkad</option>
+											<option value="Pathanamthitta">Pathanamthitta</option>
+											<option value="Thrissur">Thrissur</option>
+											<option value="Thiruvananthapuram">Thiruvananthapuram</option>
+											<option value="Wayanad">Wayanad</option>
+										</select>
+									</div>
 								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="(320) 380-4539">
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-9 text-secondary">
+										<input type="submit" name="submit" class="btn btn-primary px-4" value="Update Profile">
+									</div>
 								</div>
-							</div>
-							<div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">Address</h6>
-								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="Bay Area, San Francisco, CA">
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-3"></div>
-								<div class="col-sm-9 text-secondary">
-									<input type="button" class="btn btn-primary px-4" value="Save Changes">
-								</div>
-							</div>
+							</form>
 						</div>
 					</div>
 					<div class="row">

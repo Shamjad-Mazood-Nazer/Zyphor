@@ -109,6 +109,22 @@ pg_university_choice = (
     ('APJ KTU', 'APJ KTU'),
 )
 
+district_choice = (
+    ('Thiruvananthapuram', 'Thiruvananthapuram'),
+    ('Kollam', 'Kollam'),
+    ('Pathanamthitta', 'Pathanamthitta'),
+    ('Alappuzha', 'Alappuzha'),
+    ('Kottayam', 'Kottayam'),
+    ('Idukki', 'Idukki'),
+    ('Eranakulam', 'Eranakulam'),
+    ('Thrissur', 'Thrissur'),
+    ('Palakkad', 'Palakkad'),
+    ('Kannur', 'Kannur'),
+    ('Malappuram', 'Malappuram'),
+    ('Wayanad', 'Wayanad'),
+    ('Kozhikkodu', 'Kozhikkodu'),
+    ('Kasargod', 'Kasargod'),
+)
 
 class User(AbstractUser):
     is_student = models.BooleanField(default=False)
@@ -165,6 +181,7 @@ class MCAStudentDetails(models.Model):
     motherName = models.CharField(max_length=30, verbose_name="Mother's Name")
     motherNo = models.CharField(max_length=15, verbose_name="Mother's Mobile")
     fullAddress = models.CharField(max_length=50, verbose_name='Address')
+    district = models.CharField(max_length=50, verbose_name='District', choices=district_choice)
     pincode = models.CharField(max_length=6, verbose_name='Pincode')
     nationality = models.CharField(max_length=15, verbose_name='Nationality', choices=nationality_choice)
     planAfterGraduate = models.CharField(max_length=15, verbose_name='Future Plan')
