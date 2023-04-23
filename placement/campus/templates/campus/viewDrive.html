@@ -2,6 +2,10 @@
 {% load static %}
 {% block content %}
     <div style="margin-top: 80px;">
+        <a href="{% url 'campus:student' %}"><strong><span class="fa fa-dashboard"></span> My Dashboard / </strong></a>
+        <a href="{% url 'campus:viewDrive' %}"><strong><span class="fa fa-folder"></span> Drives / </strong></a>
+        <hr>
+
         <marquee>
             <h3 align="center" style="color: red;">Latest Update on Drives</h3>
         </marquee>
@@ -23,13 +27,18 @@
                     </td>
                 </tr>
             {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center; color: green">
+                    <u>Active Drives</u>
+                </td>
+            </tr>
                 {% for view in viewDrive %}
                     {% for display in display_drives %}
                         <tr>
                             {% if display == view.id %}
                                 <td>{{ forloop.counter }}</td>
                                 <td> {{ view.company_name }} </td>
-                                <td> {{ view.salary_package }} </td>
+                                <td> {{ view.salary_package }} LPA </td>
                                 <td> {{ view.description }} </td>
                                 <td> {{ view.last_date }} </td>
             <!--                    <td> {{ view.status }}</td>-->
@@ -42,8 +51,29 @@
                         </tr>
                     {% endfor %}
                 {% endfor %}
+<tr>
+    <td colspan="6" style="text-align: center; color: red">
+        <u>Closed Drives</u>
+    </td>
+</tr>
+                {% for view in viewDrive %}
+                    {% for display in end_drives %}
+                        <tr>
+                            {% if display == view.id %}
+                                <td>{{ forloop.counter }}</td>
+                                <td> {{ view.company_name }} </td>
+                                <td> {{ view.salary_package }} LPA </td>
+                                <td> {{ view.description }} </td>
+                                <td> {{ view.last_date }} </td>
+            <!--                    <td> {{ view.status }}</td>-->
+                                <td>
+                                    <button class="btn btn-danger" disabled>NA</button>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
             {% endif %}
-
         </table>
     </div>
 <style>

@@ -23,8 +23,15 @@
 <body>
 
 {% block content %}
+<div class="col-lg-10 col-md-10 col-sm-9 col-xs-12" style="margin-top: 80px">
+            <!-- Right -->
 
-    <div class="card" style="width: 40rem; margin-top: 90px; margin-left: 280px; border-radius: 5px; border: 1px solid #00000044; box-shadow: 1px 2px 20px 5px #00000020">
+            <a href="{% url 'campus:student' %}"><strong><span class="fa fa-dashboard"></span> My Dashboard / </strong></a>
+            <a href="{% url 'campus:quiz_mode' %}"><strong><span class="fa fa-question"></span> Quiz Mode / </strong></a>
+            <a href="{% url 'campus:quiz_list' %}"><strong><span class="fa fa-list"></span> Quiz List / </strong></a>
+            <hr>
+
+    <div class="card" style="width: 40rem; margin-left: 280px; border-radius: 5px; border: 1px solid #00000044; box-shadow: 1px 2px 20px 5px #00000020">
         <div class="card-header">
             <h1>Quiz List</h1>
         </div>
@@ -44,7 +51,7 @@
             {% endfor %}
         </ul>
     </div>
-
+</div>
 {% endblock %}
 
 </body>

@@ -309,15 +309,20 @@ def update_profile(request):
     address = request.POST['address']
     pincode = request.POST['pincode']
     district = request.POST['district']
-    id = myData
-    print(id)
+    print(phone1, phone2, address, pincode, district)
+    # id = myData
+    # print(id)
     if request.method == 'POST':
         r = MCAStudentDetails.objects.get(user=user)
+        print(r.mobileNoIndian)
         r.mobileNoIndian = phone1
+        print(r.mobileNoIndian)
         r.alternativeNo = phone2
         r.fullAddress = address
         r.pincode = pincode
+        print(r.district)
         r.district = district
+        print(r.district)
         r.save()
         print(r)
         context = {
@@ -326,7 +331,9 @@ def update_profile(request):
             'quiz_result': quiz_result,
             'aiken_result': aiken_result,
         }
-        return render(request, 'campus/studentDashboard.html', context)
+        return HttpResponse(
+                "<script>alert('Details updated!'); window.location='studentDash'; </script>"
+            )
     return render(request, 'campus/student_profile.html')
 
 
@@ -342,8 +349,9 @@ def viewDrive(request):
     email = request.session['email']
     if Payment.objects.filter(email=email).exists():
         display_drives = []
+        end_drives = []
         user = get_user(request)
-        viewDrive = Drives.objects.all()
+        viewDrive = Drives.objects.all().order_by('-last_date')
         myData = StudentReg.objects.get(email=user.email)
         print(myData.id, myData.first_name)
         id = myData.id
@@ -373,10 +381,14 @@ def viewDrive(request):
 
                 if float(stddetails.ugCgpa) >= drive.cgpa and float(stddetails.ugPer) >= drive.ug_percentage and float(
                         stddetails.mcaPer) >= drive.pg_percentage and int(stddetails.activeArrears) <= drive.backlog:
-                    display_drives.append(drive.id)
-                    print('Drives Count: ', display_drives)
+                    if datetime.today().date() <= drive.last_date:
+                        display_drives.append(drive.id)
+                        print('Drives Count: ', display_drives)
+                    else:
+                        end_drives.append(drive.id)
+                        print('End Drives Count: ', end_drives)
                 else:
-                    print('Drives Count: ', display_drives)
+                    print('Total Count: ', display_drives+end_drives)
 
             if not display_drives:
                 error = "Sorry, Your profile was not met the Academic profile that recruiters needs. Kindly " \
@@ -391,6 +403,7 @@ def viewDrive(request):
                     'user': myData,
                     'viewDrive': viewDrive,
                     'display_drives': display_drives,
+                    'end_drives': end_drives,
                 }
                 # print(display_drives.company_name)
                 return render(request, 'campus/viewDrive.html', context)
