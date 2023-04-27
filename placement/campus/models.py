@@ -213,6 +213,7 @@ class MCAStudentDetails(models.Model):
     linkedIn = models.URLField(max_length=500, verbose_name='LinkedIn Profile URL')
     achievement = models.CharField(max_length=500)
     languagesKnown = models.CharField(max_length=500)
+    profile_picture = models.ImageField(upload_to='profile picture', blank=True, verbose_name='Upload Picture')
 
     def __str__(self):
         return "%s" % self.user

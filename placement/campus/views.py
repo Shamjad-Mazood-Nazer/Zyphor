@@ -174,6 +174,10 @@ def password_changed(request):
         return render(request, 'campus/studentDashboard.html', {})
 
 
+def change_profile_picture(request):
+    return render(request, 'campus/student_profile.html')
+
+
 def tpoLogin(request):
     form = LoginForm()
     if request.method == 'POST':
@@ -332,8 +336,8 @@ def update_profile(request):
             'aiken_result': aiken_result,
         }
         return HttpResponse(
-                "<script>alert('Details updated!'); window.location='studentDash'; </script>"
-            )
+            "<script>alert('Details updated!'); window.location='studentDash'; </script>"
+        )
     return render(request, 'campus/student_profile.html')
 
 
@@ -388,7 +392,7 @@ def viewDrive(request):
                         end_drives.append(drive.id)
                         print('End Drives Count: ', end_drives)
                 else:
-                    print('Total Count: ', display_drives+end_drives)
+                    print('Total Count: ', display_drives + end_drives)
 
             if display_drives:
                 error = "Sorry, Your profile was not met the Academic profile that recruiters needs. Kindly " \

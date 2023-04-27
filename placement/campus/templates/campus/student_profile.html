@@ -17,7 +17,7 @@
 									<p class="text-secondary mb-1">Register Number : {{ details.universityReg }}</p>
 									<p class="text-muted font-size-sm">Phone: {{ details.mobileNoIndian }}</p>
 									<p class="text-muted font-size-sm">DOB: {{ details.DoB }}</p>
-									<a href="">
+									<a href="{% url 'campus:change_profile_picture' %}">
 										<button class="btn btn-primary">Change Picture</button>
 									</a>
 									<button class="btn btn-outline-primary">Message</button>
