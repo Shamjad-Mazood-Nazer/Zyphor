@@ -27,55 +27,72 @@
                     </td>
                 </tr>
             {% else %}
-            <tr>
-                <td colspan="6" style="text-align: center; color: green">
-                    <u>Active Drives</u>
-                </td>
-            </tr>
-                {% for view in viewDrive %}
-                    {% for display in display_drives %}
-                        <tr>
-                            {% if display == view.id %}
-                                <td>{{ forloop.counter }}</td>
-                                <td> {{ view.company_name }} </td>
-                                <td> {{ view.salary_package }} LPA </td>
-                                <td> {{ view.description }} </td>
-                                <td> {{ view.last_date }} </td>
-            <!--                    <td> {{ view.status }}</td>-->
-                                <td>
-                                    <a href="{% url 'campus:register_drive' view.id %}">
-                                        <button class="btn btn-primary">Apply</button>
-                                    </a>
-                                </td>
-                            {% endif %}
-                        </tr>
+                <tr>
+                    <td colspan="6" style="text-align: center; color: green">
+                        <u>Active Drives</u>
+                    </td>
+                </tr>
+                {% if display_drives|length == 0 %}
+                    <tr>
+                        <td colspan="6">
+                            <p style="color:red; text-align: center;" size="4px"> Currently there is no active drives</p>
+                        </td>
+                    </tr>
+                {% else %}
+                    {% for view in viewDrive %}
+                        {% for display in display_drives %}
+                            <tr>
+                                {% if display == view.id %}
+                                    <td>{{ forloop.counter }}</td>
+                                    <td> {{ view.company_name }} </td>
+                                    <td> {{ view.salary_package }} LPA </td>
+                                    <td> {{ view.description }} </td>
+                                    <td> {{ view.last_date }} </td>
+                <!--                    <td> {{ view.status }}</td>-->
+                                    <td>
+                                        <a href="{% url 'campus:register_drive' view.id %}">
+                                            <button class="btn btn-primary">Apply</button>
+                                        </a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-<tr>
-    <td colspan="6" style="text-align: center; color: red">
-        <u>Closed Drives</u>
-    </td>
-</tr>
-                {% for view in viewDrive %}
-                    {% for display in end_drives %}
-                        <tr>
-                            {% if display == view.id %}
-                                <td>{{ forloop.counter }}</td>
-                                <td> {{ view.company_name }} </td>
-                                <td> {{ view.salary_package }} LPA </td>
-                                <td> {{ view.description }} </td>
-                                <td> {{ view.last_date }} </td>
-            <!--                    <td> {{ view.status }}</td>-->
-                                <td>
-                                    <button class="btn btn-danger" disabled>NA</button>
-                                </td>
-                            {% endif %}
-                        </tr>
+                {% endif %}
+                <tr>
+                    <td colspan="6" style="text-align: center; color: #0b8693">
+                        <u>Closed Drives</u>
+                    </td>
+                </tr>
+                {% if end_drives|length == 0 %}
+                    <tr>
+                        <td colspan="6">
+                            <p style="color:red; text-align: center;" size="4px"> Nothing to display </p>
+                        </td>
+                    </tr>
+                {% else %}
+                    {% for view in viewDrive %}
+                        {% for display in end_drives %}
+                            <tr>
+                                {% if display == view.id %}
+                                    <td>{{ forloop.counter }}</td>
+                                    <td> {{ view.company_name }} </td>
+                                    <td> {{ view.salary_package }} LPA </td>
+                                    <td> {{ view.description }} </td>
+                                    <td> {{ view.last_date }} </td>
+                <!--                    <td> {{ view.status }}</td>-->
+                                    <td>
+                                        <button class="btn btn-danger" disabled>NA</button>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
+                {% endif %}
             {% endif %}
         </table>
     </div>
+
 <style>
 table {
   width: 100%;

@@ -390,7 +390,7 @@ def viewDrive(request):
                 else:
                     print('Total Count: ', display_drives+end_drives)
 
-            if not display_drives:
+            if display_drives:
                 error = "Sorry, Your profile was not met the Academic profile that recruiters needs. Kindly " \
                         "please wait for your turn"
                 context = {
@@ -444,10 +444,16 @@ def register_drive(request, id):
         print('Test on IF')
         if ApplyDrive.objects.filter(drive_name=drive_id, user=myData).exists():
             print('working on IF')
+            applied_on = ApplyDrive.objects.get(drive_name=drive_id, user=myData).applied_on
+            applied_on_str = applied_on.strftime('%d-%m-%Y')
             return HttpResponse(
                 "<script>alert('Already applied on {}!..'); window.location='/viewDrive'; </script>".format(
-                    drive_id.last_date.strftime('%d-%m-%Y'))
+                    applied_on_str)
             )
+            # return HttpResponse(
+            #     "<script>alert('Already applied on {}!..'); window.location='/viewDrive'; </script>".format(
+            #         drive_id.last_date.strftime('%d-%m-%Y'))
+            # )
         else:
             print('testing on else')
             r = ApplyDrive(drive_name=drive_id, user=myData, status=True)
