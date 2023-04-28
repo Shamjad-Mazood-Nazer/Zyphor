@@ -876,54 +876,46 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
 
-def placement_prediction(pg_per, pg_cgpa, active_arrears, arrears_history, ug_per, ug_cgpa, hse_per, hse_cgpa, sslc_per, sslc_cgpa):
-    print('pg_per: ', pg_per, '\npg_cgpa: ', pg_cgpa, '\nactive: ', active_arrears, '\nhistory: ', arrears_history)
-    print('\nug_per: ', ug_per, '\nug_cgpa: ', ug_cgpa, '\nhse_per: ', hse_per, '\nhse_cgpa: ', hse_cgpa)
-    print('\nsslc_per: ', sslc_per, '\nsslc_cgpa: ', sslc_cgpa)
-    # Check if the pickle file exists
+def placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per):
+    print('pg_per: ', pg_per, '\npg_cgpa: ', pg_cgpa, '\nug_per: ', ug_per, '\nug_cgpa: ', ug_cgpa, '\nhse_per: ', hse_per, '\nsslc_per: ', sslc_per)
+    import os
+    import pickle
+    import pandas as pd
+    from sklearn.model_selection import train_test_split
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.metrics import r2_score
 
-    pickle_file_path = os.path.join('static', 'css', 'model.pkl')
-    if os.path.exists(pickle_file_path):
-        # Load the model from the pickle file
-        with open(pickle_file_path, 'rb') as f:
-            model = pickle.load(f)
-    else:
-        # Load the dataset
-        data = pd.read_csv("static/csv/2020-Student-DB.csv")
+    # Load the dataset
+    data = pd.read_csv("/static/css/2020-Student-DB.csv")
 
-        # Split the data into features and target
-        X = data.drop("Placement_Status", axis=1)
-        y = data["Placement_Status"]
+    # Split the data into features and target
+    X = data.drop("output", axis=1)
+    y = data["output"]
 
-        # Split the data into training and testing sets
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # Split the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        # Standardize the features
-        scaler = StandardScaler()
-        X_train = scaler.fit_transform(X_train)
-        X_test = scaler.transform(X_test)
+    # Create a random forest regressor model
+    model = RandomForestRegressor(n_estimators=100, random_state=42)
 
-        # Create a random forest classifier model
-        model = RandomForestClassifier(n_estimators=100, random_state=42)
-
-        # Train the model on the training data
-        model.fit(X_train, y_train)
-
-        # Save the model to a pickle file
-        with open(pickle_file_path, 'wb') as f:
-            pickle.dump(model, f)
+    # Train the model on the training data
+    model.fit(X_train, y_train)
 
     # Make predictions on the testing data
     y_pred = model.predict(X_test)
 
     # Evaluate the accuracy of the model
-    accuracy = accuracy_score(y_test, y_pred)
-    print("Accuracy: ", accuracy * 100)
+    accuracy = r2_score(y_test, y_pred)
+    print("R2 Score: ", accuracy)
 
     # Make a prediction for a new student using their quiz scores
-    new_student_scores = [pg_per, pg_cgpa, active_arrears, arrears_history, ug_per, ug_cgpa, hse_per, hse_cgpa,
-                          sslc_per, sslc_cgpa]
-    new_student_scores_scaled = scaler.transform([new_student_scores])
-    placement_prediction = model.predict(new_student_scores_scaled)
+    new_student_scores = [67, 6.7, 76, 7.6, 74, 79, 50]
+    placement_prediction = model.predict([new_student_scores])
     print("Placement Prediction: ", placement_prediction)
-    return placement_prediction
+
+    # Save the trained model as a pickle file
+    if not os.path.exists("static/pickle"):
+        os.makedirs("static/pickle")
+
+    with open("static/pickle/model.pkl", "wb") as f:
+        pickle.dump(model, f)
