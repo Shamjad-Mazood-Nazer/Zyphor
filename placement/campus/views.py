@@ -881,9 +881,11 @@ def placement_prediction(pg_per, pg_cgpa, active_arrears, arrears_history, ug_pe
     print('\nug_per: ', ug_per, '\nug_cgpa: ', ug_cgpa, '\nhse_per: ', hse_per, '\nhse_cgpa: ', hse_cgpa)
     print('\nsslc_per: ', sslc_per, '\nsslc_cgpa: ', sslc_cgpa)
     # Check if the pickle file exists
-    if os.path.exists('model.pkl'):
+
+    pickle_file_path = os.path.join('static', 'css', 'model.pkl')
+    if os.path.exists(pickle_file_path):
         # Load the model from the pickle file
-        with open('model.pkl', 'rb') as f:
+        with open(pickle_file_path, 'rb') as f:
             model = pickle.load(f)
     else:
         # Load the dataset
@@ -908,7 +910,7 @@ def placement_prediction(pg_per, pg_cgpa, active_arrears, arrears_history, ug_pe
         model.fit(X_train, y_train)
 
         # Save the model to a pickle file
-        with open('model.pkl', 'wb') as f:
+        with open(pickle_file_path, 'wb') as f:
             pickle.dump(model, f)
 
     # Make predictions on the testing data
@@ -919,7 +921,8 @@ def placement_prediction(pg_per, pg_cgpa, active_arrears, arrears_history, ug_pe
     print("Accuracy: ", accuracy * 100)
 
     # Make a prediction for a new student using their quiz scores
-    new_student_scores = [pg_per, pg_cgpa, active_arrears, arrears_history, ug_per, ug_cgpa, hse_per, hse_cgpa, sslc_per, sslc_cgpa]
+    new_student_scores = [pg_per, pg_cgpa, active_arrears, arrears_history, ug_per, ug_cgpa, hse_per, hse_cgpa,
+                          sslc_per, sslc_cgpa]
     new_student_scores_scaled = scaler.transform([new_student_scores])
     placement_prediction = model.predict(new_student_scores_scaled)
     print("Placement Prediction: ", placement_prediction)
