@@ -8,11 +8,55 @@
 <body>
 {% block content %}
 <div class="container">
-    <h2>Quiz Results</h2>
-    <p>Quiz Name : {{ quiz_name }}</p>
-    <p>Your score : {{ score }}/{{ quiz.question_set.count }}</p>
-    <p><a href="{% url 'campus:home' %}">Back to Home</a></p>
+    <div class="card">
+        <h2>Quiz Results</h2>
+        <p>Quiz Name : {{ quiz_name }}</p>
+        <p>Your score : {{ score }}/{{ quiz.question_set.count }}</p>
+        <p>Chance of you getting placed : {{ chances|floatformat:2 }}</p>
+        <p><a href="{% url 'campus:home' %}">Back to Home</a></p>
+    </div>
 </div>
+<ol type="1">
+    {% if questions_with_answers %}
+        <h2>Your Questions and Answers:</h2>
+        {% for item in questions_with_answers %}
+            {% if item.is_correct %}
+                <br><li style="color:green">{{ item.question.text }}</li> Correct Answer(s):
+                <ul>
+                    {% for answer in item.question.answer_set.all %}
+                        {% if answer.is_correct %}
+                            <li style="color:green">{{ answer.text }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <br><li style="color:red">{{ item.question.text }}</li> Correct Answer(s):
+                <ul>
+                    {% for answer in item.question.answer_set.all %}
+                        {% if answer.id == item.answer.id %}
+                            <li style="color:red"><strike>{{ answer.text }}</strike></li>
+                        {% else %}
+                            {% if answer.is_correct %}
+                                <li style="color:green">{{ answer.text }}</li>
+                            {% else %}
+                                <li>{{ answer.text }}</li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</ol>
+
+<style>
+    card {
+        margin-top: 20px;
+        width: 30%;
+        text-align: justify-all;
+        padding-left: 10px;
+    }
+</style>
 {% endblock %}
 </body>
 </html>

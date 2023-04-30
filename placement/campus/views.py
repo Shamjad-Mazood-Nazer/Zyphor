@@ -771,7 +771,11 @@ def quiz_detail(request, id):
 @user_login_required
 def submit_quiz(request, id):
     email = request.session['email']
+    user = get_user(request)
     quiz = get_object_or_404(Quiz, pk=id)
+    myData = StudentReg.objects.get(email=user.email)
+    sid = myData.id
+    student = MCAStudentDetails.objects.get(user=sid)
     quiz_name = AikenFile.objects.filter(id=id).values('id').get()['id']
     print('quiz_name: ', quiz_name)
     # counter = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
@@ -786,6 +790,7 @@ def submit_quiz(request, id):
         wrong = 0
         percent = 0
         total = 0
+        questions_with_answers = []
 
         for question in quiz.question_set.all():
             answer_id = request.POST.get(f'question_{question.id}')
@@ -799,18 +804,41 @@ def submit_quiz(request, id):
                     print('Correct Answer :', answer.is_correct)
                     score += 1
                     print(score)
+                    questions_with_answers.append({
+                        'question': question,
+                        'answer': answer,
+                        'is_correct': True,
+                    })
                 else:
                     wrong += 1
                     print('Wrong Answer')
+                    questions_with_answers.append({
+                        'question': question,
+                        'answer': answer,
+                        'is_correct': False,
+                    })
+            else:
+                questions_with_answers.append({
+                    'question': question,
+                    'answer': None,
+                    'is_correct': False,
+                })
         percent = (score / total) * 100
         print('Total Mark : ', score)
         counter = 1
         print('counter: ', counter)
-        r = Aiken_Result(quiz_id=quiz_name, email=email, score=score, quiz_name=quiz_name, time=time, correct=correct,
-                         wrong=wrong,
-                         percent=percent, total=total, counter=counter)
+        r = Aiken_Result(quiz_id=quiz_name, email=email, score=score, quiz_name=quiz_name, time=time,
+                         correct=correct, wrong=wrong, percent=percent, total=total, counter=counter)
         r.save()
         print(r)
+        pg_per = student.mcaPer
+        pg_cgpa = student.mcaAggregateCgpa
+        ug_per = student.ugPer
+        ug_cgpa = student.ugCgpa
+        hse_per = student.hsePer
+        sslc_per = student.sslcPer
+        print(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, percent)
+        analysis = placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, percent)
         context = {
             'quiz_id': id,
             'quiz': quiz,
@@ -822,6 +850,8 @@ def submit_quiz(request, id):
             'wrong': wrong,
             'percent': percent,
             'total': total,
+            'chances': analysis,
+            'questions_with_answers': questions_with_answers,
         }
         return render(request, 'campus/quiz_results.html', context)
     return render(request, 'campus/quiz_list.html', {'quiz': quiz})
@@ -846,6 +876,7 @@ def performance_predict(correct, total, cgpa, time):
 
     # Make predictions on the testing data
     y_pred = regressor.predict(X_test)
+    print(y_pred)
 
     # Evaluate the performance of the model
     from sklearn.metrics import mean_squared_error, r2_score
@@ -869,53 +900,46 @@ def chat_to_admin(request):
 
 import os
 import pickle
-import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score
 
 
-def placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per):
-    print('pg_per: ', pg_per, '\npg_cgpa: ', pg_cgpa, '\nug_per: ', ug_per, '\nug_cgpa: ', ug_cgpa, '\nhse_per: ', hse_per, '\nsslc_per: ', sslc_per)
-    import os
-    import pickle
-    import pandas as pd
-    from sklearn.model_selection import train_test_split
-    from sklearn.ensemble import RandomForestRegressor
-    from sklearn.metrics import r2_score
+def placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, quiz_per):
+    print('pg_per: ', pg_per, '\npg_cgpa: ', pg_cgpa, '\nug_per: ', ug_per, '\nug_cgpa: ', ug_cgpa, '\nhse_per: ',
+          hse_per, '\nsslc_per: ', sslc_per, '\nquiz_per: ', quiz_per)
+    # Define the path to the pickle file
+    pickle_file_path = 'static/csv/model.pickle'
 
-    # Load the dataset
-    data = pd.read_csv("/static/css/2020-Student-DB.csv")
+    # Check if the pickle file exists
+    if os.path.exists(pickle_file_path):
+        # Load the trained model from the pickle file
+        with open(pickle_file_path, 'rb') as f:
+            model = pickle.load(f)
+    else:
+        # Load the dataset
+        data = pd.read_csv("static/csv/2020-Student-DB.csv")
 
-    # Split the data into features and target
-    X = data.drop("output", axis=1)
-    y = data["output"]
+        # Split the data into features and target
+        X = data.drop("output", axis=1)
+        y = data["output"]
 
-    # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        # Split the data into training and testing sets
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Create a random forest regressor model
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
+        # Create a random forest regressor model
+        model = RandomForestRegressor(n_estimators=100, random_state=42)
 
-    # Train the model on the training data
-    model.fit(X_train, y_train)
+        # Train the model on the training data
+        model.fit(X_train, y_train)
 
-    # Make predictions on the testing data
-    y_pred = model.predict(X_test)
-
-    # Evaluate the accuracy of the model
-    accuracy = r2_score(y_test, y_pred)
-    print("R2 Score: ", accuracy)
+        # Save the trained model to the pickle file
+        with open(pickle_file_path, 'wb') as f:
+            pickle.dump(model, f)
 
     # Make a prediction for a new student using their quiz scores
-    new_student_scores = [67, 6.7, 76, 7.6, 74, 79, 50]
+    new_student_scores = [pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, quiz_per]
     placement_prediction = model.predict([new_student_scores])
-    print("Placement Prediction: ", placement_prediction)
+    print("Placement Prediction: ", placement_prediction[0]*100)
 
-    # Save the trained model as a pickle file
-    if not os.path.exists("static/pickle"):
-        os.makedirs("static/pickle")
-
-    with open("static/pickle/model.pkl", "wb") as f:
-        pickle.dump(model, f)
+    return placement_prediction[0]*100
