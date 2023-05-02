@@ -937,13 +937,6 @@ def placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, qu
         with open(pickle_file_path, 'wb') as f:
             pickle.dump(model, f)
 
-    # Make predictions on the testing data
-    y_pred = model.predict(X_test)
-
-    # Evaluate the accuracy of the model
-    accuracy = r2_score(y_test, y_pred)
-    print("R2 Score: ", accuracy)
-
     # Make a prediction for a new student using their quiz scores
     new_student_scores = [pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, quiz_per]
     placement_prediction = model.predict([new_student_scores])
