@@ -907,36 +907,26 @@ from sklearn.ensemble import RandomForestRegressor
 def placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, quiz_per):
     print('pg_per: ', pg_per, '\npg_cgpa: ', pg_cgpa, '\nug_per: ', ug_per, '\nug_cgpa: ', ug_cgpa, '\nhse_per: ',
           hse_per, '\nsslc_per: ', sslc_per, '\nquiz_per: ', quiz_per)
-    # Define the path to the pickle file
     pickle_file = 'static/csv/model.pickle'
 
-    # Check if the pickle file exists
     if os.path.exists(pickle_file):
-        # Load the trained model from the pickle file
         with open(pickle_file, 'rb') as f:
             model = pickle.load(f)
     else:
-        # Load the dataset
         data = pd.read_csv("static/csv/2020-Student-DB.csv")
 
-        # Split the data into features and target
         X = data.drop("output", axis=1)
         y = data["output"]
 
-        # Split the data into training and testing sets
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        # Create a random forest regressor model
         model = RandomForestRegressor(n_estimators=100, random_state=42)
 
-        # Train the model on the training data
         model.fit(X_train, y_train)
 
-        # Save the trained model to the pickle file
         with open(pickle_file, 'wb') as f:
             pickle.dump(model, f)
 
-    # Make a prediction for a new student using their quiz scores
     new_student_scores = [pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, quiz_per]
     prediction = model.predict([new_student_scores])
     print("Placement Prediction: ", prediction[0]*100)
