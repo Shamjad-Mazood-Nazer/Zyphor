@@ -908,12 +908,12 @@ def placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, qu
     print('pg_per: ', pg_per, '\npg_cgpa: ', pg_cgpa, '\nug_per: ', ug_per, '\nug_cgpa: ', ug_cgpa, '\nhse_per: ',
           hse_per, '\nsslc_per: ', sslc_per, '\nquiz_per: ', quiz_per)
     # Define the path to the pickle file
-    pickle_file_path = 'static/csv/model.pickle'
+    pickle_file = 'static/csv/model.pickle'
 
     # Check if the pickle file exists
-    if os.path.exists(pickle_file_path):
+    if os.path.exists(pickle_file):
         # Load the trained model from the pickle file
-        with open(pickle_file_path, 'rb') as f:
+        with open(pickle_file, 'rb') as f:
             model = pickle.load(f)
     else:
         # Load the dataset
@@ -933,7 +933,7 @@ def placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, qu
         model.fit(X_train, y_train)
 
         # Save the trained model to the pickle file
-        with open(pickle_file_path, 'wb') as f:
+        with open(pickle_file, 'wb') as f:
             pickle.dump(model, f)
 
     # Make a prediction for a new student using their quiz scores
