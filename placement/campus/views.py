@@ -902,7 +902,6 @@ import os
 import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import r2_score
 
 
 def placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, quiz_per):
@@ -939,7 +938,7 @@ def placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, qu
 
     # Make a prediction for a new student using their quiz scores
     new_student_scores = [pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, quiz_per]
-    placement_prediction = model.predict([new_student_scores])
-    print("Placement Prediction: ", placement_prediction[0]*100)
+    prediction = model.predict([new_student_scores])
+    print("Placement Prediction: ", prediction[0]*100)
 
-    return placement_prediction[0]*100
+    return prediction[0]*100
