@@ -1,0 +1,92 @@
+Aptitude Mock Test
+
+1. A boat can travel 12 km upstream and 24 km downstream in 6 hours. If the speed of the stream is 3 km/hr, what is the speed of the boat in still water?
+A) 12 km/hr
+*B) 14 km/hr
+C) 18 km/hr
+D) 20 km/hr
+
+2. What is the next number in the following pattern: 2, 4, 8, 16, ___?
+A) 20
+B) 24
+*C) 32
+D) 64
+
+3. A train is moving at a speed of 60 km/hr. If it crosses a bridge of length 500 m in 30 seconds, what is the length of the train?
+A) 120 m
+*B) 150 m
+C) 200 m
+D) 250 m
+
+4. If a train is moving at a speed of 80 km/hr, how long will it take to cover a distance of 400 km?
+A) 4 hours
+*B) 5 hours
+C) 6 hours
+D) 8 hours
+
+5. In a boat, 5 men can row 10 km in 2 hours. How long will it take for 10 men to row the same distance?
+A) 1 hour
+B) 1.5 hours
+*C) 2 hours
+D) 2.5 hours
+
+6. What is the next letter in the following pattern: A, C, F, J, ___?
+A) K
+B) M
+C) N
+*D) O
+
+7. A boat travels upstream for 4 hours and downstream for 3 hours. If the speed of the boat in still water is 10 km/hr and the speed of the stream is 2 km/hr, what is the total distance covered by the boat?
+A) 42 km
+B) 46 km
+*C) 50 km
+D) 54 km
+
+8. If a train is moving at a speed of 100 km/hr, how far will it travel in 3 hours?
+A) 150 km
+B) 200 km
+C) 250 km
+*D) 300 km
+
+9. Two trains are moving in opposite directions at speeds of 40 km/hr and 60 km/hr. If the distance between them is 400 km, how long will it take for them to meet?
+A) 2 hours
+*B) 3 hours
+C) 4 hours
+D) 5 hours
+
+10. What is the next number in the following pattern: 1, 4, 9, 16, 25, ___?
+A) 30
+B) 36
+*C) 49
+D) 64
+
+11. A boat can travel 15 km/hr in still water. If the speed of the stream is 3 km/hr, what is the speed of the boat upstream?
+*A) 10 km/hr
+B) 12 km/hr
+C) 13 km/hr
+D) 15 km/hr
+
+12. A boat can travel 30 km upstream and 50 km downstream in 10 hours. If the speed of the stream is 5 km/hr, what is the speed of the boat in still water?
+A) 15 km/hr
+*B) 20 km/hr
+C) 25 km/hr
+D) 30 km/hr
+
+13. What is the next letter in the following pattern: B, D, H, P, ___?
+A) U
+B) V
+C) W
+*D) X
+
+
+14. A train covers a distance of 1000 km in 12 hours. If it travels the first 500 km at a speed of 60 km/hr and the remaining distance at a speed of 80 km/hr, what is the average speed of the train?
+A) 64 km/hr
+B) 66 km/hr
+*C) 68 km/hr
+D) 70 km/hr
+
+15. A boat can travel 12 km downstream in 1 hour and 20 minutes. If the speed of the stream is 3 km/hr, what is the speed of the boat in still water?
+A) 9 km/hr
+B) 10 km/hr
+C) 11 km/hr
+*D) 12 km/hr
