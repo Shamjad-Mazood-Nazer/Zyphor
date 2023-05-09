@@ -244,9 +244,13 @@ def studentDash(request):
     for result in aiken_result:
         total_score = total_score + int(result.score)
         total_questions = total_questions + int(result.total)
-    average = (total_score/total_questions)*100
-    average_score = round(average, 2)
-    print('correct: ', total_score, '\nquestion: ', total_questions, '\naverage: ', average_score)
+    if total_questions != 0:
+        average = (total_score / total_questions) * 100
+        average_score = round(average, 2)
+        print('correct: ', total_score, '\nquestion: ', total_questions, '\naverage: ', average_score)
+    else:
+        average_score = 0
+        print('No questions answered yet.')
     # quiz_results = Aiken_Result.objects.filter(email=request.user.email).values_list('score', flat=True)
     # print(aiken_result, '\nquiz_results: ', quiz_results)
     # print(myData)
@@ -499,9 +503,11 @@ def payment(request):
     user = StudentReg.objects.get(email=email)
     if Payment.objects.filter(email=email).exists():
         info = Payment.objects.filter(email=email).values('payment_on').get()['payment_on']
+        transaction_id = Payment.objects.filter(email=email).values('transaction_id').get()['transaction_id']
         context = {
             'info': info,
             'user': user,
+            'transaction_id': transaction_id,
         }
         print(info)
         return render(request, 'campus/payment_done.html', context)
@@ -515,7 +521,7 @@ def payment(request):
                 'quantity': 1,
             }],
             mode='payment',
-            success_url=request.build_absolute_uri(reverse('campus:thanks')) + '?session_id = {CHECKOUT_SESSION_ID}',
+            success_url=request.build_absolute_uri(reverse('campus:thanks')).replace('%20', '') + '?session_id={CHECKOUT_SESSION_ID}',
             cancel_url=request.build_absolute_uri(reverse('campus:home')),
         )
         context = {
@@ -528,17 +534,34 @@ def payment(request):
 
 # @user_login_required
 def thanks(request):
-    email = request.session['email']
-    status = 'paid'
-    print(email)
-    if not Payment.objects.filter(email=email).exists():
-        r = Payment(email=email, status=status)
-        r.save()
-        print(r)
-    else:
-        return HttpResponse("<script>alert('You just Paid your fee!');window.location='/payment';</script>")
+    session_id = request.GET.get('session_id')  # Retrieve the session ID from the URL parameters
+    print(session_id)  # Debugging statement to check the value of session_id
 
-    return render(request, 'campus/thanks.html')
+    # Retrieve the session details from Stripe using the session ID
+    stripe.api_key = settings.STRIPE_PRIVATE_KEY
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+        print(session)  # Debugging statement to check the session details
+
+        if session.payment_intent is not None:
+            transaction_id = session.payment_intent
+            # Save the transaction ID to your database or perform any necessary actions
+            email = request.session['email']
+            status = 'paid'
+            if not Payment.objects.filter(email=email).exists():
+                r = Payment(email=email, status=status, transaction_id=transaction_id)
+                r.save()
+                print(r)
+            else:
+                return HttpResponse("<script>alert('You just Paid your fee!');window.location='/payment';</script>")
+
+            return render(request, 'campus/thanks.html')
+        else:
+            return redirect('campus:payment')  # Redirect to an error page
+
+    except stripe.error.InvalidRequestError as e:
+        print(e)  # Debugging statement to print the exception details
+        return redirect('campus:payment')  # Redirect to an error page
 
 
 @user_login_required
@@ -549,6 +572,7 @@ def generate_receipt(request):
     last_name = StudentReg.objects.filter(email=email).values('last_name').get()['last_name']
     payment_amount = 5000
     fetch_date = Payment.objects.filter(email=email).values('payment_on').get()['payment_on']
+    transaction_id = Payment.objects.filter(email=email).values('transaction_id').get()['transaction_id']
     payment_date = fetch_date.date()
     payment_method = 'Credit card'
     customer_name = first_name + ' ' + last_name
@@ -570,6 +594,7 @@ def generate_receipt(request):
         ['Bill'],
         ['Recipient Name:', customer_name],
         ['Payment Amount:', payment_amount],
+        ['Stripe Transaction ID:', transaction_id],
         ['Payment Date:', payment_date],
         ['Payment Method:', payment_method],
     ]
@@ -585,9 +610,9 @@ def generate_receipt(request):
     ])
     elements.append(Table(table_data, style=table_style))
 
-    # Add a thank you message to the PDF document
+    # Add a “Thank You” message to the PDF document
     elements.append(Spacer(1, 0.5 * inch))
-    elements.append(Paragraph('Thank you for your payment!', styles['Normal']))
+    elements.append(Paragraph('Thank You for your payment!', styles['Normal']))
 
     # Build the PDF document from the elements
     doc.build(elements)

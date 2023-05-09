@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-g!9qj%_d5x4v^-08+uj-$*3hz!#lypkii1^cz)y&xaj5(6z8y+
 DEBUG = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'project.zyphor@gmail.com'
-EMAIL_HOST_PASSWORD = 'nudsxszdzlryerqz'
+EMAIL_HOST_PASSWORD = 'qxkxfhbtqrymqgcc'
+    #'nudsxszdzlryerqz'
     #'ucuoxukqritxphma'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

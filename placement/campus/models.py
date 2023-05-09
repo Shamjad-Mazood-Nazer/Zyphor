@@ -305,6 +305,7 @@ class Tpo(models.Model):
     password = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
 
+
 class ApplyDrive(models.Model):
     drive_name = models.ForeignKey(Drives, verbose_name='Drive Name', on_delete=models.CASCADE)
     user = models.ForeignKey(StudentReg, verbose_name='Student Name', on_delete=models.CASCADE)
@@ -328,6 +329,7 @@ class Company_Image(models.Model):
 class Payment(models.Model):
     email = models.EmailField(max_length=100, unique=True)
     payment_on = models.DateTimeField(auto_now_add=True)
+    transaction_id = models.CharField(max_length=255)
     status = models.CharField(max_length=25, default='Not Paid', choices=payment_choice)
 
     def __str__(self):

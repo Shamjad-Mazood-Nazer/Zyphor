@@ -63,43 +63,53 @@
                         const totalQuestions = {{ total_questions }};
                         const averageScore = {{ average_score }};
 
-                        // Calculate the percentage
-                        const percentage = (totalScore / (totalQuestions * 100)) * 100;
+                        // Check if total questions is zero
+                        if (totalQuestions === 0) {
+                            const ctx = document.getElementById('performanceChart').getContext('2d');
+                            ctx.font = '14px Arial';
+                            ctx.fillStyle = 'red';
+                            ctx.textAlign = 'center';
+                            ctx.fillText('No Performance Data Available', ctx.canvas.width / 2, ctx.canvas.height / 2);
+                        } else {
+                            // Calculate the percentage
+                            const percentage = (totalScore / (totalQuestions * 100)) * 100;
 
-                        // Get the canvas element
-                        const ctx = document.getElementById('performanceChart').getContext('2d');
+                            // Get the canvas element
+                            const ctx = document.getElementById('performanceChart').getContext('2d');
 
-                        // Create the chart
-                        new Chart(ctx, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['Total Scores', 'Total Questions', 'Performance'],
-                                datasets: [
-                                    {
-                                        data: [totalScore, totalQuestions, averageScore],
-                                        backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 255, 132, 0.5)'],
-                                        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 255, 132, 1)'],
-                                        borderWidth: 1
-                                    }
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                cutoutPercentage: 80,
-                                plugins: {
-                                    legend: {
-                                        display: true,
-                                        position: 'right'
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: 'Your Performance:'
+                            // Create the chart
+                            new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: ['Total Scores', 'Total Questions', 'Performance'],
+                                    datasets: [
+                                        {
+                                            data: [totalScore, totalQuestions, averageScore],
+                                            backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 255, 132, 0.5)'],
+                                            borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 255, 132, 1)'],
+                                            borderWidth: 1
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    responsive: true,
+                                    cutoutPercentage: 80,
+                                    plugins: {
+                                        legend: {
+                                            display: true,
+                                            position: 'right'
+                                        },
+                                        title: {
+                                            display: true,
+                                            text: 'Your Performance:'
+                                        }
                                     }
                                 }
-                            }
-                        });
+                            });
+                        }
                     </script>
                 </div>
+
             </div>
 
                 <br><br>

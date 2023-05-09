@@ -20,8 +20,11 @@
         </div>
         <h1>Success</h1>
         <p>Your Payment to <em>ZYPHOR</em> was completed successfully;<br/>Payment Info:<br></p>
-        <p>Mail : {{request.session.email}}<br>
-            Payment On : {{info}}</p><br>
+        <p>
+            Mail : "{{request.session.email}}" <br>
+            Payment On : "{{info}}" <br>
+            Transaction ID : "{{transaction_id}}" <br>
+        </p><br>
         <a href="{% url 'campus:student' %}">
             <button type="button" class="btn btn-primary">Back to Home</button>
         </a>
