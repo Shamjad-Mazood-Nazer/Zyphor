@@ -3,63 +3,103 @@
 {% load static %}
 
 <html lang="en">
-  <head>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-  <!------ Include the above in your HEAD tag ---------->
-    <title>Zyphor-Student</title>
-      <link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
-      <link rel="stylesheet" href="{% static '/css/studentDashStyle.css' %}">
-<!--      <script src="{% static '/js/logoutScript.js' %}"></script>-->
-  </head>
+    <head>
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <!------ Include the above in your HEAD tag ---------->
+        <title>Zyphor-Student</title>
+        <link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
+        <link rel="stylesheet" href="{% static '/css/studentDashStyle.css' %}">
+        <!--      <script src="{% static '/js/logoutScript.js' %}"></script>-->
+    </head>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
-<body>
+    <body>
 
         {% block content %}
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <a href="{% url 'campus:student' %}"><strong><span class="fa fa-dashboard"></span> My Dashboard</strong></a>
             <hr>
 <!--            <div class="container p-3 my-3 bg-dark text-white">-->
-            <div class="card" style="width: auto; height: auto;">
-                <h2><u>Account Info</u></h2><br>
-                <table>
-                    <tr>
-                        <th>Your Admission Number : </th>
-                        <td>{{user.admino}}
-<!--                            <input type="text" name="admino" id="admino" value="{{user.admino}}" disabled>-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Your First Name : </th>
-                        <td>{{user.first_name}}
-<!--                            <input type="text" name="fname" id="fname" value="{{user.first_name}}" disabled>-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Your Last Name : </th>
-                        <td>{{user.last_name}}
-<!--                            <input type="text" name="lname" id="lname" value="{{user.last_name}}" disabled>-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Your Email Address : </th>
-                        <td>{{user.email}}
-<!--                            <input type="text" name="email" id="email" value="{{user.email}}" disabled>-->
-                        </td>
-                    </tr>
-                </table>
-            </div>
 
-            <div class="card" style="width: 350px; height: 350px; margin-top: 10px;">
-                <h3>Alerts:</h3>
-                <font size="5px" color="red">
-                    {% if message %}
-                        <div align="center"> {{ message }} </div>
-                        <div align="center"> <img src="{% static 'campus/animate/shield.gif' %}" width="50%"> </div>
-                    {% else %}
-                        <div align="center"> Hurray! Account looks fine. </div>
-                    {% endif %}
-                </font>
+            <div class="container" style="display: flex; height: auto; width: 100%">
+                <div class="card" style="width: auto; height: auto;">
+                    <h2><u>Account Info</u></h2><br>
+                    <table>
+                        <tr>
+                            <th>Your Admission Number : </th>
+                            <td>{{user.admino}}
+    <!--                            <input type="text" name="admino" id="admino" value="{{user.admino}}" disabled>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Your First Name : </th>
+                            <td>{{user.first_name}}
+    <!--                            <input type="text" name="fname" id="fname" value="{{user.first_name}}" disabled>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Your Last Name : </th>
+                            <td>{{user.last_name}}
+    <!--                            <input type="text" name="lname" id="lname" value="{{user.last_name}}" disabled>-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Your Email Address : </th>
+                            <td>{{user.email}}
+    <!--                            <input type="text" name="email" id="email" value="{{user.email}}" disabled>-->
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card" style="width: 350px; height: auto;">
+                    <canvas id="performanceChart"></canvas>
+
+                    <script>
+                        // Retrieve data from the template context
+                        const totalScore = {{ total_score }};
+                        const totalQuestions = {{ total_questions }};
+                        const averageScore = {{ average_score }};
+
+                        // Calculate the percentage
+                        const percentage = (totalScore / (totalQuestions * 100)) * 100;
+
+                        // Get the canvas element
+                        const ctx = document.getElementById('performanceChart').getContext('2d');
+
+                        // Create the chart
+                        new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Total Scores', 'Total Questions', 'Performance'],
+                                datasets: [
+                                    {
+                                        data: [totalScore, totalQuestions, averageScore],
+                                        backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 255, 132, 0.5)'],
+                                        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 255, 132, 1)'],
+                                        borderWidth: 1
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                cutoutPercentage: 80,
+                                plugins: {
+                                    legend: {
+                                        display: true,
+                                        position: 'right'
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Your Performance:'
+                                    }
+                                }
+                            }
+                        });
+                    </script>
+                </div>
             </div>
 
                 <br><br>
@@ -130,7 +170,6 @@
                     {% endif %}
                 </table>
             </div>
-        </div>
         {% endblock %}
-</body>
+    </body>
 </html>

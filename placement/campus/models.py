@@ -126,11 +126,17 @@ district_choice = (
     ('Kasargod', 'Kasargod'),
 )
 
+
 class User(AbstractUser):
-    is_student = models.BooleanField(default=False)
+    is_student = models.BooleanField(default=True)
     is_tpo = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_freeze = models.BooleanField(default=False)
+    admino = models.IntegerField()
+    branch = models.CharField(max_length=50)
     first_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=200)
 
@@ -287,6 +293,7 @@ class Drives(models.Model):
     backlog = models.IntegerField(default=0, verbose_name='Backlog Count')
     last_date = models.DateField(verbose_name='Last Date', default='')
     status = models.BooleanField(default=False, verbose_name='Accept Response')
+    file = models.FileField(upload_to='DriveFiles', verbose_name='Drive File', default='Not Available')
 
     class Meta:
         verbose_name_plural = 'Drive Details'
@@ -468,4 +475,3 @@ class Message(models.Model):
 
     class Meta:
         verbose_name_plural = 'Message'
-

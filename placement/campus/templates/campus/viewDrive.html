@@ -17,24 +17,25 @@
                 <th>Package(LPA)</th>
                 <th>Description</th>
                 <th>Due Date</th>
+                <th>Attachments</th>
 <!--                <th>Status</th>-->
                 <th>Action</th>
             </tr>
             {% if error %}
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         <p style="color:red; text-align: center;" size="4px"> {{ error }} </p>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6" style="text-align: center; color: green">
+                    <td colspan="7" style="text-align: center; color: green">
                         <u>Active Drives</u>
                     </td>
                 </tr>
                 {% if display_drives|length == 0 %}
                     <tr>
-                        <td colspan="6">
+                        <td colspan="7">
                             <p style="color:red; text-align: center;" size="4px"> Currently there is no active drives</p>
                         </td>
                     </tr>
@@ -48,6 +49,13 @@
                                     <td> {{ view.salary_package }} LPA </td>
                                     <td> {{ view.description }} </td>
                                     <td> {{ view.last_date }} </td>
+                                    <td>
+                                        {% if view.file != 'Not Available' %}
+                                            <a href="{{ view.file.url }}"><i class="fa fa-download"> Download</i></a>
+                                        {% else %}
+                                          <p style="color: red; font-size: 15px;" > No Attachments </p>
+                                        {% endif %}
+                                    </td>
                 <!--                    <td> {{ view.status }}</td>-->
                                     <td>
                                         <a href="{% url 'campus:register_drive' view.id %}">
@@ -60,13 +68,13 @@
                     {% endfor %}
                 {% endif %}
                 <tr>
-                    <td colspan="6" style="text-align: center; color: #0b8693">
+                    <td colspan="7" style="text-align: center; color: #0b8693">
                         <u>Closed Drives</u>
                     </td>
                 </tr>
                 {% if end_drives|length == 0 %}
                     <tr>
-                        <td colspan="6">
+                        <td colspan="7">
                             <p style="color:red; text-align: center;" size="4px"> Nothing to display </p>
                         </td>
                     </tr>
@@ -80,6 +88,13 @@
                                     <td> {{ view.salary_package }} LPA </td>
                                     <td> {{ view.description }} </td>
                                     <td> {{ view.last_date }} </td>
+                                    <td>
+                                        {% if view.file != 'Not Available' %}
+                                            <a href="{{ view.file.url }}"><i class="fa fa-download"> Download</i></a>
+                                        {% else %}
+                                            <p style="color: red; font-size: 15px;" > No Attachments </p>
+                                        {% endif %}
+                                    </td>
                 <!--                    <td> {{ view.status }}</td>-->
                                     <td>
                                         <button class="btn btn-danger" disabled>NA</button>

@@ -239,13 +239,26 @@ def studentDash(request):
     myData = StudentReg.objects.filter(admino=user.admino)
     quiz_result = QuizResult.objects.filter(email=email)
     aiken_result = Aiken_Result.objects.filter(email=email)
-    print(aiken_result)
+    total_score = 0
+    total_questions = 0
+    for result in aiken_result:
+        total_score = total_score + int(result.score)
+        total_questions = total_questions + int(result.total)
+    average = (total_score/total_questions)*100
+    average_score = round(average, 2)
+    print('correct: ', total_score, '\nquestion: ', total_questions, '\naverage: ', average_score)
+    # quiz_results = Aiken_Result.objects.filter(email=request.user.email).values_list('score', flat=True)
+    # print(aiken_result, '\nquiz_results: ', quiz_results)
     # print(myData)
     context = {
         'user': user,
         'myData': myData,
         'quiz_result': quiz_result,
         'aiken_result': aiken_result,
+        'total_score': total_score,
+        'total_questions': total_questions,
+        'average_score': average_score,
+        # 'quiz_results': quiz_results,
     }
     return render(request, 'campus/studentDashboard.html', context)
 
@@ -394,7 +407,7 @@ def viewDrive(request):
                 else:
                     print('Total Count: ', display_drives + end_drives)
 
-            if display_drives:
+            if display_drives is None:
                 error = "Sorry, Your profile was not met the Academic profile that recruiters needs. Kindly " \
                         "please wait for your turn"
                 context = {
