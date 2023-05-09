@@ -128,15 +128,10 @@ district_choice = (
 
 
 class User(AbstractUser):
-    is_student = models.BooleanField(default=True)
+    is_student = models.BooleanField(default=False)
     is_tpo = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    is_freeze = models.BooleanField(default=False)
-    admino = models.IntegerField()
-    branch = models.CharField(max_length=50)
     first_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=200)
 
@@ -301,6 +296,14 @@ class Drives(models.Model):
     def __str__(self):
         return self.company_name
 
+
+class Tpo(models.Model):
+    first_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=500, unique=True)
+    password = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
 
 class ApplyDrive(models.Model):
     drive_name = models.ForeignKey(Drives, verbose_name='Drive Name', on_delete=models.CASCADE)
