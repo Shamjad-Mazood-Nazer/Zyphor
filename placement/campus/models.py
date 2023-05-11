@@ -137,10 +137,10 @@ class User(AbstractUser):
 
 
 class StudentReg(models.Model):
-    admino = models.CharField(unique=True, max_length=255)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=500, unique=True)
+    admino = models.CharField(unique=True, max_length=255, verbose_name='Admission Number')
+    first_name = models.CharField(max_length=50, verbose_name='First Name')
+    last_name = models.CharField(max_length=50, verbose_name='Last Name')
+    email = models.EmailField(max_length=500, unique=True, verbose_name='Email')
     password = models.CharField(max_length=255)
 
     def __str__(self):

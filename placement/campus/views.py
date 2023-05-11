@@ -557,11 +557,15 @@ def thanks(request):
 
             return render(request, 'campus/thanks.html')
         else:
-            return redirect('campus:payment')  # Redirect to an error page
+            return redirect('campus:pay_error')
 
     except stripe.error.InvalidRequestError as e:
-        print(e)  # Debugging statement to print the exception details
-        return redirect('campus:payment')  # Redirect to an error page
+        print(e)
+        return redirect('campus:pay_error')
+
+
+def pay_error(request):
+    return render(request, 'campus/error.html')
 
 
 @user_login_required
@@ -709,6 +713,10 @@ def quiz_list(request):
     quizzes = Quiz.objects.all()
     quiz_details = AikenFile.objects.all()
     user = StudentReg.objects.get(email=email)
+    user1 = get_user(request)
+    myData = StudentReg.objects.get(email=user1.email)
+
+    id = myData.id
     context = {
         'quizzes': quizzes,
         'quiz_details': quiz_details,
@@ -717,12 +725,24 @@ def quiz_list(request):
     print(quizzes)
     # print(aiken_quiz)
 
-    if not quizzes:
+    try:
+        stddetails = MCAStudentDetails.objects.get(user=id)
+    except MCAStudentDetails.DoesNotExist:
+        # Handle the case where no MCAStudentDetails record is found
+        stddetails = None
+    print(stddetails)
+    if stddetails is None:
         return HttpResponse(
-            "<script>alert('Nothing is Scheduled by the TPO!'); window.location='quiz_mode'; </script>"
+            "<script>alert('Your details were not uploaded! Please do that first.'); "
+            "window.location='updateStudentDetails'; </script>"
         )
     else:
-        return render(request, 'campus/quiz_list.html', context)
+        if not quizzes:
+            return HttpResponse(
+                "<script>alert('Nothing is Scheduled by the TPO!'); window.location='quiz_mode'; </script>"
+            )
+        else:
+            return render(request, 'campus/quiz_list.html', context)
 
 
 # def quiz_detail(request, id):

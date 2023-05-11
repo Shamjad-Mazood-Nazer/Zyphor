@@ -32,6 +32,7 @@ urlpatterns = [
 
     path('payment', views.payment, name='payment'),
     path('thanks', views.thanks, name='thanks'),
+    path('pay_error', views.pay_error, name='pay_error'),
     path('receipt/', views.generate_receipt, name='generate_receipt'),
 
     path('quiz', views.quiz, name='quiz'),

@@ -6,4 +6,4 @@ class TPO(Admin):
     list_display = ['first_name',]
 
 
-admin.site.register(Admin)
+# admin.site.register(Admin)

@@ -1,28 +1,92 @@
 from django.contrib import admin
 from .models import *
+from django.contrib.auth.models import Group
+admin.site.unregister(Group)
+
 
 # Register your models here.
 
-admin.site.register(StudentReg)
+class StudentRegAdmin(admin.ModelAdmin):
+    list_display = ('admino', 'first_name', 'last_name', 'email')
+    ordering = ['id']
+
+
+admin.site.register(StudentReg, StudentRegAdmin)
+
 
 # admin.site.register(Tpo)
 
 # admin.site.register(BTechStudentDetails)
-admin.site.register(MCAStudentDetails)
+class MCAStudentDetailsAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'user', 'universityReg', 'branch', 'DoB', 'gender', 'mobileNoIndian', 'alternativeNo', 'collegeMail',
+        'fatherName', 'fatherNo', 'motherName', 'motherNo', 'fullAddress', 'district', 'pincode', 'nationality',
+        'planAfterGraduate', 'sslcPer', 'sslcYoP', 'sslcBoard', 'hsePer', 'hseYoP', 'hseBoard', 'nameOfUG', 'ugPer',
+        'ugCgpa', 'ugYoP', 'collegeNameUg', 'ugUniversity', 'entranceRank', 'mcaAggregateCgpa', 'mcaPer',
+        'activeArrears', 'historyOfArrears', 'examsNotAttended', 'pgUniversity', 'plan_after_graduate',
+        'technicalSkills', 'certifications', 'internships', 'workExperience', 'projectGithub', 'linkedIn',
+        'achievement', 'languagesKnown',
+    )
+    ordering = ['id']
 
-admin.site.register(Drives)
-admin.site.register(ApplyDrive)
+
+admin.site.register(MCAStudentDetails, MCAStudentDetailsAdmin)
+
+
+class DrivesAdmin(admin.ModelAdmin):
+    list_display = (
+        'company_name', 'salary_package', 'description', 'ug_percentage', 'pg_percentage', 'cgpa', 'backlog',
+        'last_date', 'file')
+
+
+admin.site.register(Drives, DrivesAdmin)
+
+
+# admin.site.register(ApplyDrive)
 # admin.site.register(Company_Image)
 
-admin.site.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'email', 'payment_on', 'transaction_id', 'status')
+    ordering = ['id']
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+admin.site.register(Payment, PaymentAdmin)
 
 admin.site.register(QuesModel)
 admin.site.register(QuizResult)
 
+
 # admin.site.register(Question)
 # admin.site.register(Answer)
 # admin.site.register(Quiz)
-admin.site.register(Aiken_Result)
+class Aiken_ResultAdmin(admin.ModelAdmin):
+    list_display = (
+        'email',
+        'quiz_name',
+        'percent',
+        'quiz_taken_on',
+    )
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+admin.site.register(Aiken_Result, Aiken_ResultAdmin)
 
 
 class AdminAiken(admin.ModelAdmin):
@@ -92,3 +156,70 @@ class AikenFileAdmin(admin.ModelAdmin):
 
             if len(answers) == 4:
                 Answer.objects.bulk_create(answers)
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+import csv
+from django.http import HttpResponse
+
+
+def export_to_csv(modeladmin, request, queryset):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="students data.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['First Name', 'Last Name', 'Email', 'Contact Number', 'SSLC Percentage', 'HSE Percentage',
+                     'Name of UG', 'UG CGPA', 'UG Percentage', 'MCA Aggregate CGPA', 'MCA Percentage', 'Active Arrears',
+                     'History of Arrears', 'Exams Not Attended'])
+
+    for apply_drive in queryset:
+        student_reg = apply_drive.user
+        mca_details = student_reg.mcastudentdetails
+
+        row = [
+            student_reg.first_name,
+            student_reg.last_name,
+            student_reg.email,
+            mca_details.mobileNoIndian,
+            mca_details.sslcPer,
+            mca_details.hsePer,
+            mca_details.nameOfUG,
+            mca_details.ugCgpa,
+            mca_details.ugPer,
+            mca_details.mcaAggregateCgpa,
+            mca_details.mcaPer,
+            mca_details.activeArrears,
+            mca_details.historyOfArrears,
+            mca_details.examsNotAttended
+        ]
+
+        writer.writerow(row)
+
+    return response
+
+
+export_to_csv.short_description = "Export selected drives to CSV"
+
+
+class ApplyDriveAdmin(admin.ModelAdmin):
+    actions = [export_to_csv]
+
+    list_display = ['drive_name', 'user', 'applied_on', 'status']
+    list_filter = ['drive_name', 'status']
+    search_fields = ['user__first_name', 'user__last_name', 'user__email']
+
+    # ... your other admin configurations
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+admin.site.register(ApplyDrive, ApplyDriveAdmin)
