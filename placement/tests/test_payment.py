@@ -35,7 +35,7 @@ def test_successful_login_and_payment(driver):
     download_button.click()
 
     # Wait for the file to download
-    time.sleep(2)  # Increase the sleep duration to 10 seconds
+    time.sleep(2)  # Increase the sleep duration to 2 seconds
 
     # Check if the receipt file exists on the Desktop
     receipt_file_path = os.path.expanduser("~/Downloads/payment_receipt (1).pdf")
