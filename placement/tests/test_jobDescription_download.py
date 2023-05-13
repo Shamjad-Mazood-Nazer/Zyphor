@@ -2,6 +2,8 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+import os
+import time
 
 
 @pytest.fixture(scope="module")
@@ -32,11 +34,23 @@ def test_successful_login_and_download_job_description(driver):
     # Get the URL of the job description file
     job_description_url = download_link.get_attribute("href")
 
+    # Get the file name from the URL
+    file_name = os.path.basename(job_description_url)
+
     # Click the "Download" link
     download_link.click()
 
-    # Verify that the file is downloaded
-    # You can add assertions or further actions here to validate the downloaded file
+    # Wait for the file to be downloaded
+    time.sleep(2)
 
-    # Example: Check if the page redirects to a specific page after downloading the file
-    assert driver.current_url == "http://localhost:8000/somepage"
+    # Specify the path where the file should be saved
+    download_path = os.path.expanduser("~/Downloads")  # Update the directory path
+
+    # Construct the full file path
+    file_path = os.path.join(download_path, file_name)
+
+    # Assert that the file exists in the specified path
+    assert os.path.isfile(file_path), f"File '{file_name}' was not downloaded successfully"
+
+    # Assert that the file size is greater than 0
+    assert os.path.getsize(file_path) > 0, f"File '{file_name}' is empty or not downloaded correctly"
