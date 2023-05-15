@@ -532,6 +532,7 @@ def payment(request):
             cancel_url=request.build_absolute_uri(reverse('campus:home')),
         )
         context = {
+            'user': user,
             'session_id': session.id,
             'stripe_public_key': settings.STRIPE_PUBLIC_KEY
         }
