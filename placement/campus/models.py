@@ -417,8 +417,6 @@ class Quiz(models.Model):
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     text = models.TextField()
-    correct_answer = models.CharField(max_length=255)
-    explanation = models.TextField()
 
     def __str__(self):
         return self.text

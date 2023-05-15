@@ -483,7 +483,7 @@ def register_drive(request, id):
             print('drive_name: ', drive_id, 'user: ', myData.id, 'status: ', True)
             r.save()
 
-            drive_name = Drives.objects.filter(id=drive_id).values('company_name').get()['company_name']
+            drive_name = Drives.objects.filter(id=id).values('company_name').get()['company_name']
             text_content = "This mail is to inform that you have successfully registered for the drive " + drive_name + "."
             msg = EmailMultiAlternatives('Registration for the ' + drive_name + ' Drive', text_content, EMAIL_HOST_USER, [email])
             msg.send()
