@@ -47,6 +47,14 @@ urlpatterns = [
     path('chat_to_admin', views.chat_to_admin, name='chat_to_admin'),
     path('sent_message', views.sent_message, name='sent_message'),
 
+    path('teacher_login', views.teacher_login_view, name='teacher_login'),
+    path('teacher_logout', views.teacher_logout_view, name='teacher_logout'),
+    path('teacher_dashboard', views.teacher_dashboard, name='teacher'),
+    path('teacher_profile', views.teacher_profile, name='teacher_profile'),
+    path('teacher_update_password', views.teacher_update_password, name='teacher_update_password'),
+    path('student_list', views.student_list, name='student_list'),
+    path('teacher_update_mca/<int:id>/', views.teacher_update_mca, name='teacher_update_mca'),
+
     path('reset_password/',
          auth_views.PasswordResetView.as_view(template_name='campus/password_reset.html'),
          name='reset_password'),

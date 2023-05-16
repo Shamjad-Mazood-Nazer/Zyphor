@@ -7,7 +7,7 @@
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <!------ Include the above in your HEAD tag ---------->
-        <title>Zyphor-Student</title>
+        <title>Zyphor-Teacher</title>
         <link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
         <link rel="stylesheet" href="{% static '/css/studentDashStyle.css' %}">
         <!--      <script src="{% static '/js/logoutScript.js' %}"></script>-->
@@ -22,28 +22,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{% url 'campus:student' %}">Dashboard</a>
+                    <a class="navbar-brand" href="{% url 'campus:teacher' %}">Dashboard</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                                <i class="fa fa-bell"></i> Notifications
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li>
-                                    <p style="text-align: center;">No new notifications from your TPO</p>
-                                </li>
-                                {% for notification in  user.notifications.unread %}
-                                    <div>
-                                        Message from <b>{{ notification.actor }}</b>
-                                        <button class="dropdown-item" type="button">Hello{{ notification.description }}</button>
-                                    </div>
-                                    <div class="dropdown-divider"></div>
-                                {% endfor %}
-                            </ul>
-                        </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
                                 <i class="fa fa-user-circle"></i> Hi, {{user.first_name}} !
@@ -51,17 +33,17 @@
                             </a>
                             <ul id="g-account-menu" class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="{% url 'campus:student_profile' %}">
+                                    <a href="{% url 'campus:teacher_profile' %}">
                                         <i class="fa fa-user-secret"></i> My Profile
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'campus:update_password' %}">
+                                    <a href="{% url 'campus:teacher_update_password' %}">
                                         <i class="fa fa-key"></i> Change Password
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'campus:logout' %}">
+                                    <a href="{% url 'campus:teacher_logout' %}">
                                         <i class="fa fa-sign-out"></i> Logout
                                     </a>
                                 </li>
@@ -82,30 +64,13 @@
             <ul class="nav nav-pills nav-stacked" style="border-right:1px solid black">
                 <!--<li class="nav-header"></li>-->
                 <li>
-                    <a href="{% url 'campus:student' %}">
+                    <a href="{% url 'campus:teacher' %}">
                         <i class="fa fa-dashboard"></i> Dashboard
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'campus:updateStudentDetails'  %}">
-                        <i class="fa fa-database"></i> Update Details
-                    </a>
-                </li>
-                <!--                <li><a href="#"><i class="fa fa-history"></i> My history / Drives</a></li>-->
-                <!--                <li><a href=""><i class="fa fa-lock"></i> Change Password</a></li>-->
-                <li>
-                    <a href="{% url 'campus:viewDrive' %}">
-                        <i class="fa fa-folder"></i> Drives
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'campus:payment' %}">
-                        <i class="fa fa-money"></i> One Time Payment
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'campus:quiz_mode' %}">
-                        <i class="fa fa-question"></i> Quiz
+                    <a href="{% url 'campus:student_list' %}">
+                        <i class="fa fa-question"></i> View Students
                     </a>
                 </li>
 

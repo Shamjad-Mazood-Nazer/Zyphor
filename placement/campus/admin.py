@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 from django.contrib.auth.models import Group
+
 admin.site.unregister(Group)
 
 
@@ -223,3 +224,13 @@ class ApplyDriveAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ApplyDrive, ApplyDriveAdmin)
+
+
+class TeacherAdmin(admin.ModelAdmin):
+    list_display = ('id', 'first_name', 'middle_name', 'last_name', 'email', 'department')
+    ordering = ['id']
+
+
+admin.site.register(Teacher, TeacherAdmin)
+
+# admin.site.register(Department)

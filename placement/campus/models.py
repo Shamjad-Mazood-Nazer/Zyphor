@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User, AbstractUser
@@ -9,6 +10,12 @@ User = settings.AUTH_USER_MODEL
 payment_choice = (
     ('paid', 'paid'),
     ('not paid', 'not paid'),
+)
+
+class_choice = (
+    ('RMCA-A', 'RMCA-A'),
+    ('RMCA-B', 'RMCA-B'),
+    ('INT-MCA', 'INT-MCA'),
 )
 
 nationality_choice = (
@@ -169,7 +176,7 @@ class MCAStudentDetails(models.Model):
         ('female', 'female'),
     )
 
-    user = models.OneToOneField(StudentReg, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(StudentReg, null=True, blank=True, on_delete=models.CASCADE, unique=True)
     universityReg = models.CharField(max_length=13, verbose_name='KTU register number')
     branch = models.CharField(max_length=50, choices=branch, verbose_name='Programme')
     DoB = models.DateField(max_length=10, verbose_name='Date of Birth')
@@ -199,6 +206,7 @@ class MCAStudentDetails(models.Model):
     collegeNameUg = models.CharField(max_length=50, verbose_name='UG College Name')
     ugUniversity = models.CharField(max_length=50, verbose_name='UG University', choices=ug_university_choices)
     entranceRank = models.CharField(max_length=6, verbose_name='Entrance Rank')
+    class_name = models.CharField(max_length=20, verbose_name='Class Name', choices=class_choice)
     mcaAggregateCgpa = models.CharField(max_length=4, verbose_name='PG CGPA')
     mcaPer = models.CharField(max_length=5, verbose_name='PG Percent')
     activeArrears = models.CharField(max_length=2, verbose_name='Active Arrears (Count)')
@@ -238,7 +246,7 @@ class BTechStudentDetails(models.Model):
         ('female', 'female'),
     )
 
-    admino = models.ForeignKey(StudentReg, null=True, blank=True, on_delete=models.CASCADE)
+    admino = models.OneToOneField(StudentReg, null=True, blank=True, on_delete=models.CASCADE, unique=True)
     branch = models.CharField(max_length=50, choices=branch)
     DoB = models.DateField(max_length=10)
     gender = models.CharField(max_length=6, choices=gender)
@@ -478,3 +486,28 @@ class Message(models.Model):
 
     class Meta:
         verbose_name_plural = 'Message'
+
+
+class Department(models.Model):
+    class_name = models.CharField(max_length=30, verbose_name='Class Name', choices=class_choice, unique=True)
+
+    def __str__(self):
+        return self.class_name
+
+    class Meta:
+        verbose_name_plural = 'Department'
+
+
+class Teacher(models.Model):
+    department = models.OneToOneField(Department, on_delete=models.CASCADE, verbose_name='Department', unique=True)
+    first_name = models.CharField(max_length=30, verbose_name='First Name')
+    middle_name = models.CharField(max_length=30, verbose_name='Middle Name', blank=True)
+    last_name = models.CharField(max_length=30, verbose_name='Last Name')
+    email = models.EmailField(max_length=50, verbose_name='Mail ID', unique=True)
+    password = models.CharField(max_length=128, verbose_name='Password')
+
+    def __str__(self):
+        return self.first_name
+
+    class Meta:
+        verbose_name_plural = 'Table Teacher'

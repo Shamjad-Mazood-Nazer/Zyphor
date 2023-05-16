@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+{% extends 'campus/teacher_dashboard_base.html' %}
+{% load static %}
+
+<html lang="en">
+    <head>
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <!------ Include the above in your HEAD tag ---------->
+        <title>Zyphor-Student</title>
+        <link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
+        <link rel="stylesheet" href="{% static '/css/studentDashStyle.css' %}">
+        <!--      <script src="{% static '/js/logoutScript.js' %}"></script>-->
+    </head>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <body>
+
+        {% block content %}
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <a href="{% url 'campus:teacher' %}"><strong><span class="fa fa-dashboard"></span> My Dashboard</strong></a>
+            <hr>
+<!--            <div class="container p-3 my-3 bg-dark text-white">-->
+
+            <div class="container" style="display: flex; height: auto; width: 100%">
+                <div class="card" style="width: auto; height: auto; overflow: auto;">
+                    <h2><u>Your Student's Details</u></h2><br>
+                    <form method="post">
+                        {% csrf_token %}
+                        <table style="font-size: small;">
+                            <tr>
+                                <th> Sl No. </th>
+                                <th> Name </th>
+                                <th> Mail </th>
+                                <th> University Register </th>
+                                <th> Branch </th>
+                                <th> DoB </th>
+                                <th> Gender </th>
+                                <th> Contact Number 1 </th>
+                                <th> Contact Number 2 </th>
+                                <th> Father's Name </th>
+                                <th> Father Mobile </th>
+                                <th> Mother's Name </th>
+                                <th> Mother's Mobile </th>
+                                <th> Address </th>
+                                <th> District </th>
+                                <th> Pincode </th>
+                                <th> Nationality </th>
+                                <th> Future Plan </th>
+                                <th> SSLC % </th>
+                                <th> SSLC YOP </th>
+                                <th> SSLC Board </th>
+                                <th> HSE % </th>
+                                <th> HSE YOP </th>
+                                <th> HSE Board </th>
+                                <th> UG Programme </th>
+                                <th> UG % </th>
+                                <th> UG CGPA </th>
+                                <th> UG YOP </th>
+                                <th> UG College </th>
+                                <th> UG University </th>
+                                <th> Entrance Rank </th>
+                                <th> MCA Aggregate CGPA </th>
+                                <th> MCA % </th>
+                                <th> Active Arrears </th>
+                                <th> History Of Arrears </th>
+                                <th> Exam not Attended </th>
+                                <th> University </th>
+                                <th> Technical Skills </th>
+                                <th> Certifications </th>
+                                <th> Internships </th>
+                                <th> Work Experience </th>
+                                <th> GitHub Link </th>
+                                <th> LinkedIn Link </th>
+                                <th> Achievement </th>
+                                <th> Languages Known </th>
+                            </tr>
+                            {% if students %}
+                                {% for std in students %}
+                                    <tr>
+                                        <td style="text-align: center;">{{ forloop.counter }}</td>
+                                        <td style="text-align: center;">{{ std }}</td>
+                                        <td style="text-align: center;">{{ std.collegeMail }}</td>
+                                        <td style="text-align: center;">{{ std.universityReg }}</td>
+                                        <td style="text-align: center;">{{ std.class_name }}</td>
+                                        <td style="text-align: center;">{{ std.DoB }}</td>
+                                        <td style="text-align: center;">{{ std.gender }}</td>
+                                        <td style="text-align: center;">{{ std.mobileNoIndian }}</td>
+                                        <td style="text-align: center;">{{ std.alternativeNo }}</td>
+                                        <td style="text-align: center;">{{ std.fatherName }}</td>
+                                        <td style="text-align: center;">{{ std.fatherNo }}</td>
+                                        <td style="text-align: center;">{{ std.motherName }}</td>
+                                        <td style="text-align: center;">{{ std.motherNo }}</td>
+                                        <td style="text-align: center;">{{ std.fullAddress }}</td>
+                                        <td style="text-align: center;">{{ std.district }}</td>
+                                        <td style="text-align: center;">{{ std.pincode }}</td>
+                                        <td style="text-align: center;">{{ std.nationality }}</td>
+                                        <td style="text-align: center;">{{ std.planAfterGraduate }}</td>
+                                        <td style="text-align: center;">{{ std.sslcPer }}</td>
+                                        <td style="text-align: center;">{{ std.sslcYoP }}</td>
+                                        <td style="text-align: center;">{{ std.sslcBoard }}</td>
+                                        <td style="text-align: center;">{{ std.hsePer }}</td>
+                                        <td style="text-align: center;">{{ std.hseYoP }}</td>
+                                        <td style="text-align: center;">{{ std.hseBoard }}</td>
+                                        <td style="text-align: center;">{{ std.nameOfUG }}</td>
+                                        <td style="text-align: center;">{{ std.ugPer }}</td>
+                                        <td style="text-align: center;">{{ std.ugCgpa }}</td>
+                                        <td style="text-align: center;">{{ std.ugYoP }}</td>
+                                        <td style="text-align: center;">{{ std.ugPer }}</td>
+                                        <td style="text-align: center;">{{ std.collegeNameUg }}</td>
+                                        <td style="text-align: center;">{{ std.ugUniversity }}</td>
+                                        <td style="text-align: center;">{{ std.entranceRank }}</td>
+                                        <td style="text-align: center;">
+                                            <span id="error"></span>
+                                            <input type="text" name="mcacgpa" value="{{ std.mcaAggregateCgpa }}" style="max-width: 50px;" oninput="validateCGPA(this);">
+                                            <a href="{% url 'campus:teacher_update_mca' std.id %}">
+                                                <button class="btn btn-primary" type="submit" name="submit" value="submit" style="margin-top: 10px">Update</button>
+                                            </a>
+                                        </td>
+                                        <td style="text-align: center;">{{ std.mcaPer }}</td>
+                                        <td style="text-align: center;">{{ std.activeArrears }}</td>
+                                        <td style="text-align: center;">{{ std.historyOfArrears }}</td>
+                                        <td style="text-align: center;">{{ std.examsNotAttended }}</td>
+                                        <td style="text-align: center;">{{ std.pgUniversity }}</td>
+                                        <td style="text-align: center;">{{ std.technicalSkills }}</td>
+                                        <td style="text-align: center;">{{ std.certifications }}</td>
+                                        <td style="text-align: center;">{{ std.internships }}</td>
+                                        <td style="text-align: center;">{{ std.workExperience }}</td>
+                                        <td style="text-align: center;">{{ std.projectGithub }}</td>
+                                        <td style="text-align: center;">{{ std.linkedIn }}</td>
+                                        <td style="text-align: center;">{{ std.languagesKnown }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="45">You don't have any students </td>
+                                </tr>
+                            {% endif %}
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+        <script>
+            function validateCGPA(input) {
+              var cgpaPattern = /^(?:[0-9](?:\.[0-9]{1,2})?|10(?:\.0{1,2})?)$/;
+              var isValid = cgpaPattern.test(input.value);
+              var errorSpan = document.getElementById("error");
+              if (!isValid) {
+                errorSpan.innerHTML = "Invalid CGPA";
+              } else {
+                errorSpan.innerHTML = "";
+              }
+            }
+            </script>
+
+
+        {% endblock %}
+    </body>
+</html>

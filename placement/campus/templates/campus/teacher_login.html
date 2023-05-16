@@ -3,7 +3,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Admin Login</title>
+		<title>ZYPHOR - PLACEMENT CELL</title>
 		<link rel="icon" type="image/x-icon" href="{% static '/img/placement.png' %}">
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -11,20 +11,36 @@
 		<!------ Include the above in your HEAD tag ---------->
 		<link rel="stylesheet" href="{% static '/css/loginStyle.css' %}">
 		<script src="{% static '/js/loginScript.js' %}"></script>
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+		<script>
+			/*window.onload = function() {
+			  var recaptcha = document.forms["loginForm"]["g-recaptcha-response"];
+			  recaptcha.required = true;
+			  recaptcha.oninvalid = function(e) {
+				alert("Please complete all the details, captcha and try again!");
+			  }
+			}*/
+		</script>
 	</head>
 	<body>
+	<font size="5px" color="red">
+		{% if error %}
+			<div align="center"> {{ error }} </div>
+		{% endif %}
+	</font>
 		<div class="limiter">
 			<div class="container-login100">
 				<div class="wrap-login100">
 					<div class="login100-pic js-tilt" data-tilt>
-						<img style="text-align: justify;" src="https://colorlib.com/etc/lf/Login_v1/images/img-01.png" alt="Along with preparation, college placement cells help get the right people to the right place. If left alone, students could really hamper their careers by getting into the wrong place. Therefore, the importance of a good place cell cannot be stressed enough.">
+						<img style="text-align: justify;" src="https://colorlib.com/etc/lf/Login_v1/images/img-01.png" alt="IMG">
 					</div>
 
-					<form method="post" action="tpoLogin" class="login100-form validate-form">
+					<form name="loginForm" method="post" action="teacher_login" class="login100-form validate-form">
 						{% csrf_token %}
 						<span class="login100-form-title">
 							<a class="txt3" href="http://127.0.0.1:8000/admin"></a> |
 							<a class="txt3" href="{% url 'campus:home' %}">> Student? <</a> |
+<!--							<a class="txt3" href="http://127.0.0.1:8000/admin">ADMIN?</a>-->
 <!--							<a class="txt3" href="http://127.0.0.1:8000/hod">HOD</a> |-->
 <!--							<a class="txt3" href="http://127.0.0.1:8000/faculty">Faculty</a> |-->
 							<br><br>
@@ -49,6 +65,10 @@
 							</span>
 						</div>
 						<span id="pass" class="new"></span>
+
+						<div class="container-login100-form-btn">
+							<div class="g-recaptcha" data-sitekey="6LfLHLgkAAAAAEAqtTmmXH9kqWR0_zWAPeZpBLXW"></div>
+						</div>
 						<div class="container-login100-form-btn">
 							<button class="login100-form-btn" type="submit">
 								Login
@@ -59,11 +79,16 @@
 							<span class="txt1">
 								Forgot
 							</span>
-							<a class="txt2" href="">
+							<a class="txt2" href="{% url 'campus:reset_password' %}">
 								Password?
 							</a>
 						</div>
+
 					</form>
+
+						<span class="login100-form-title">
+							<a class="txt3" href="{% url 'placement_officer:admin_login' %}">ADMIN?</a>
+						</span>
 				</div>
 			</div>
 		</div>

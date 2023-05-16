@@ -15,7 +15,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib import messages
 from django.contrib import auth
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import authenticate, get_user_model, login
 from django.core.mail import EmailMultiAlternatives
 from datetime import *
 
@@ -485,7 +485,8 @@ def register_drive(request, id):
 
             drive_name = Drives.objects.filter(id=id).values('company_name').get()['company_name']
             text_content = "This mail is to inform that you have successfully registered for the drive " + drive_name + "."
-            msg = EmailMultiAlternatives('Registration for the ' + drive_name + ' Drive', text_content, EMAIL_HOST_USER, [email])
+            msg = EmailMultiAlternatives('Registration for the ' + drive_name + ' Drive', text_content, EMAIL_HOST_USER,
+                                         [email])
             msg.send()
 
             context = {
@@ -528,7 +529,8 @@ def payment(request):
                 'quantity': 1,
             }],
             mode='payment',
-            success_url=request.build_absolute_uri(reverse('campus:thanks')).replace('%20', '') + '?session_id={CHECKOUT_SESSION_ID}',
+            success_url=request.build_absolute_uri(reverse('campus:thanks')).replace('%20',
+                                                                                     '') + '?session_id={CHECKOUT_SESSION_ID}',
             cancel_url=request.build_absolute_uri(reverse('campus:home')),
         )
         context = {
@@ -995,6 +997,79 @@ def placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, qu
 
     new_student_scores = [pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, quiz_per]
     prediction = model.predict([new_student_scores])
-    print("Placement Prediction: ", prediction[0]*100)
+    print("Placement Prediction: ", prediction[0] * 100)
 
-    return prediction[0]*100
+    return prediction[0] * 100
+
+
+def teacher_login_view(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        if Teacher.objects.filter(email=email, password=password).exists():
+            user = Teacher.objects.filter(email=email)
+            for std in user:
+                email = std.email
+                id = std.id
+                print(email, id)
+                request.session['email'] = std.email
+                """This is a session variable and will remain existing as long as you don't delete this manually or 
+                clear your browser cache """
+                request.session['admino'] = id
+                return redirect('campus:teacher')
+        error = "Credentials not match! Try again"
+        return render(request, 'campus/teacher_login.html', {'error': error})
+    else:
+        return render(request, 'campus/teacher_login.html', )
+
+
+def teacher_logout_view(request):
+    logout(request)
+    return redirect('campus:home')
+
+
+def teacher_dashboard(request):
+    email = request.session['email']
+    if not email:
+        return redirect('campus:teacher_login')
+    else:
+        user = Teacher.objects.get(email=email)
+        context = {
+            'user': user
+        }
+        return render(request, 'campus/teacher_dashboard.html', context)
+
+
+def student_list(request):
+    email = request.session['email']
+    user = Teacher.objects.get(email=email)
+    dept = user.department
+    print(dept)
+    students = MCAStudentDetails.objects.filter(class_name=dept)
+    print(students)
+    context = {
+        'user': user,
+        'students': students,
+    }
+    return render(request, 'campus/teacher_student_details.html', context)
+
+
+def teacher_profile(request):
+    return render(request, 'campus/login.html')
+
+def teacher_update_password(request):
+    return render(request, 'campus/login.html')
+
+def teacher_update_mca(request, id):
+    email = request.session['email']
+    cgpa = request.POST['mcacgpa']
+    print('email: ',email, cgpa)
+    if request.method == 'POST':
+        r = MCAStudentDetails.objects.filter(id=id).values('mcaAggregateCgpa').get()['mcaAggregateCgpa']
+        print(r)
+        r.save()
+        print(r)
+        return HttpResponse(
+            "<script>alert('CGPA updated successfully!..'); window.location='/quiz_list'; </script>"
+        )
+    return render(request, 'campus/teacher_dashboard.html')
