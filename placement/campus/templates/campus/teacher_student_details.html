@@ -79,7 +79,7 @@
                             {% if students %}
                                 {% for std in students %}
                                     <tr>
-                                        <td style="text-align: center;">{{ forloop.counter }}</td>
+                                        <td style="text-align: center;">{{ std.id }}</td>
                                         <td style="text-align: center;">{{ std }}</td>
                                         <td style="text-align: center;">{{ std.collegeMail }}</td>
                                         <td style="text-align: center;">{{ std.universityReg }}</td>
@@ -114,7 +114,7 @@
                                         <td style="text-align: center;">
                                             <span id="error"></span>
                                             <input type="text" name="mcacgpa" value="{{ std.mcaAggregateCgpa }}" style="max-width: 50px;" oninput="validateCGPA(this);">
-                                            <a href="{% url 'campus:teacher_update_mca' std.id %}">
+                                            <a href="{% url 'campus:update_cgpa' std.id %}">
                                                 <button class="btn btn-primary" type="submit" name="submit" value="submit" style="margin-top: 10px">Update</button>
                                             </a>
                                         </td>

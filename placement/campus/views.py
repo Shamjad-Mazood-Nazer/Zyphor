@@ -1,18 +1,9 @@
-from hashlib import sha256
-
 import stripe
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
-from django.contrib.sites import requests
-from django.views import View
 from .forms import *
 
-from django.template import loader
 
-from django.template.loader import render_to_string
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.auth import authenticate, get_user_model, login
@@ -30,35 +21,16 @@ from .decorators import user_login_required
 import random
 from placement.settings import EMAIL_HOST_USER
 
-from notifications.signals import notify
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
-from django.template.loader import get_template
-from django.template import Context
 
-from .aiken import Aiken
-
-"""imports for Machine Learning Algorithms"""
-import pandas as pd
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
 
 # user model
 User = get_user_model()
-
-
-# Create your views here.
-
-# sender = User.objects.get(username=request.user)
-# recipient = User.objects.get(id=user_id)
-# message = "This is an simple message"
-# notify.send(actor=sender, recipient=recipient, verb='Message',
-#             description=message)
-
 
 def ajax_generate_code(request):
     print(request.GET)
@@ -73,11 +45,6 @@ def ajax_generate_code(request):
             msg = EmailMultiAlternatives('Verify Email', text_content, EMAIL_HOST_USER, [email])
             msg.send()
     return HttpResponse("success")
-
-
-# def activateEmail(request, user, to_email):
-#     mail_subject = "Activate your user account."
-#     messages = render_to_string()
 
 
 def register(request):
@@ -251,9 +218,6 @@ def studentDash(request):
     else:
         average_score = 0
         print('No questions answered yet.')
-    # quiz_results = Aiken_Result.objects.filter(email=request.user.email).values_list('score', flat=True)
-    # print(aiken_result, '\nquiz_results: ', quiz_results)
-    # print(myData)
     context = {
         'user': user,
         'myData': myData,
@@ -272,13 +236,6 @@ def logout(request):
         request.session.clear()  # delete user session
     return redirect('/')
 
-
-# def logout(request):
-#     try:
-#         del request.session['email']
-#     except KeyError:
-#         pass
-#     return render(request, "campus/login.html")
 
 
 def tpo(request):
@@ -433,22 +390,6 @@ def viewDrive(request):
         return render(request, 'campus/payments.html', )
 
 
-@user_login_required
-def applyDrive(request):
-    return HttpResponse("<script>alert('Congrats! Applied Successfully');window.location='/';</script>")
-    # if request.method == 'POST':
-    #     email = request.POST['email']
-    #     full_name = request.POST['full_name']
-    #     print(email)
-    #     if ApplyDrive.objects.filter(email=email, full_name=full_name).exists():
-    #         return HttpResponse("<script>alert('Already Applied!');window.location='/viewDrive';</script>")
-    #     else:
-    #         drive = ApplyDrive(email=email, full_name=full_name, job_name='TCS')
-    #         drive.save()
-    #         return HttpResponse("<script>alert('Applied Successful!');window.location='/viewDrive';</script>")
-    # else:
-    #     redirect('applyDrive')
-
 
 @user_login_required
 def register_drive(request, id):
@@ -506,8 +447,6 @@ def register_drive(request, id):
 @user_login_required
 def payment(request):
     email = request.session['email']
-    # user = get_user(request)
-    # myData = StudentReg.objects.filter(admino=user.admino)
     user = StudentReg.objects.get(email=email)
     if Payment.objects.filter(email=email).exists():
         info = Payment.objects.filter(email=email).values('payment_on').get()['payment_on']
@@ -576,62 +515,6 @@ def thanks(request):
 
 def pay_error(request):
     return render(request, 'campus/error.html')
-
-
-@user_login_required
-def generate_receipt(request):
-    # Get the payment information from the request or database
-    email = request.session['email']
-    first_name = StudentReg.objects.filter(email=email).values('first_name').get()['first_name']
-    last_name = StudentReg.objects.filter(email=email).values('last_name').get()['last_name']
-    payment_amount = 5000
-    fetch_date = Payment.objects.filter(email=email).values('payment_on').get()['payment_on']
-    transaction_id = Payment.objects.filter(email=email).values('transaction_id').get()['transaction_id']
-    payment_date = fetch_date.date()
-    payment_method = 'Credit card'
-    customer_name = first_name + ' ' + last_name
-
-    # Create a PDF document using ReportLab
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="payment_receipt.pdf"'
-
-    doc = SimpleDocTemplate(response, pagesize=A4)
-    styles = getSampleStyleSheet()
-
-    # Define the elements for the PDF document
-    elements = []
-    elements.append(Paragraph('Zyphor - Payment Receipt', styles['Heading1']))
-    elements.append(Spacer(1, 0.2 * inch))
-
-    # Add the payment information to the PDF document
-    table_data = [
-        ['Bill'],
-        ['Recipient Name:', customer_name],
-        ['Payment Amount:', payment_amount],
-        ['Stripe Transaction ID:', transaction_id],
-        ['Payment Date:', payment_date],
-        ['Payment Method:', payment_method],
-    ]
-    table_style = TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 14),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-    ])
-    elements.append(Table(table_data, style=table_style))
-
-    # Add a “Thank You” message to the PDF document
-    elements.append(Spacer(1, 0.5 * inch))
-    elements.append(Paragraph('Thank You for your payment!', styles['Normal']))
-
-    # Build the PDF document from the elements
-    doc.build(elements)
-
-    return response
 
 
 def quiz(request):
@@ -755,37 +638,6 @@ def quiz_list(request):
             return render(request, 'campus/quiz_list.html', context)
 
 
-# def quiz_detail(request, id):
-#     # question = AikenQuizFormat.objects.filter(id=id)
-#     # attempts = AikenFile.objects.filter(id=id).values('attempts').get()['attempts']
-#     # print('attempts: ', attempts)
-#
-#     attempt_counter = Aiken_Result.objects.filter(id=id).values('counter').get()['counter']
-#     print(attempt_counter)
-#
-#     if not attempt_counter:
-#         data = AikenFile.objects.get(id=id)
-#         print(data)
-#         print(id)
-#
-#         times = AikenFile.objects.filter(id=id).values('time').get()['time']
-#         print(times)
-#         quiz = Quiz.objects.get(id=id)
-#         questions = quiz.question_set.all()
-#
-#         print('questions : \n', questions)
-#         print('Quiz:', quiz)
-#
-#         context = {
-#             'quiz': quiz,
-#             'questions': questions,
-#             'times': times,
-#         }
-#         return render(request, 'campus/quiz_details.html', context)
-#     else:
-#         return HttpResponse(
-#             "<script>alert('You have already attended this Quiz'); window.location='/quiz_list'; </script>"
-#         )
 
 @user_login_required
 def quiz_detail(request, id):
@@ -929,79 +781,6 @@ def sent_message(request):
     return render(request, 'chat_to_admin')
 
 
-def performance_predict(correct, total, cgpa, time):
-    print(correct, total, cgpa, time)
-    # Load the CSV file into a Pandas DataFrame
-    df = pd.read_csv('static/csv/Student.csv')
-
-    # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(df.drop('output', axis=1), df['output'], test_size=0.2,
-                                                        random_state=0)
-
-    # Create a Linear Regression model and fit it to the training data
-    regressor = LinearRegression()
-    regressor.fit(X_train, y_train)
-
-    # Make predictions on the testing data
-    y_pred = regressor.predict(X_test)
-    print(y_pred)
-
-    # Evaluate the performance of the model
-    from sklearn.metrics import mean_squared_error, r2_score
-    print('Mean squared error: %.2f' % mean_squared_error(y_test, y_pred))
-    print('Coefficient of determination (R^2): %.2f' % r2_score(y_test, y_pred))
-    print('Accuracy : %.2f' % (r2_score(y_test, y_pred) * 100))
-    print('prediction: ', y_pred)
-
-    return r2_score(y_test, y_pred) * 100
-
-
-def chat_to_admin(request):
-    email = request.session['email']
-    print(email)
-    user = StudentReg.objects.get(email=email)
-    context = {
-        'user': user,
-    }
-    return render(request, 'campus/chat.html', context)
-
-
-import os
-import pickle
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-
-
-def placement_prediction(pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, quiz_per):
-    print('pg_per: ', pg_per, '\npg_cgpa: ', pg_cgpa, '\nug_per: ', ug_per, '\nug_cgpa: ', ug_cgpa, '\nhse_per: ',
-          hse_per, '\nsslc_per: ', sslc_per, '\nquiz_per: ', quiz_per)
-    pickle_file = 'static/csv/model.pickle'
-
-    if os.path.exists(pickle_file):
-        with open(pickle_file, 'rb') as f:
-            model = pickle.load(f)
-    else:
-        data = pd.read_csv("static/csv/2020-Student-DB.csv")
-
-        X = data.drop("output", axis=1)
-        y = data["output"]
-
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-        model = RandomForestRegressor(n_estimators=100, random_state=42)
-
-        model.fit(X_train, y_train)
-
-        with open(pickle_file, 'wb') as f:
-            pickle.dump(model, f)
-
-    new_student_scores = [pg_per, pg_cgpa, ug_per, ug_cgpa, hse_per, sslc_per, quiz_per]
-    prediction = model.predict([new_student_scores])
-    print("Placement Prediction: ", prediction[0] * 100)
-
-    return prediction[0] * 100
-
-
 def teacher_login_view(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -1061,15 +840,16 @@ def teacher_update_password(request):
     return render(request, 'campus/login.html')
 
 def teacher_update_mca(request, id):
+    print("frrrrfffv")
     email = request.session['email']
     cgpa = request.POST['mcacgpa']
     print('email: ',email, cgpa)
     if request.method == 'POST':
-        r = MCAStudentDetails.objects.filter(id=id).values('mcaAggregateCgpa').get()['mcaAggregateCgpa']
+        r = MCAStudentDetails.objects.get(id=id)
         print(r)
         r.save()
         print(r)
         return HttpResponse(
-            "<script>alert('CGPA updated successfully!..'); window.location='/quiz_list'; </script>"
+            "<script>alert('CGPA updated successfully!..'); window.location='/teacher'; </script>"
         )
     return render(request, 'campus/teacher_dashboard.html')

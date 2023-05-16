@@ -26,9 +26,6 @@ urlpatterns = [
 
     path('viewDrive', views.viewDrive, name='viewDrive'),
     path('register_drive/<int:id>/', views.register_drive, name='register_drive'),
-    # path('applyDrive', views.applyDrive, name='applyDrive'),
-    # path('apply_drive/<int:id>/', views.apply_drive, name='apply_drive'),
-    # path('applyDrive/<drive_id>/', applyDrive.as_view(), name='applyDrive'),
 
     path('payment', views.payment, name='payment'),
     path('thanks', views.thanks, name='thanks'),
@@ -44,7 +41,6 @@ urlpatterns = [
 
     path('ajax_generate_code/', views.ajax_generate_code, name='ajax_generate_code'),
 
-    path('chat_to_admin', views.chat_to_admin, name='chat_to_admin'),
     path('sent_message', views.sent_message, name='sent_message'),
 
     path('teacher_login', views.teacher_login_view, name='teacher_login'),
@@ -53,7 +49,7 @@ urlpatterns = [
     path('teacher_profile', views.teacher_profile, name='teacher_profile'),
     path('teacher_update_password', views.teacher_update_password, name='teacher_update_password'),
     path('student_list', views.student_list, name='student_list'),
-    path('teacher_update_mca/<int:id>/', views.teacher_update_mca, name='teacher_update_mca'),
+    path('update_cgpa/<int:id>/', views.teacher_update_mca, name='update_cgpa'),
 
     path('reset_password/',
          auth_views.PasswordResetView.as_view(template_name='campus/password_reset.html'),
